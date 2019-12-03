@@ -1010,6 +1010,12 @@ namespace Search
             {
                 SearchGrid.CellValueChanged -= SearchGrid_CellValueChanged;
 
+                if (string.IsNullOrEmpty(tb.Text))
+                {
+                    Text = "";
+                    SubSearchTextBoxes.ToList().ForEach(sstb => sstb.TextBox.Text = "");
+                }
+
                 string[] XZ_Texts = tb.Text.Split(new string[] { MultSelectSplit }, StringSplitOptions.None);
                 string[] Texts = tb.Text.Split(new char[] { ' ' }, StringSplitOptions.None);
 
