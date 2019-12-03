@@ -1,0 +1,807 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SearchControls</name>
+    </assembly>
+    <members>
+        <member name="T:Search.CreateColumns">
+            <summary>
+            创建列的方法
+            </summary>
+        </member>
+        <member name="M:Search.CreateColumns.CreatePinYinDataColumn(System.Data.DataTable,System.Data.DataColumn[])">
+            <summary>
+            创建拼音列
+            </summary>
+            <param name="dataTable">需要创建列的对应表单DataTable</param>
+            <param name="dataColumns">需要创建的对应列</param>
+            <returns>拼音列</returns>
+        </member>
+        <member name="M:Search.CreateColumns.CreatePinYinDataColumn(System.Data.DataTable,System.String[])">
+            <summary>
+            创建拼音列
+            </summary>
+            <param name="dataTable">需要创建列的对应表单DataTable</param>
+            <param name="columnNames">需要创建的对应列名</param>
+            <returns>拼音列</returns>
+        </member>
+        <member name="T:Search.DataGridViewSearchTextBoxColumn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Search.DataGridViewSearchTextBoxColumn.BindingItemDataPropertyName">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Search.DataGridViewSearchTextBoxColumn.BindingItemColumnIndex">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:Search.DataGridViewSearchTextBoxColumn.ItemSource">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Search.GridSelectingEventArgs">
+            <summary>
+            小表正在选择某项所需的事件参数
+            </summary>
+        </member>
+        <member name="P:Search.GridSelectingEventArgs.SearchGrid">
+            <summary>
+            模糊查找的DataGridView表<see cref="T:System.Windows.Forms.DataGridView"/>
+            </summary>
+        </member>
+        <member name="P:Search.GridSelectingEventArgs.RowIndex">
+            <summary>
+            获取一个值，此值指示发生此事件的单元格的行索引。
+            </summary>
+        </member>
+        <member name="P:Search.GridSelectingEventArgs.CurrentRow">
+            <summary>
+            选择的行<see cref="T:System.Windows.Forms.DataGridViewRow"/>
+            </summary>
+        </member>
+        <member name="P:Search.GridSelectingEventArgs.Key">
+            <summary>
+            键盘数据
+            </summary>
+        </member>
+        <member name="P:Search.GridSelectingEventArgs.Handled">
+            <summary>
+            获取一个值，该值表示是否处理过此事件
+            </summary>
+        </member>
+        <member name="M:Search.GridSelectingEventArgs.#ctor(System.Windows.Forms.DataGridView,System.Int32,System.Windows.Forms.KeyEventArgs)">
+            <summary>
+            初始化 GridSelectedEnterEventArgs 类的新实例。
+            </summary>
+            <param name="searchGrid">模糊查找的DataGridView表<see cref="T:System.Windows.Forms.DataGridView"/></param>
+            <param name="rowIndex">行的索引，该行包含发生此事件的单元格。</param>
+            <param name="key">键盘数据</param>
+        </member>
+        <member name="F:Search.SearchDataGridView.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:Search.SearchDataGridView.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:Search.SearchDataGridView.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要修改
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="F:Search.SearchForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Search.SearchForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Search.SearchForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Search.SearchForm.SearchGrid">
+            <summary>
+            模糊查找的小表
+            </summary>
+        </member>
+        <member name="F:Search.SearchGrid.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:Search.SearchGrid.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:Search.SearchGrid.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要修改
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="T:Search.SearchTextBox">
+            <summary>
+            带有模糊查找(DataGridView)的TextBox
+            </summary>
+            <example>使用模糊查找文本框的示例
+            <code>
+                class TestForm : Form
+                {
+                    private Search.SearchTextBox searchTextBox1;
+                    private System.Windows.Forms.TextBox textBox1;
+                    private System.Data.DataTable dataTable1;
+                    
+                    public TestForm()
+                    {
+                        searchTextBox1 = new Search.SearchTextBox(); //初始化
+                        searchTextBox1.DataSource = dataTable1; //绑定数据源
+                        searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                        searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    }
+                }
+            </code>
+            </example>
+        </member>
+        <member name="P:Search.SearchTextBox.MultSelectColumn">
+            <summary>
+            多重选择的列
+            </summary>
+            <remarks>
+            源代码
+            <code>
+            new DataGridViewCheckBoxColumn
+            {
+                Name = "Select",
+                DataPropertyName = "Select",
+                HeaderText = "选择",
+                Width = 30,
+                FalseValue = false,
+                TrueValue = true,
+                ValueType = typeof(bool)
+            };
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Search.SearchTextBox.IsMultSelect">
+            <summary>
+            是否多选
+            </summary>
+            <value>
+            <para><c>IsMultSelect</c>为<c>True </c>时，添加多选框</para>
+            <para><c>IsMultSelect</c>为<c>False</c>时，只能单选</para>
+            </value>
+        </member>
+        <member name="P:Search.SearchTextBox.MultSelectSplit">
+            <summary>
+            多重选择的分隔符
+            </summary>
+        </member>
+        <member name="P:Search.SearchTextBox.SubSearchTextBoxes">
+            <summary>
+            附属的文本框集合
+            </summary>
+            <example>添加附属文本框的方法<see cref="M:Search.SubSearchTextBoxCollection.Add(System.Windows.Forms.TextBox,System.String,System.String)"/>
+            <code>
+                class TestForm : Form
+                {
+                    private Search.SearchTextBox searchTextBox1;
+                    private System.Data.DataTable dataTable1;
+                    
+                    public TestForm()
+                    {
+                        searchTextBox1 = new Search.SearchTextBox(); //初始化
+                        searchTextBox1.DataSource = dataTable1; //绑定数据源
+                        searchTextBox1.DisplayDataName = "DM";  //需要展示的列名
+                        searchTextBox1.SubSearchTextBoxes.Add(textBox1, "MC", "DM");
+                    }
+                }
+            </code>
+            </example>
+        </member>
+        <member name="P:Search.SearchTextBox.SearchGrid">
+            <summary>
+            模糊查找的DataGridView表<see cref="T:System.Windows.Forms.DataGridView"/>
+            </summary>
+        </member>
+        <member name="P:Search.SearchTextBox.Columns">
+            <summary>
+            模糊查找表格的列<see cref="T:System.Windows.Forms.DataGridViewColumnCollection"/>
+            </summary>
+        </member>
+        <member name="P:Search.SearchTextBox.CurrentRow">
+            <summary>
+            根据文本框的内容返回表格当前的行<see cref="T:System.Windows.Forms.DataGridViewRow"/>
+            </summary>
+            <remarks>
+            源代码
+            <code>
+                public partial class SearchTextBox : TextBox
+                {
+                    public DataGridViewRow CurrentRow
+                    {
+                        get
+                        {
+                            DataGridViewRow dgvr;
+                            if (string.IsNullOrWhiteSpace(this.Text)) return SearchGrid.CurrentRow;
+                            if (string.IsNullOrWhiteSpace(DisplayDataName)) 
+                            {
+                                dgvr = SearchGrid.Rows.Cast&lt;DataGridViewRow&gt;()
+                                        .FirstOrDefault(_dgvr => 
+                                            _dgvr.Cells.Cast&lt;DataGridViewCell&gt;().Select(_dgvc=>_dgvc.Value.ToString()).Any(item=>item.Equals(this.Text))
+                                        );
+                            }
+                            else
+                            {
+                                dgvr = SearchGrid.Rows.Cast&lt;DataGridViewRow&gt;().FirstOrDefault(_dgvr => _dgvr.Cells[DisplayDataName].Value.Equals(this.Text));
+                            }
+                            return dgvr == null ? SearchGrid.CurrentRow : dgvr;
+                        }
+                    }
+                }
+            </code>
+            </remarks>
+        </member>
+        <member name="P:Search.SearchTextBox.IsUp">
+            <summary>
+            是否将表朝上
+            </summary>
+            <value>
+            <para><c>IsUp</c>为true 时，表在文本框的上面</para>
+            <para><c>IsUp</c>为false时，表在文本框的下面</para>
+            </value>
+        </member>
+        <member name="P:Search.SearchTextBox.DisplayDataName">
+            <summary>
+            需要在文本框中展示的对应的列名
+            </summary>
+            <remarks>
+            当选择完之后需要自动写入文本框内的列名
+            </remarks>
+        </member>
+        <member name="P:Search.SearchTextBox.AutoInputDataName">
+            <summary>
+            自动输入对应的列名
+            </summary>
+            <remarks>
+            根据文本框中的内容是否与对应的列中的数据一致，自动选择对应的内容
+            </remarks>
+        </member>
+        <member name="P:Search.SearchTextBox.IsTextChanged">
+            <summary>
+            是否进行模糊查找
+            </summary>
+            <value>
+            <para><c>IsTextChanged</c>为<c>True </c>时，自动对所有列中的内容进行模糊查找</para>
+            <para><c>IsTextChanged</c>为<c>false</c>时，不会进行模糊查找</para>
+            </value>
+        </member>
+        <member name="P:Search.SearchTextBox.IsAutoInput">
+            <summary>
+            是否当输入内容完全正确时，自动触发选择相应内容
+            </summary>
+            <seealso cref="P:Search.SearchTextBox.AutoInputDataName"/>
+        </member>
+        <member name="P:Search.SearchTextBox.DisplayRowCount">
+            <summary>
+            想要显示的行数
+            </summary>
+        </member>
+        <member name="P:Search.SearchTextBox.IsAutoReset">
+            <summary>
+            模糊查找框显示的时候是否自动还原到原来的状态
+            </summary>
+            <value>
+            <para><c>IsAutoReset</c>为<c>True </c>时，列表显示时自动还原到初始状态，显示列表全部内容</para>
+            <para><c>IsAutoReset</c>为<c>false</c>时，列表显示时是模糊查找以后的状态</para>
+            </value>
+            <seealso cref="M:Search.SearchTextBox.Reset"/>
+        </member>
+        <member name="P:Search.SearchTextBox.DataSource">
+            <summary>
+            设置或者获取SearchGrid的数据源<see cref="P:System.Windows.Forms.DataGridView.DataSource"/>
+            </summary>
+        </member>
+        <member name="P:Search.SearchTextBox.DataMember">
+            <summary>
+            获取或设置 System.Windows.Forms.DataGridView 正在为其显示数据的数据源中的列表或表的名称。
+            </summary>
+        </member>
+        <member name="T:Search.SearchTextBox.GridSelectingEventHandler">
+            <summary>
+            当表格被点击或者按确定时，执行委托方法
+            </summary>
+            <example>
+            事件执行普通方法
+            <code>
+            class TestForm : Form
+            {
+                private Search.SearchTextBox searchTextBox1;
+                private System.Windows.Forms.TextBox textBox1;
+                private System.Data.DataTable dataTable1;
+                    
+                public TestForm()
+                {
+                    searchTextBox1 = new Search.SearchTextBox(); //初始化
+                    searchTextBox1.DataSource = dataTable1; //绑定数据源
+                    searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                    searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    
+                    searchTextBox1.GridSelecting += searchTextBox1_GridSelecting;
+                }
+                
+                private void searchTextBox1_GridSelecting(object sender, GridSelectingEventArgs e)
+                {
+                    e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                    if (sender is TextBox tb)
+                    {
+                        //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                        tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+            
+                        textBox1.Focus();
+                    }
+                }
+            }
+            </code>
+            事件执行的Linq方法
+            <code>
+            class TestForm : Form
+            {
+                private Search.SearchTextBox searchTextBox1;
+                private System.Windows.Forms.TextBox textBox1;
+                private System.Data.DataTable dataTable1;
+                    
+                public TestForm()
+                {
+                    searchTextBox1 = new Search.SearchTextBox(); //初始化
+                    searchTextBox1.DataSource = dataTable1; //绑定数据源
+                    searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                    searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    
+                    searchTextBox1.GridSelecting += (sender, e) => 
+                    {
+                        e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                        if (sender is TextBox tb)
+                        {
+                            //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                            tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+            
+                            textBox1.Focus();
+                        }
+                    };
+                }
+            }
+            </code>
+            </example>
+            <seealso cref="E:Search.SearchTextBox.GridSelecting"/>
+        </member>
+        <member name="E:Search.SearchTextBox.GridSelecting">
+            <summary>
+            当选择完某一行时发生（鼠标点击和键盘确定键都会触发）。
+            </summary>
+            <example>
+            事件执行普通方法
+            <code>
+            class TestForm : Form
+            {
+                private Search.SearchTextBox searchTextBox1;
+                private System.Windows.Forms.TextBox textBox1;
+                private System.Data.DataTable dataTable1;
+                    
+                public TestForm()
+                {
+                    searchTextBox1 = new Search.SearchTextBox(); //初始化
+                    searchTextBox1.DataSource = dataTable1; //绑定数据源
+                    searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                    searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    
+                    searchTextBox1.GridSelecting += searchTextBox1_GridSelecting;
+                }
+                
+                private void searchTextBox1_GridSelecting(object sender, GridSelectingEventArgs e)
+                {
+                    e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                    if (sender is TextBox tb)
+                    {
+                        //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                        tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+            
+                        textBox1.Focus();
+                    }
+                }
+            }
+            </code>
+            事件执行的Linq方法
+            <code>
+            class TestForm : Form
+            {
+                private Search.SearchTextBox searchTextBox1;
+                private System.Windows.Forms.TextBox textBox1;
+                private System.Data.DataTable dataTable1;
+                    
+                public TestForm()
+                {
+                    searchTextBox1 = new Search.SearchTextBox(); //初始化
+                    searchTextBox1.DataSource = dataTable1; //绑定数据源
+                    searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                    searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    
+                    searchTextBox1.GridSelecting += (sender, e) => 
+                    {
+                        e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                        if (sender is TextBox tb)
+                        {
+                            //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                            tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+            
+                            textBox1.Focus();
+                        }
+                    };
+                }
+            }
+            </code>
+            </example>
+        </member>
+        <member name="M:Search.SearchTextBox.OnGridSelecting(Search.GridSelectingEventArgs)">
+            <summary>
+            引发 Search.SearchTextBox.GridSelecting 事件。
+            </summary>
+            <param name="e">包含事件数据的 System.ComponentModel.CollectionChangeEventArgs。</param>
+        </member>
+        <member name="T:Search.SearchTextBox.SearchGridLocationSizeChangedEventHandler">
+            <summary>
+            当表格调整完位置和高宽后，执行对应的事件
+            </summary>
+        </member>
+        <member name="E:Search.SearchTextBox.SearchGridLocationSizeChanged">
+            <summary>
+            当表格调整完位置和高宽后
+            </summary>
+        </member>
+        <member name="M:Search.SearchTextBox.OnSearchGridLocationSizeChanged(Search.SubFormLocationSizeEventArgs)">
+            <summary>
+            引发 Search.SearchTextBox.SearchGridLocationSizeChanged 事件。
+            </summary>
+            <param name="e">包含事件数据的System.EventArgs</param>
+        </member>
+        <member name="M:Search.SearchTextBox.#ctor">
+            <summary>
+            SearchTextBox初始化
+            </summary>
+            <example>使用模糊查找文本框的示例<see cref="T:Search.SearchTextBox"/>
+            <code>
+                class TestForm : Form
+                {
+                    private Search.SearchTextBox searchTextBox1;
+                    private System.Data.DataTable dataTable1;
+                    
+                    public TestForm()
+                    {
+                        searchTextBox1 = new Search.SearchTextBox(); //初始化
+                        searchTextBox1.DataSource = dataTable1; //绑定数据源
+                        searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                        searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+                    }
+                }
+            </code>
+            </example>
+        </member>
+        <member name="M:Search.SearchTextBox.Reset">
+            <summary>
+            将模糊查找还原到原来的状态
+            </summary>
+            <remarks>
+            <c>DataTable.DefaultView.RowFilter = "";</c>
+            </remarks>
+        </member>
+        <member name="M:Search.SearchTextBox.OnCreateControl">
+            <summary>
+            引发 System.Windows.Forms.Control.CreateControl 事件。
+            </summary>
+        </member>
+        <member name="M:Search.SearchTextBox.GetSelectedText(System.String[],System.Int32@,System.Int32@)">
+            <summary>
+            获得光标所在处的词组信息
+            </summary>
+            <param name="Texts">用;分隔的数组</param>
+            <param name="LocationStart">词组最开始的位置</param>
+            <param name="Index">光标所在的数组的位置</param>
+        </member>
+        <member name="M:Search.SearchTextBox.ShowSearchGrid">
+            <summary>
+            显示并设置网格高宽
+            </summary>
+        </member>
+        <member name="M:Search.SearchTextBox.SetSearchGridSize">
+            <summary>
+            设置网格大小
+            </summary>
+        </member>
+        <member name="M:Search.SearchTextBox.SetSearchGridLocation">
+            <summary>
+            设置网格位置
+            </summary>
+        </member>
+        <member name="F:Search.SearchTextBox.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:Search.SearchTextBox.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:Search.SearchTextBox.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要修改
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="T:Search.SubFormLocationSizeEventArgs">
+            <summary>
+            子窗口的位置和大小发生变动时所需的参数
+            </summary>
+        </member>
+        <member name="P:Search.SubFormLocationSizeEventArgs.SubForm">
+            <summary>
+            子窗口
+            </summary>
+        </member>
+        <member name="M:Search.SubFormLocationSizeEventArgs.#ctor(System.Windows.Forms.Form)">
+            <summary>
+            初始化 SubFormLocationSizeEventArgs 类的新实例
+            </summary>
+            <param name="subForm">子窗口</param>
+        </member>
+        <member name="T:Search.SubSearchTextBoxCollection">
+            <summary>
+            SearchTextBox的附属文本框的集合
+            </summary>
+        </member>
+        <member name="E:Search.SubSearchTextBoxCollection.CollectionChanged">
+            <summary>
+            当更改集合的内容时发生。
+            </summary>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.OnCollectionChanged(System.ComponentModel.CollectionChangeEventArgs)">
+            <summary>
+            引发 Search.SubSearchTextBoxCollection.CollectionChanged 事件。
+            </summary>
+            <param name="e">包含事件数据的 System.ComponentModel.CollectionChangeEventArgs。</param>
+        </member>
+        <member name="P:Search.SubSearchTextBoxCollection.Item(System.Windows.Forms.TextBox)">
+            <summary>
+            获取或设置指定文本框的元素。
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <returns>指定文本框的元素</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Add(Search.SubSearchTextBox)">
+            <summary>
+            将对象添加到 System.Collections.Generic.List`1 的结尾处。
+            </summary>
+            <param name="item">要添加到 System.Collections.Generic.List`1 的末尾处的对象。对于引用类型，该值可以为 null。</param>
+            <exception cref="T:System.Exception">列表中不能出现重复的文本框</exception>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Add(System.Windows.Forms.TextBox,System.String,System.String)">
+            <summary>
+            将对象添加到 System.Collections.Generic.List`1 的结尾处。
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <param name="displayDataName">要绑定显示的列名</param>
+            <param name="autoInputDataName">自动输入的列名</param>
+            <exception cref="T:System.Exception">列表中不能出现重复的文本框</exception>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.AddRange(System.Collections.Generic.IEnumerable{Search.SubSearchTextBox})">
+            <summary>
+            将指定集合的元素添加到 System.Collections.Generic.List`1 的末尾。
+            </summary>
+            <param name="collection">一个集合，其元素应被添加到 System.Collections.Generic.List`1 的末尾。集合自身不能为 null，但它可以包含为 null的元素（如果类型 T 为引用类型）。</param>
+            <exception cref="T:System.Exception">列表中不能出现重复的文本框</exception>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Clear">
+            <summary>
+            从 System.Collections.Generic.List`1 中移除所有元素。
+            </summary>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Contains(System.Windows.Forms.TextBox,System.String,System.String)">
+            <summary>
+            确定某元素是否在 System.Collections.Generic.List`1 中。
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <param name="displayDataName">需要展示的数据列名</param>
+            <param name="autoInputDataName">自动输入的列名</param>
+            <returns>如果在 System.Collections.Generic.List`1 中找到 item，则为 true，否则为 false。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Contains(System.Windows.Forms.TextBox)">
+            <summary>
+            确定某元素是否在 System.Collections.Generic.List`1 中。
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <returns>如果在 System.Collections.Generic.List`1 中找到 item，则为 true，否则为 false。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.IndexOf(System.Windows.Forms.TextBox)">
+            <summary>
+            搜索指定的对象，并返回整个 System.Collections.Generic.List`1 中第一个匹配项的从零开始的索引。
+            </summary>
+            <param name="item">附属的文本框</param>
+            <returns>如果在整个 System.Collections.Generic.List`1 中找到 item 的第一个匹配项，则为该项的从零开始的索引；否则为 -1。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.LastIndexOf(System.Windows.Forms.TextBox)">
+            <summary>
+            搜索指定的对象，并返回整个 System.Collections.Generic.List`1 中最后一个匹配项的从零开始的索引。
+            </summary>
+            <param name="item">附属的文本框</param>
+            <returns>如果在整个 System.Collections.Generic.List`1 中找到 item 的最后一个匹配项，则为该项的从零开始的索引；否则为 -1。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Insert(System.Int32,Search.SubSearchTextBox)">
+            <summary>
+            将元素插入 System.Collections.Generic.List`1 的指定索引处。
+            </summary>
+            <param name="index">从零开始的索引，应在该位置插入 item。</param>
+            <param name="item">要插入的对象。对于引用类型，该值可以为 null。</param>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Insert(System.Int32,System.Windows.Forms.TextBox,System.String,System.String)">
+            <summary>
+            将元素插入 System.Collections.Generic.List`1 的指定索引处。
+            </summary>
+            <param name="index">从零开始的索引，应在该位置插入 item。</param>
+            <param name="textBox">附属的文本框</param>
+            <param name="displayDataName">要展示的列名</param>
+            <param name="autoInputDataName">自动输入的列名</param>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.InsertRange(System.Int32,System.Collections.Generic.IEnumerable{Search.SubSearchTextBox})">
+            <summary>
+            将集合中的某个元素插入 System.Collections.Generic.List`1 的指定索引处。
+            </summary>
+            <param name="index">应在此处插入新元素的从零开始的索引。</param>
+            <param name="collection">一个集合，应将其元素插入到 System.Collections.Generic.List`1 中。集合自身不能为 null，但它可以包含为 null 的元素（如果类型T 为引用类型）。</param>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Remove(Search.SubSearchTextBox)">
+            <summary>
+            从 System.Collections.Generic.List`1 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="item">要从 System.Collections.Generic.List`1 中移除的对象。对于引用类型，该值可以为 null。</param>
+            <returns>如果成功移除 item，则为 true；否则为 false。如果在 System.Collections.Generic.List`1 中没有找到 item，该方法也会返回false。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.Remove(System.Windows.Forms.TextBox)">
+            <summary>
+            从 System.Collections.Generic.List`1 中移除特定对象的第一个匹配项。
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <returns>如果成功移除 item，则为 true；否则为 false。如果在 System.Collections.Generic.List`1 中没有找到 item，该方法也会返回false。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.RemoveAll(System.Predicate{Search.SubSearchTextBox})">
+            <summary>
+            移除与指定的谓词所定义的条件相匹配的所有元素。
+            </summary>
+            <param name="match">System.Predicate`1 委托，用于定义要移除的元素应满足的条件。</param>
+            <returns>从 System.Collections.Generic.List`1 中移除的元素的数目。</returns>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.RemoveAt(System.Int32)">
+            <summary>
+            移除 System.Collections.Generic.List`1 的指定索引处的元素。
+            </summary>
+            <param name="index">要移除的元素的从零开始的索引。</param>
+        </member>
+        <member name="M:Search.SubSearchTextBoxCollection.RemoveRange(System.Int32,System.Int32)">
+            <summary>
+            从 System.Collections.Generic.List`1 中移除一定范围的元素。
+            </summary>
+            <param name="index">要移除的元素的范围从零开始的起始索引。</param>
+            <param name="count">要移除的元素数。</param>
+        </member>
+        <member name="T:Search.SubSearchTextBox">
+            <summary>
+            附属的文本框的类
+            </summary>
+        </member>
+        <member name="P:Search.SubSearchTextBox.TextBox">
+            <summary>
+            附属的文本框
+            </summary>
+        </member>
+        <member name="P:Search.SubSearchTextBox.DisplayDataName">
+            <summary>
+            要展示的列名
+            </summary>
+        </member>
+        <member name="P:Search.SubSearchTextBox.AutoInputDataName">
+            <summary>
+            自动输入对应的列名(根据文本框中的内容是否与对应的列中的数displayData据一致，自动输入DisplayDataName列的内容)
+            </summary>
+        </member>
+        <member name="M:Search.SubSearchTextBox.#ctor(System.Windows.Forms.TextBox,System.String,System.String)">
+            <summary>
+            类的初始化
+            </summary>
+            <param name="textBox">附属的文本框</param>
+            <param name="displayDataName">要展示的列名</param>
+            <param name="autoInputDataName">自动输入的列名</param>
+        </member>
+        <member name="T:PinYinConverter.PinYin">
+            <summary>
+            中文转换为拼音
+            </summary>
+        </member>
+        <member name="M:PinYinConverter.PinYin.GetInitials(System.String)">
+            <summary>
+            得到首字母
+            </summary>
+            <param name="text">中文文本</param>
+            <returns>中文文本的拼音首字母</returns>
+            <remarks>
+            源代码
+            <code>
+            public static string[] GetInitials(string text) => string.IsNullOrEmpty(text) ? null :
+                new List&lt;ChineseChar&gt;(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
+                    Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin[0]).Distinct())
+                    .Aggregate((IEnumerable&lt;IEnumerable&lt;char&gt;&gt;)new IEnumerable&lt;char&gt;[] { Enumerable.Empty&lt;char&gt;() },
+                    (accumulator, sequence) =>
+                        from accseq in accumulator
+                        from item in sequence
+                        select accseq.Concat(new[] { item }),
+                    (result) => result.Select(r => new string (r.ToArray()))).ToArray();
+            </code>
+            </remarks>
+        </member>
+        <member name="M:PinYinConverter.PinYin.GetPinYin(System.String)">
+            <summary>
+            得到拼音
+            </summary>
+            <param name="text">中文文本</param>
+            <returns>中文文本的拼音</returns>
+            <remarks>
+            源代码
+            <code>
+            public static string[] GetPinYin(string text) => string.IsNullOrEmpty(text) ? null :
+               new List&lt;ChineseChar&gt;(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
+                   Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin.Substring(0, pinyin.Length - 1)).Distinct())
+                   .Aggregate((IEnumerable&lt;IEnumerable&lt;string&gt;&gt;)new IEnumerable&lt;string>[] { Enumerable.Empty&lt;string&gt;() },
+                   (accumulator, sequence) =>
+                       from accseq in accumulator
+                       from item in sequence
+                       select accseq.Concat(new[] { item }),
+                   (result) => result.Select(r => string.Join(" ", r.Select(s => string.Concat(s[0], s.Substring(1).ToLower()))))).ToArray();
+            </code>
+            </remarks>
+        </member>
+        <member name="M:PinYinConverter.PinYin.CreatePinYinDataColumn(System.Data.DataTable,System.Data.DataColumn[])">
+            <summary>
+            创建拼音列
+            </summary>
+            <param name="dataTable">需要创建列的对应表单DataTable</param>
+            <param name="dataColumns">需要创建的对应列</param>
+            <returns>拼音列</returns>
+        </member>
+        <member name="M:PinYinConverter.PinYin.CreatePinYinDataColumn(System.Data.DataTable,System.String[])">
+            <summary>
+            创建拼音列
+            </summary>
+            <param name="dataTable">需要创建列的对应表单DataTable</param>
+            <param name="columnNames">需要创建的对应列名</param>
+            <returns>拼音列</returns>
+        </member>
+    </members>
+</doc>
