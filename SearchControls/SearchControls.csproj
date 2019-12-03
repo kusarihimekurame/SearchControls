@@ -10,9 +10,10 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
     <Authors>kusarihimekurame</Authors>
-    <Description>利用表格进行模糊查找的控件。</Description>
+    <Description>The control of fuzzy searching by table.
+利用表格进行模糊查找的控件。</Description>
     <Copyright>kusarihimekurame</Copyright>
-    <PackageProjectUrl></PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/kusarihimekurame/SearchControls</PackageProjectUrl>
     <RepositoryUrl>https://github.com/kusarihimekurame/SearchControls</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -20,14 +21,15 @@
     <PackageId>SearchControls</PackageId>
     <Product>SearchControls</Product>
     <RootNamespace>Search</RootNamespace>
+    <RepositoryType>github</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.0|AnyCPU'">
-    <DocumentationFile>C:\Users\Administrator\source\repos\SearchCore\SearchCore\SearchCore.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\SearchControls.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp3.0|AnyCPU'">
-    <DocumentationFile>C:\Users\Administrator\source\repos\SearchCore\SearchCore\SearchCore.xml</DocumentationFile>
+    <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\SearchControls.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
