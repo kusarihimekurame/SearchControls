@@ -660,8 +660,11 @@ namespace SearchControls
             MouseClick += TextBox_MouseClick;
             MouseDoubleClick += TextBox_MouseDoubleClick;
             KeyDown += TextBox_KeyDown;
-            Click += Show_event;
-            Enter += Show_event;
+            Enter += (sender, e) =>
+            {
+                IsEnter = true;
+                Show_event(sender, e);
+            };
             Leave += Hide_event2;
             
             SearchForm = new SearchForm();
@@ -858,7 +861,7 @@ namespace SearchControls
             }
         }
 
-        private string Filter;
+        private bool IsEnter = false;
         private int _SelectionStart;
         private int _SelectionLength;
 
@@ -872,20 +875,33 @@ namespace SearchControls
             else if (SearchGrid.DataSource is DataView _dv) dt = _dv.Table;
             else if (SearchGrid.DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
 
-            if (dt != null)
+            if (dt != null && (Focused || SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)))
             {
-                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter)) dt.DefaultView.RowFilter = Filter;
-                else dt.DefaultView.RowFilter = null;
+                TextBox tb;
+                if (Focused) tb = this;
+                else tb = SubSearchTextBoxes.First(sstb => sstb.TextBox.Focused).TextBox;
+                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter)) TextBox_TextChanged(tb, new EventArgs());
+                else
+                {
+                    dt.DefaultView.RowFilter = null;
+                    ShowSearchGrid();
+                }
             }
-
-            if (Focused || SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)) ShowSearchGrid();
         }
 
         private void TextBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (sender is TextBox tb)
             {
-                ReversalSearchState();
+                if (e != null)
+                {
+                    if (IsEnter) IsEnter = false;
+                    else
+                    {
+                        if (SearchForm.Visible) ReversalSearchState();
+                        else Show_event(sender, new EventArgs());
+                    }
+                }
 
                 _SelectionStart = tb.SelectionStart;
                 _SelectionLength = tb.SelectionLength;
@@ -1095,7 +1111,6 @@ namespace SearchControls
                         cWHERE = IsMultSelect ? cWHERE.Substring(3) + "OR Select = true" : cWHERE.Substring(3);
                         if (!dt.DefaultView.RowFilter.Equals(cWHERE))
                             dt.DefaultView.RowFilter = cWHERE;
-                        Filter = dt.DefaultView.RowFilter;
                     }
                     else
                     {
@@ -1366,7 +1381,7 @@ namespace SearchControls
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (_IsMultSelect && e.KeyChar == ' ')
+            if (_IsMultSelect && e.KeyChar.Equals(' '))
             {
                 e.Handled = true;
             }
