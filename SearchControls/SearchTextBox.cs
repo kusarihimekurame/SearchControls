@@ -880,7 +880,7 @@ namespace SearchControls
                 TextBox tb;
                 if (Focused) tb = this;
                 else tb = SubSearchTextBoxes.First(sstb => sstb.TextBox.Focused).TextBox;
-                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter)) TextBox_TextChanged(tb, new EventArgs());
+                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter)) TextBox_TextChanged(tb, null);
                 else
                 {
                     dt.DefaultView.RowFilter = null;
