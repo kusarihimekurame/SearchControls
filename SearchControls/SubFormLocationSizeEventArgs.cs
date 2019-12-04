@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Search
+namespace SearchControls
 {
     /// <summary>
     /// 子窗口的位置和大小发生变动时所需的参数

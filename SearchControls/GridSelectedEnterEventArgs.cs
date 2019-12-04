@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Search
+namespace SearchControls
 {
     /// <summary>
     /// 小表正在选择某项所需的事件参数

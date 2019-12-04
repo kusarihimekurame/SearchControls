@@ -1,4 +1,4 @@
-﻿namespace Search
+﻿namespace SearchControls
 {
     partial class SearchDataGridView
     {

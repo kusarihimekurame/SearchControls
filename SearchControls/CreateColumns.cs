@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 
-namespace Search
+namespace SearchControls
 {
     /// <summary>
     /// 创建列的方法

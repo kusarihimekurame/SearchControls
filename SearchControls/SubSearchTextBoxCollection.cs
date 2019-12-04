@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Search
+namespace SearchControls
 {
     /// <summary>
     /// SearchTextBox的附属文本框的集合

@@ -1,4 +1,4 @@
-﻿namespace Search
+﻿namespace SearchControls
 {
     partial class SearchForm
     {
@@ -30,7 +30,7 @@
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.SearchGrid = new Search.SearchGrid();
+            this.SearchGrid = new SearchControls.SearchGrid();
             ((System.ComponentModel.ISupportInitialize)(this.SearchGrid)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,6 +78,6 @@
         /// <summary>
         /// 模糊查找的小表
         /// </summary>
-        internal Search.SearchGrid SearchGrid;
+        internal SearchControls.SearchGrid SearchGrid;
     }
 }

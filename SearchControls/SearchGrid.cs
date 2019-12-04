@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Search
+namespace SearchControls
 {
     internal partial class SearchGrid : DataGridView
     {

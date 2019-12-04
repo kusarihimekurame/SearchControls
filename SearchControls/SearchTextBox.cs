@@ -13,7 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace Search
+namespace SearchControls
 {
     /// <summary>
     /// 带有模糊查找(DataGridView)的TextBox
@@ -807,7 +807,7 @@ namespace Search
             }
         }
 
-        private void Show_event(object sender,EventArgs e)
+        private void Show_event(object sender, EventArgs e)
         {
             if (!SearchForm.Visible) SearchForm.Show(TopLevelControl);
         }
@@ -858,13 +858,35 @@ namespace Search
             }
         }
 
+        private string Filter;
         private int _SelectionStart;
         private int _SelectionLength;
+
+        /// <summary>
+        /// 反转搜索状态
+        /// </summary>
+        public void ReversalSearchState()
+        {
+            DataTable dt = null;
+            if (SearchGrid.DataSource is DataTable _dt) dt = _dt;
+            else if (SearchGrid.DataSource is DataView _dv) dt = _dv.Table;
+            else if (SearchGrid.DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
+
+            if (dt != null)
+            {
+                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter)) dt.DefaultView.RowFilter = Filter;
+                else dt.DefaultView.RowFilter = null;
+            }
+
+            if (Focused || SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)) ShowSearchGrid();
+        }
 
         private void TextBox_MouseClick(object sender, MouseEventArgs e)
         {
             if (sender is TextBox tb)
             {
+                ReversalSearchState();
+
                 _SelectionStart = tb.SelectionStart;
                 _SelectionLength = tb.SelectionLength;
             }
@@ -874,6 +896,8 @@ namespace Search
         {
             if (sender is TextBox tb)
             {
+                ReversalSearchState();
+
                 if (tb.Text.Contains(MultSelectSplit))
                 {
                     string[] Texts = tb.Text.Split(new string[] { MultSelectSplit }, StringSplitOptions.None);
@@ -1071,6 +1095,7 @@ namespace Search
                         cWHERE = IsMultSelect ? cWHERE.Substring(3) + "OR Select = true" : cWHERE.Substring(3);
                         if (!dt.DefaultView.RowFilter.Equals(cWHERE))
                             dt.DefaultView.RowFilter = cWHERE;
+                        Filter = dt.DefaultView.RowFilter;
                     }
                     else
                     {

@@ -20,13 +20,13 @@
     <NeutralLanguage></NeutralLanguage>
     <PackageId>SearchControls</PackageId>
     <Product>SearchControls</Product>
-    <RootNamespace>Search</RootNamespace>
+    <RootNamespace>SearchControls</RootNamespace>
     <RepositoryType>github</RepositoryType>
   </PropertyGroup>
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.0.0.1</Version>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">

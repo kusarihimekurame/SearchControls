@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpTOC>
+
+  <HelpTOCNode Id="c64d967f-b396-4383-9e3e-bc23454d3608" Title="PinYinConverter" Url="html/N_PinYinConverter.htm">
+    <HelpTOCNode Id="9bb659d3-0179-4985-8c6a-72c17dd4f6b8" Title="PinYin 类" Url="html/T_PinYinConverter_PinYin.htm">
+      <HelpTOCNode Id="29209f92-9b1f-43f0-8321-22f4244889bb" Title="PinYin 方法" Url="html/Methods_T_PinYinConverter_PinYin.htm">
+        <HelpTOCNode Id="e8d43740-600c-4fdd-8d65-8162726bd3bc" Title="CreatePinYinDataColumn 方法 " Url="html/Overload_PinYinConverter_PinYin_CreatePinYinDataColumn.htm">
+          <HelpTOCNode Title="CreatePinYinDataColumn 方法 (DataTable, DataColumn[])" Url="html/M_PinYinConverter_PinYin_CreatePinYinDataColumn.htm" />
+          <HelpTOCNode Title="CreatePinYinDataColumn 方法 (DataTable, String[])" Url="html/M_PinYinConverter_PinYin_CreatePinYinDataColumn_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="GetInitials 方法 " Url="html/M_PinYinConverter_PinYin_GetInitials.htm" />
+        <HelpTOCNode Title="GetPinYin 方法 " Url="html/M_PinYinConverter_PinYin_GetPinYin.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+  <HelpTOCNode Id="c7e8e7e9-84d9-4aed-9eb5-c775a687e6f9" Title="SearchControls" Url="html/N_SearchControls.htm">
+    <HelpTOCNode Id="a9c106d6-d46a-4e81-82c8-0a737331413f" Title="CreateColumns 类" Url="html/T_SearchControls_CreateColumns.htm">
+      <HelpTOCNode Id="0061ed83-b0f2-4ae7-9eed-614c5504851a" Title="CreateColumns 方法" Url="html/Methods_T_SearchControls_CreateColumns.htm">
+        <HelpTOCNode Id="6b6b0b15-0f5e-467d-a761-01310b41d6b6" Title="CreatePinYinDataColumn 方法 " Url="html/Overload_SearchControls_CreateColumns_CreatePinYinDataColumn.htm">
+          <HelpTOCNode Title="CreatePinYinDataColumn 方法 (DataTable, DataColumn[])" Url="html/M_SearchControls_CreateColumns_CreatePinYinDataColumn.htm" />
+          <HelpTOCNode Title="CreatePinYinDataColumn 方法 (DataTable, String[])" Url="html/M_SearchControls_CreateColumns_CreatePinYinDataColumn_1.htm" />
+        </HelpTOCNode>
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="40170732-496e-4834-85d6-c2260a447b55" Title="GridSelectingEventArgs 类" Url="html/T_SearchControls_GridSelectingEventArgs.htm">
+      <HelpTOCNode Title="GridSelectingEventArgs 构造函数 " Url="html/M_SearchControls_GridSelectingEventArgs__ctor.htm" />
+      <HelpTOCNode Id="e590583d-90fc-43c8-9430-320416bcf23f" Title="GridSelectingEventArgs 属性" Url="html/Properties_T_SearchControls_GridSelectingEventArgs.htm">
+        <HelpTOCNode Title="CurrentRow 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_CurrentRow.htm" />
+        <HelpTOCNode Title="Handled 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_Handled.htm" />
+        <HelpTOCNode Title="Key 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_Key.htm" />
+        <HelpTOCNode Title="RowIndex 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_RowIndex.htm" />
+        <HelpTOCNode Title="SearchGrid 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_SearchGrid.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="94fff102-1a2a-439d-a512-7cf1d892083c" Title="SearchTextBox 类" Url="html/T_SearchControls_SearchTextBox.htm">
+      <HelpTOCNode Title="SearchTextBox 构造函数 " Url="html/M_SearchControls_SearchTextBox__ctor.htm" />
+      <HelpTOCNode Id="18656c91-97dc-436d-95f0-78f0ff8b2849" Title="SearchTextBox 属性" Url="html/Properties_T_SearchControls_SearchTextBox.htm">
+        <HelpTOCNode Title="AutoInputDataName 属性 " Url="html/P_SearchControls_SearchTextBox_AutoInputDataName.htm" />
+        <HelpTOCNode Title="Columns 属性 " Url="html/P_SearchControls_SearchTextBox_Columns.htm" />
+        <HelpTOCNode Title="CurrentRow 属性 " Url="html/P_SearchControls_SearchTextBox_CurrentRow.htm" />
+        <HelpTOCNode Title="DataMember 属性 " Url="html/P_SearchControls_SearchTextBox_DataMember.htm" />
+        <HelpTOCNode Title="DataSource 属性 " Url="html/P_SearchControls_SearchTextBox_DataSource.htm" />
+        <HelpTOCNode Title="DisplayDataName 属性 " Url="html/P_SearchControls_SearchTextBox_DisplayDataName.htm" />
+        <HelpTOCNode Title="DisplayRowCount 属性 " Url="html/P_SearchControls_SearchTextBox_DisplayRowCount.htm" />
+        <HelpTOCNode Title="IsAutoInput 属性 " Url="html/P_SearchControls_SearchTextBox_IsAutoInput.htm" />
+        <HelpTOCNode Title="IsAutoReset 属性 " Url="html/P_SearchControls_SearchTextBox_IsAutoReset.htm" />
+        <HelpTOCNode Title="IsMultSelect 属性 " Url="html/P_SearchControls_SearchTextBox_IsMultSelect.htm" />
+        <HelpTOCNode Title="IsTextChanged 属性 " Url="html/P_SearchControls_SearchTextBox_IsTextChanged.htm" />
+        <HelpTOCNode Title="IsUp 属性 " Url="html/P_SearchControls_SearchTextBox_IsUp.htm" />
+        <HelpTOCNode Title="MultSelectColumn 属性 " Url="html/P_SearchControls_SearchTextBox_MultSelectColumn.htm" />
+        <HelpTOCNode Title="MultSelectSplit 属性 " Url="html/P_SearchControls_SearchTextBox_MultSelectSplit.htm" />
+        <HelpTOCNode Title="SearchGrid 属性 " Url="html/P_SearchControls_SearchTextBox_SearchGrid.htm" />
+        <HelpTOCNode Title="SubSearchTextBoxes 属性 " Url="html/P_SearchControls_SearchTextBox_SubSearchTextBoxes.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="67ca4509-e1d1-4e8a-bdc8-ae6784878a9b" Title="SearchTextBox 方法" Url="html/Methods_T_SearchControls_SearchTextBox.htm">
+        <HelpTOCNode Title="Dispose 方法 " Url="html/M_SearchControls_SearchTextBox_Dispose.htm" />
+        <HelpTOCNode Title="GetSelectedText 方法 " Url="html/M_SearchControls_SearchTextBox_GetSelectedText.htm" />
+        <HelpTOCNode Title="OnCreateControl 方法 " Url="html/M_SearchControls_SearchTextBox_OnCreateControl.htm" />
+        <HelpTOCNode Title="OnGridSelecting 方法 " Url="html/M_SearchControls_SearchTextBox_OnGridSelecting.htm" />
+        <HelpTOCNode Title="OnSearchGridLocationSizeChanged 方法 " Url="html/M_SearchControls_SearchTextBox_OnSearchGridLocationSizeChanged.htm" />
+        <HelpTOCNode Title="Reset 方法 " Url="html/M_SearchControls_SearchTextBox_Reset.htm" />
+        <HelpTOCNode Title="ReversalSearchState 方法 " Url="html/M_SearchControls_SearchTextBox_ReversalSearchState.htm" />
+        <HelpTOCNode Title="SetSearchGridLocation 方法 " Url="html/M_SearchControls_SearchTextBox_SetSearchGridLocation.htm" />
+        <HelpTOCNode Title="SetSearchGridSize 方法 " Url="html/M_SearchControls_SearchTextBox_SetSearchGridSize.htm" />
+        <HelpTOCNode Title="ShowSearchGrid 方法 " Url="html/M_SearchControls_SearchTextBox_ShowSearchGrid.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="12334d2b-4940-4179-a62b-5d4bded051f0" Title="SearchTextBox 事件" Url="html/Events_T_SearchControls_SearchTextBox.htm">
+        <HelpTOCNode Title="GridSelecting 事件" Url="html/E_SearchControls_SearchTextBox_GridSelecting.htm" />
+        <HelpTOCNode Title="SearchGridLocationSizeChanged 事件" Url="html/E_SearchControls_SearchTextBox_SearchGridLocationSizeChanged.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Title="SearchTextBox.GridSelectingEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_GridSelectingEventHandler.htm" />
+    <HelpTOCNode Title="SearchTextBox.SearchGridLocationSizeChangedEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_SearchGridLocationSizeChangedEventHandler.htm" />
+    <HelpTOCNode Id="2c4700ba-c270-41e3-b176-731bae2a27d0" Title="SubFormLocationSizeEventArgs 类" Url="html/T_SearchControls_SubFormLocationSizeEventArgs.htm">
+      <HelpTOCNode Title="SubFormLocationSizeEventArgs 构造函数 " Url="html/M_SearchControls_SubFormLocationSizeEventArgs__ctor.htm" />
+      <HelpTOCNode Id="800f62c3-4b02-4378-bcd4-262013c48cac" Title="SubFormLocationSizeEventArgs 属性" Url="html/Properties_T_SearchControls_SubFormLocationSizeEventArgs.htm">
+        <HelpTOCNode Title="SubForm 属性 " Url="html/P_SearchControls_SubFormLocationSizeEventArgs_SubForm.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="c243c986-920b-4511-81bf-719f6ef31703" Title="SubSearchTextBox 类" Url="html/T_SearchControls_SubSearchTextBox.htm">
+      <HelpTOCNode Title="SubSearchTextBox 构造函数 " Url="html/M_SearchControls_SubSearchTextBox__ctor.htm" />
+      <HelpTOCNode Id="2979f065-84b2-46ec-bf4f-a0a3c2432cb4" Title="SubSearchTextBox 属性" Url="html/Properties_T_SearchControls_SubSearchTextBox.htm">
+        <HelpTOCNode Title="AutoInputDataName 属性 " Url="html/P_SearchControls_SubSearchTextBox_AutoInputDataName.htm" />
+        <HelpTOCNode Title="DisplayDataName 属性 " Url="html/P_SearchControls_SubSearchTextBox_DisplayDataName.htm" />
+        <HelpTOCNode Title="TextBox 属性 " Url="html/P_SearchControls_SubSearchTextBox_TextBox.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+    <HelpTOCNode Id="466c84e5-8c7c-4caf-a6b4-e9f3c1743017" Title="SubSearchTextBoxCollection 类" Url="html/T_SearchControls_SubSearchTextBoxCollection.htm">
+      <HelpTOCNode Title="SubSearchTextBoxCollection 构造函数 " Url="html/M_SearchControls_SubSearchTextBoxCollection__ctor.htm" />
+      <HelpTOCNode Id="75c7493c-22af-4d5c-9c34-8d04255f3047" Title="SubSearchTextBoxCollection 属性" Url="html/Properties_T_SearchControls_SubSearchTextBoxCollection.htm">
+        <HelpTOCNode Title="Item 属性 " Url="html/P_SearchControls_SubSearchTextBoxCollection_Item.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="343a1d81-3642-4fdd-8112-34bc0ab57d50" Title="SubSearchTextBoxCollection 方法" Url="html/Methods_T_SearchControls_SubSearchTextBoxCollection.htm">
+        <HelpTOCNode Id="95d8faa9-b658-483b-a91f-21174532a1db" Title="Add 方法 " Url="html/Overload_SearchControls_SubSearchTextBoxCollection_Add.htm">
+          <HelpTOCNode Title="Add 方法 (SubSearchTextBox)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Add.htm" />
+          <HelpTOCNode Title="Add 方法 (TextBox, String, String)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Add_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="AddRange 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_AddRange.htm" />
+        <HelpTOCNode Title="Clear 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_Clear.htm" />
+        <HelpTOCNode Id="328e6c99-2d60-40d9-8976-6dc381dfea18" Title="Contains 方法 " Url="html/Overload_SearchControls_SubSearchTextBoxCollection_Contains.htm">
+          <HelpTOCNode Title="Contains 方法 (TextBox)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Contains.htm" />
+          <HelpTOCNode Title="Contains 方法 (TextBox, String, String)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Contains_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="IndexOf 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_IndexOf.htm" />
+        <HelpTOCNode Id="8e113325-68a2-4b0b-bcbc-7dfbbbd59d86" Title="Insert 方法 " Url="html/Overload_SearchControls_SubSearchTextBoxCollection_Insert.htm">
+          <HelpTOCNode Title="Insert 方法 (Int32, SubSearchTextBox)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Insert.htm" />
+          <HelpTOCNode Title="Insert 方法 (Int32, TextBox, String, String)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Insert_1.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="InsertRange 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_InsertRange.htm" />
+        <HelpTOCNode Title="LastIndexOf 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_LastIndexOf.htm" />
+        <HelpTOCNode Title="OnCollectionChanged 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_OnCollectionChanged.htm" />
+        <HelpTOCNode Id="5e1573a9-81a5-4f18-9605-b3fd50619671" Title="Remove 方法 " Url="html/Overload_SearchControls_SubSearchTextBoxCollection_Remove.htm">
+          <HelpTOCNode Title="Remove 方法 (TextBox)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Remove_1.htm" />
+          <HelpTOCNode Title="Remove 方法 (SubSearchTextBox)" Url="html/M_SearchControls_SubSearchTextBoxCollection_Remove.htm" />
+        </HelpTOCNode>
+        <HelpTOCNode Title="RemoveAll 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_RemoveAll.htm" />
+        <HelpTOCNode Title="RemoveAt 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_RemoveAt.htm" />
+        <HelpTOCNode Title="RemoveRange 方法 " Url="html/M_SearchControls_SubSearchTextBoxCollection_RemoveRange.htm" />
+      </HelpTOCNode>
+      <HelpTOCNode Id="654c313f-191a-4756-8fb7-7d75e742a565" Title="SubSearchTextBoxCollection 事件" Url="html/Events_T_SearchControls_SubSearchTextBoxCollection.htm">
+        <HelpTOCNode Title="CollectionChanged 事件" Url="html/E_SearchControls_SubSearchTextBoxCollection_CollectionChanged.htm" />
+      </HelpTOCNode>
+    </HelpTOCNode>
+  </HelpTOCNode>
+  <HelpTOCNode Title="Welcome to the [TODO: Add project name]" Url="html/fb2282e4-b6ca-4d30-a88a-6845a4f5a2e7.htm" />
+  <HelpTOCNode Id="431d6fed-0a59-4e97-8c95-f57891c3ba80" Title="Version History" Url="html/f17f8cd6-7bb9-42af-b656-1001114b6be0.htm">
+    <HelpTOCNode Title="Version 1.0.0.0" Url="html/7cca4f2e-07bf-403c-82c0-e7dcefdd167f.htm" />
+  </HelpTOCNode>
+</HelpTOC>

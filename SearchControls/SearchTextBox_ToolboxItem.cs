@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Search
+namespace SearchControls
 {
     [Serializable()]
     internal class SearchTextBox_ToolboxItem : ToolboxItem
