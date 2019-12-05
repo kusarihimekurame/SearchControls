@@ -15,6 +15,27 @@ namespace SearchControls
     {
         private DataSet _OriginSource;
         private string _DataMember;
+
+        public new bool ColumnHeadersVisible
+        {
+            get => base.ColumnHeadersVisible;
+            set
+            {
+                base.ColumnHeadersVisible = value;
+                if (TopLevelControl != null)
+                {
+                    if (value)
+                    {
+                        TopLevelControl.Height += ColumnHeadersHeight;
+                    }
+                    else
+                    {
+                        TopLevelControl.Height -= ColumnHeadersHeight;
+                    }
+                }
+            }
+        }
+
         public new string DataMember
         {
             get => _OriginSource == null ? _DataMember : base.DataMember;
@@ -51,11 +72,7 @@ namespace SearchControls
         public SearchGrid()
         {
             InitializeComponent();
-        }
-        [DebuggerStepThrough]
-        protected override void OnPaint(PaintEventArgs pe)
-        {
-            base.OnPaint(pe);
+            ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
         }
 
         protected override void OnScroll(ScrollEventArgs e)
@@ -198,14 +215,6 @@ namespace SearchControls
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             ColumnHeadersVisible = !ColumnHeadersVisible;
-            if (ColumnHeadersVisible)
-            {
-                TopLevelControl.Height += ColumnHeadersHeight;
-            }
-            else
-            {
-                TopLevelControl.Height -= ColumnHeadersHeight;
-            }
         }
     }
 }

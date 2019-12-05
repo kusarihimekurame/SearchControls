@@ -10,7 +10,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateLibraryLayout>true</GenerateLibraryLayout>
     <Authors>kusarihimekurame</Authors>
-    <Description>This control supports WinForm.
+    <Description>The control supports WinForm.
 The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。</Description>
     <Copyright>kusarihimekurame</Copyright>
@@ -27,7 +27,7 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.0.2.1</Version>
+    <Version>1.0.2.2</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">

@@ -109,6 +109,16 @@ namespace SearchControls
                 }
             }
         }
+
+        /// <summary>
+        /// 是否显示列标题
+        /// </summary>
+        public bool IsDisplayColumnHeaders
+        {
+            get => ((SearchGrid)SearchGrid).ColumnHeadersVisible;
+            set => ((SearchGrid)SearchGrid).ColumnHeadersVisible = value;
+        }
+
         /// <summary>
         /// 多重选择的分隔符
         /// </summary>
@@ -523,7 +533,7 @@ namespace SearchControls
         public delegate void GridSelectingEventHandler(object sender, GridSelectingEventArgs e);
         private GridSelectingEventHandler onGridSelecting;
         /// <summary>
-        /// 当选择完某一行时发生（鼠标点击和键盘确定键都会触发）。
+        /// 当正在选择某一行时发生（鼠标点击和键盘确定键都会触发）。
         /// </summary>
         /// <example>
         /// 事件执行普通方法
@@ -605,6 +615,145 @@ namespace SearchControls
             onGridSelecting?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// 当表格被点击或者按确定之后，执行委托方法
+        /// </summary>
+        /// <example>
+        /// 事件执行普通方法
+        /// <code>
+        /// class TestForm : Form
+        /// {
+        ///     private Search.SearchTextBox searchTextBox1;
+        ///     private System.Windows.Forms.TextBox textBox1;
+        ///     private System.Data.DataTable dataTable1;
+        ///         
+        ///     public TestForm()
+        ///     {
+        ///         searchTextBox1 = new Search.SearchTextBox(); //初始化
+        ///         searchTextBox1.DataSource = dataTable1; //绑定数据源
+        ///         searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+        ///         searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+        ///         
+        ///         searchTextBox1.GridSelected += searchTextBox1_GridSelected;
+        ///     }
+        ///     
+        ///     private void searchTextBox1_GridSelecting(object sender, GridSelectedEventArgs e)
+        ///     {
+        ///         if (sender is TextBox tb)
+        ///         {
+        ///             //需要处理的步骤
+        ///             textBox1.Focus();
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// 事件执行的Linq方法
+        /// <code>
+        /// class TestForm : Form
+        /// {
+        ///     private Search.SearchTextBox searchTextBox1;
+        ///     private System.Windows.Forms.TextBox textBox1;
+        ///     private System.Data.DataTable dataTable1;
+        ///         
+        ///     public TestForm()
+        ///     {
+        ///         searchTextBox1 = new Search.SearchTextBox(); //初始化
+        ///         searchTextBox1.DataSource = dataTable1; //绑定数据源
+        ///         searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+        ///         searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+        ///         
+        ///         searchTextBox1.GridSelected += (sender, e) => 
+        ///         {
+        ///             e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+        ///             if (sender is TextBox tb)
+        ///             {
+        ///                 //需要处理的步骤
+        ///                 textBox1.Focus();
+        ///             }
+        ///         };
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        /// <seealso cref="GridSelected"/>
+        public delegate void GridSelectedEventHandler(object sender, GridSelectedEventArgs e);
+        private GridSelectedEventHandler onGridSelected;
+        /// <summary>
+        /// 当选择完某一行时发生（鼠标点击和键盘确定键都会触发）。
+        /// </summary>
+        /// <example>
+        /// 事件执行普通方法
+        /// <code>
+        /// class TestForm : Form
+        /// {
+        ///     private Search.SearchTextBox searchTextBox1;
+        ///     private System.Windows.Forms.TextBox textBox1;
+        ///     private System.Data.DataTable dataTable1;
+        ///         
+        ///     public TestForm()
+        ///     {
+        ///         searchTextBox1 = new Search.SearchTextBox(); //初始化
+        ///         searchTextBox1.DataSource = dataTable1; //绑定数据源
+        ///         searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+        ///         searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+        ///         
+        ///         searchTextBox1.GridSelected += searchTextBox1_GridSelected;
+        ///     }
+        ///     
+        ///     private void searchTextBox1_GridSelected(object sender, GridSelectedEventArgs e)
+        ///     {
+        ///         if (sender is TextBox tb)
+        ///         {
+        ///             //相要处理的方法
+        ///             textBox1.Focus();
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// 事件执行的Linq方法
+        /// <code>
+        /// class TestForm : Form
+        /// {
+        ///     private Search.SearchTextBox searchTextBox1;
+        ///     private System.Windows.Forms.TextBox textBox1;
+        ///     private System.Data.DataTable dataTable1;
+        ///         
+        ///     public TestForm()
+        ///     {
+        ///         searchTextBox1 = new Search.SearchTextBox(); //初始化
+        ///         searchTextBox1.DataSource = dataTable1; //绑定数据源
+        ///         searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+        ///         searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+        ///         
+        ///         searchTextBox1.GridSelected += (sender, e) => 
+        ///         {
+        ///             if (sender is TextBox tb)
+        ///             {
+        ///                 //相要处理的方法
+        ///                 textBox1.Focus();
+        ///             }
+        ///         };
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
+        [
+            Category("Search"),
+            Description("当选择完某一行时发生（鼠标点击和键盘确定键都会触发）。")
+        ]
+        public event GridSelectedEventHandler GridSelected
+        {
+            add => onGridSelected += value;
+            remove => onGridSelected -= value;
+        }
+        /// <summary>
+        /// 引发 Search.SearchTextBox.GridSelected 事件。
+        /// </summary>
+        /// <param name="e">包含事件数据的 SearchControls.GridSelectedEventArgs。</param>
+        protected virtual void OnGridSelected(GridSelectedEventArgs e)
+        {
+            onGridSelected?.Invoke(this, e);
+        }
 
         /// <summary>
         /// 当表格调整完位置和高宽后，执行对应的事件
@@ -1231,6 +1380,7 @@ namespace SearchControls
                         else if (sstb != null) tb = sstb.TextBox;
 
                         GridSelectingEventArgs row = new GridSelectingEventArgs(SearchGrid, index, e);
+                        GridSelectedEventArgs rowed = new GridSelectedEventArgs(SearchGrid, index, e);
 
                         OnGridSelecting(row);
                         if (!row.Handled)
@@ -1268,7 +1418,10 @@ namespace SearchControls
                                       _sstb.TextBox.Text = SearchGrid[_sstb.DisplayDataName, index].Value.ToString().Trim();
                                   });
                             }
-                            if (tb.Focused) SendKeys.Send("{TAB}");
+
+                            SearchForm.Visible = false;
+                            OnGridSelected(rowed);
+                            if (tb != null && tb.Focused) SendKeys.Send("{TAB}");
                         }
                         
                         TextChanged += TextBox_TextChanged;
@@ -1276,8 +1429,6 @@ namespace SearchControls
                         {
                             _sstb.TextBox.TextChanged += TextBox_TextChanged;
                         });
-
-                        SearchForm.Visible = false;
                     }
                     else
                     {
@@ -1335,6 +1486,7 @@ namespace SearchControls
                                 else if (sstb != null) tb = sstb.TextBox;
 
                                 GridSelectingEventArgs row = new GridSelectingEventArgs(SearchGrid, index, e);
+                                GridSelectedEventArgs rowed = new GridSelectedEventArgs(SearchGrid, index, e);
 
                                 OnGridSelecting(row);
                                 if (!row.Handled)
@@ -1360,6 +1512,7 @@ namespace SearchControls
                                    {
                                        _sstb.TextBox.Text = SearchGrid[_sstb.DisplayDataName, index].Value.ToString().Trim();
                                    });
+                                OnGridSelected(rowed);
                             }
 
                             TextChanged += TextBox_TextChanged;

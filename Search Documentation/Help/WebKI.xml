@@ -20,6 +20,7 @@
     <HelpKINode Title="PinYin.CreatePinYinDataColumn 方法 " Url="html/Overload_PinYinConverter_PinYin_CreatePinYinDataColumn.htm" />
   </HelpKINode>
   <HelpKINode Title="CurrentRow 属性">
+    <HelpKINode Title="GridSelectedEventArgs.CurrentRow 属性 " Url="html/P_SearchControls_GridSelectedEventArgs_CurrentRow.htm" />
     <HelpKINode Title="GridSelectingEventArgs.CurrentRow 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_CurrentRow.htm" />
     <HelpKINode Title="SearchTextBox.CurrentRow 属性 " Url="html/P_SearchControls_SearchTextBox_CurrentRow.htm" />
   </HelpKINode>
@@ -34,6 +35,17 @@
   <HelpKINode Title="GetInitials 方法" Url="html/M_PinYinConverter_PinYin_GetInitials.htm" />
   <HelpKINode Title="GetPinYin 方法" Url="html/M_PinYinConverter_PinYin_GetPinYin.htm" />
   <HelpKINode Title="GetSelectedText 方法" Url="html/M_SearchControls_SearchTextBox_GetSelectedText.htm" />
+  <HelpKINode Title="GridSelected 事件" Url="html/E_SearchControls_SearchTextBox_GridSelected.htm" />
+  <HelpKINode Title="GridSelectedEventArgs 类">
+    <HelpKINode Title="GridSelectedEventArgs 类" Url="html/T_SearchControls_GridSelectedEventArgs.htm" />
+    <HelpKINode Title="属性" Url="html/Properties_T_SearchControls_GridSelectedEventArgs.htm" />
+    <HelpKINode Title="构造函数" Url="html/M_SearchControls_GridSelectedEventArgs__ctor.htm" />
+  </HelpKINode>
+  <HelpKINode Title="GridSelectedEventArgs.CurrentRow 属性" Url="html/P_SearchControls_GridSelectedEventArgs_CurrentRow.htm" />
+  <HelpKINode Title="GridSelectedEventArgs.GridSelectedEventArgs 构造函数" Url="html/M_SearchControls_GridSelectedEventArgs__ctor.htm" />
+  <HelpKINode Title="GridSelectedEventArgs.Key 属性" Url="html/P_SearchControls_GridSelectedEventArgs_Key.htm" />
+  <HelpKINode Title="GridSelectedEventArgs.RowIndex 属性" Url="html/P_SearchControls_GridSelectedEventArgs_RowIndex.htm" />
+  <HelpKINode Title="GridSelectedEventArgs.SearchGrid 属性" Url="html/P_SearchControls_GridSelectedEventArgs_SearchGrid.htm" />
   <HelpKINode Title="GridSelecting 事件" Url="html/E_SearchControls_SearchTextBox_GridSelecting.htm" />
   <HelpKINode Title="GridSelectingEventArgs 类">
     <HelpKINode Title="GridSelectingEventArgs 类" Url="html/T_SearchControls_GridSelectingEventArgs.htm" />
@@ -52,16 +64,21 @@
   <HelpKINode Title="InsertRange 方法" Url="html/M_SearchControls_SubSearchTextBoxCollection_InsertRange.htm" />
   <HelpKINode Title="IsAutoInput 属性" Url="html/P_SearchControls_SearchTextBox_IsAutoInput.htm" />
   <HelpKINode Title="IsAutoReset 属性" Url="html/P_SearchControls_SearchTextBox_IsAutoReset.htm" />
+  <HelpKINode Title="IsDisplayColumnHeaders 属性" Url="html/P_SearchControls_SearchTextBox_IsDisplayColumnHeaders.htm" />
   <HelpKINode Title="IsMultSelect 属性" Url="html/P_SearchControls_SearchTextBox_IsMultSelect.htm" />
   <HelpKINode Title="IsTextChanged 属性" Url="html/P_SearchControls_SearchTextBox_IsTextChanged.htm" />
   <HelpKINode Title="IsUp 属性" Url="html/P_SearchControls_SearchTextBox_IsUp.htm" />
   <HelpKINode Title="Item 属性" Url="html/P_SearchControls_SubSearchTextBoxCollection_Item.htm" />
-  <HelpKINode Title="Key 属性" Url="html/P_SearchControls_GridSelectingEventArgs_Key.htm" />
+  <HelpKINode Title="Key 属性">
+    <HelpKINode Title="GridSelectedEventArgs.Key 属性 " Url="html/P_SearchControls_GridSelectedEventArgs_Key.htm" />
+    <HelpKINode Title="GridSelectingEventArgs.Key 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_Key.htm" />
+  </HelpKINode>
   <HelpKINode Title="LastIndexOf 方法" Url="html/M_SearchControls_SubSearchTextBoxCollection_LastIndexOf.htm" />
   <HelpKINode Title="MultSelectColumn 属性" Url="html/P_SearchControls_SearchTextBox_MultSelectColumn.htm" />
   <HelpKINode Title="MultSelectSplit 属性" Url="html/P_SearchControls_SearchTextBox_MultSelectSplit.htm" />
   <HelpKINode Title="OnCollectionChanged 方法" Url="html/M_SearchControls_SubSearchTextBoxCollection_OnCollectionChanged.htm" />
   <HelpKINode Title="OnCreateControl 方法" Url="html/M_SearchControls_SearchTextBox_OnCreateControl.htm" />
+  <HelpKINode Title="OnGridSelected 方法" Url="html/M_SearchControls_SearchTextBox_OnGridSelected.htm" />
   <HelpKINode Title="OnGridSelecting 方法" Url="html/M_SearchControls_SearchTextBox_OnGridSelecting.htm" />
   <HelpKINode Title="OnSearchGridLocationSizeChanged 方法" Url="html/M_SearchControls_SearchTextBox_OnSearchGridLocationSizeChanged.htm" />
   <HelpKINode Title="PinYin 类">
@@ -79,17 +96,23 @@
   <HelpKINode Title="RemoveRange 方法" Url="html/M_SearchControls_SubSearchTextBoxCollection_RemoveRange.htm" />
   <HelpKINode Title="Reset 方法" Url="html/M_SearchControls_SearchTextBox_Reset.htm" />
   <HelpKINode Title="ReversalSearchState 方法" Url="html/M_SearchControls_SearchTextBox_ReversalSearchState.htm" />
-  <HelpKINode Title="RowIndex 属性" Url="html/P_SearchControls_GridSelectingEventArgs_RowIndex.htm" />
+  <HelpKINode Title="RowIndex 属性">
+    <HelpKINode Title="GridSelectedEventArgs.RowIndex 属性 " Url="html/P_SearchControls_GridSelectedEventArgs_RowIndex.htm" />
+    <HelpKINode Title="GridSelectingEventArgs.RowIndex 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_RowIndex.htm" />
+  </HelpKINode>
   <HelpKINode Title="SearchControls 命名空间" Url="html/N_SearchControls.htm" />
   <HelpKINode Title="SearchControls.CreateColumns 类" Url="html/T_SearchControls_CreateColumns.htm" />
+  <HelpKINode Title="SearchControls.GridSelectedEventArgs 类" Url="html/T_SearchControls_GridSelectedEventArgs.htm" />
   <HelpKINode Title="SearchControls.GridSelectingEventArgs 类" Url="html/T_SearchControls_GridSelectingEventArgs.htm" />
   <HelpKINode Title="SearchControls.SearchTextBox 类" Url="html/T_SearchControls_SearchTextBox.htm" />
+  <HelpKINode Title="SearchControls.SearchTextBox.GridSelectedEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_GridSelectedEventHandler.htm" />
   <HelpKINode Title="SearchControls.SearchTextBox.GridSelectingEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_GridSelectingEventHandler.htm" />
   <HelpKINode Title="SearchControls.SearchTextBox.SearchGridLocationSizeChangedEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_SearchGridLocationSizeChangedEventHandler.htm" />
   <HelpKINode Title="SearchControls.SubFormLocationSizeEventArgs 类" Url="html/T_SearchControls_SubFormLocationSizeEventArgs.htm" />
   <HelpKINode Title="SearchControls.SubSearchTextBox 类" Url="html/T_SearchControls_SubSearchTextBox.htm" />
   <HelpKINode Title="SearchControls.SubSearchTextBoxCollection 类" Url="html/T_SearchControls_SubSearchTextBoxCollection.htm" />
   <HelpKINode Title="SearchGrid 属性">
+    <HelpKINode Title="GridSelectedEventArgs.SearchGrid 属性 " Url="html/P_SearchControls_GridSelectedEventArgs_SearchGrid.htm" />
     <HelpKINode Title="GridSelectingEventArgs.SearchGrid 属性 " Url="html/P_SearchControls_GridSelectingEventArgs_SearchGrid.htm" />
     <HelpKINode Title="SearchTextBox.SearchGrid 属性 " Url="html/P_SearchControls_SearchTextBox_SearchGrid.htm" />
   </HelpKINode>
@@ -110,16 +133,20 @@
   <HelpKINode Title="SearchTextBox.DisplayRowCount 属性" Url="html/P_SearchControls_SearchTextBox_DisplayRowCount.htm" />
   <HelpKINode Title="SearchTextBox.Dispose 方法" Url="html/M_SearchControls_SearchTextBox_Dispose.htm" />
   <HelpKINode Title="SearchTextBox.GetSelectedText 方法" Url="html/M_SearchControls_SearchTextBox_GetSelectedText.htm" />
+  <HelpKINode Title="SearchTextBox.GridSelected 事件" Url="html/E_SearchControls_SearchTextBox_GridSelected.htm" />
+  <HelpKINode Title="SearchTextBox.GridSelectedEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_GridSelectedEventHandler.htm" />
   <HelpKINode Title="SearchTextBox.GridSelecting 事件" Url="html/E_SearchControls_SearchTextBox_GridSelecting.htm" />
   <HelpKINode Title="SearchTextBox.GridSelectingEventHandler 委托" Url="html/T_SearchControls_SearchTextBox_GridSelectingEventHandler.htm" />
   <HelpKINode Title="SearchTextBox.IsAutoInput 属性" Url="html/P_SearchControls_SearchTextBox_IsAutoInput.htm" />
   <HelpKINode Title="SearchTextBox.IsAutoReset 属性" Url="html/P_SearchControls_SearchTextBox_IsAutoReset.htm" />
+  <HelpKINode Title="SearchTextBox.IsDisplayColumnHeaders 属性" Url="html/P_SearchControls_SearchTextBox_IsDisplayColumnHeaders.htm" />
   <HelpKINode Title="SearchTextBox.IsMultSelect 属性" Url="html/P_SearchControls_SearchTextBox_IsMultSelect.htm" />
   <HelpKINode Title="SearchTextBox.IsTextChanged 属性" Url="html/P_SearchControls_SearchTextBox_IsTextChanged.htm" />
   <HelpKINode Title="SearchTextBox.IsUp 属性" Url="html/P_SearchControls_SearchTextBox_IsUp.htm" />
   <HelpKINode Title="SearchTextBox.MultSelectColumn 属性" Url="html/P_SearchControls_SearchTextBox_MultSelectColumn.htm" />
   <HelpKINode Title="SearchTextBox.MultSelectSplit 属性" Url="html/P_SearchControls_SearchTextBox_MultSelectSplit.htm" />
   <HelpKINode Title="SearchTextBox.OnCreateControl 方法" Url="html/M_SearchControls_SearchTextBox_OnCreateControl.htm" />
+  <HelpKINode Title="SearchTextBox.OnGridSelected 方法" Url="html/M_SearchControls_SearchTextBox_OnGridSelected.htm" />
   <HelpKINode Title="SearchTextBox.OnGridSelecting 方法" Url="html/M_SearchControls_SearchTextBox_OnGridSelecting.htm" />
   <HelpKINode Title="SearchTextBox.OnSearchGridLocationSizeChanged 方法" Url="html/M_SearchControls_SearchTextBox_OnSearchGridLocationSizeChanged.htm" />
   <HelpKINode Title="SearchTextBox.Reset 方法" Url="html/M_SearchControls_SearchTextBox_Reset.htm" />
