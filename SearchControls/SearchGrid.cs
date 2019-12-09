@@ -114,10 +114,20 @@ namespace SearchControls
             base.WndProc(ref m);
         }
 
+        private bool IsMouseDown = false;
+        [DebuggerStepThrough]
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            IsMouseDown = true;
+        }
+
         [DebuggerStepThrough]
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            if (IsMouseDown) IsMouseDown = false;
+            else return;
             if (e.Button.Equals(MouseButtons.Left))
             {
                 OnClick(e);

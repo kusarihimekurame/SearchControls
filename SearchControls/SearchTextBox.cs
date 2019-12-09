@@ -113,10 +113,29 @@ namespace SearchControls
         /// <summary>
         /// 是否显示列标题
         /// </summary>
+        [
+            DefaultValue(false),
+            Category("Search"),
+            Description("是否展示列标题")
+        ]
         public bool IsDisplayColumnHeaders
         {
             get => ((SearchGrid)SearchGrid).ColumnHeadersVisible;
             set => ((SearchGrid)SearchGrid).ColumnHeadersVisible = value;
+        }
+
+        /// <summary>
+        /// 是否显示行标题
+        /// </summary>
+        [
+            DefaultValue(false),
+            Category("Search"),
+            Description("是否展示行标题")
+        ]
+        public bool IsDisplayRowHeaders
+        {
+            get => ((SearchGrid)SearchGrid).RowHeadersVisible;
+            set => ((SearchGrid)SearchGrid).RowHeadersVisible = value;
         }
 
         /// <summary>
