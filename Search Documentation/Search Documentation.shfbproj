@@ -30,7 +30,7 @@
       <DocumentationSource sourceFile="..\SearchControls\bin\Release\net48\SearchControls.dll" />
       <DocumentationSource sourceFile="..\SearchControls\bin\Release\net48\SearchControls.xml" />
     </DocumentationSources>
-    <HelpFileFormat>HtmlHelp1, Website</HelpFileFormat>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SyntaxFilters>Standard</SyntaxFilters>
     <PresentationStyle>VS2013</PresentationStyle>
     <CleanIntermediates>True</CleanIntermediates>
