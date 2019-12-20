@@ -229,6 +229,7 @@ namespace SearchControls
 
             if (CurrentCell.OwningColumn is DataGridViewSearchTextBoxColumn stbc)
             {
+                Reset();
                 DataGridViewSearchTextBoxColumn MainColumn = null;
                 if (!stbc.IsMain) MainColumn = Columns[stbc.MainColumnName] as DataGridViewSearchTextBoxColumn;
 
