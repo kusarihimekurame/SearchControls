@@ -12,18 +12,18 @@ namespace SearchControls
     public static class CreateColumns
     {
         /// <summary>
-        /// 创建拼音列
+        /// 创建多音首字母列
         /// </summary>
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="dataColumns">需要创建的对应列</param>
         /// <returns>拼音列</returns>
-        public static DataColumn[] CreatePinYinDataColumn(DataTable dataTable, DataColumn[] dataColumns) => PinYinConverter.PinYin.CreatePinYinDataColumn(dataTable, dataColumns);
+        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, DataColumn[] dataColumns) => PinYinConverter.PinYin.CreateManyInitialsDataColumn(dataTable, dataColumns);
         /// <summary>
-        /// 创建拼音列
+        /// 创建多音首字母列
         /// </summary>
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="columnNames">需要创建的对应列名</param>
         /// <returns>拼音列</returns>
-        public static DataColumn[] CreatePinYinDataColumn(DataTable dataTable, string[] columnNames) => PinYinConverter.PinYin.CreatePinYinDataColumn(dataTable, columnNames);
+        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, string[] columnNames) => PinYinConverter.PinYin.CreateManyInitialsDataColumn(dataTable, columnNames);
     }
 }

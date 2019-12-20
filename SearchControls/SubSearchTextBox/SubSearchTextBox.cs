@@ -69,5 +69,10 @@ namespace SearchControls
             DisplayDataName = displayDataName;
             AutoInputDataName = autoInputDataName;
         }
+
+        /// <summary>
+        /// 类的初始化
+        /// </summary>
+        public SubSearchTextBox() { }
     }
 }

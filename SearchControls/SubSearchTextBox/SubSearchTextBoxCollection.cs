@@ -33,7 +33,7 @@ namespace SearchControls
         }
 
         /// <summary>
-        /// 引发 Search.SubSearchTextBoxCollection.CollectionChanged 事件。
+        /// 引发 SearchControls.SubSearchTextBoxCollection.CollectionChanged 事件。
         /// </summary>
         /// <param name="e">包含事件数据的 System.ComponentModel.CollectionChangeEventArgs。</param>
         protected virtual void OnCollectionChanged(CollectionChangeEventArgs e)

@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<Tab>
+  <Members>
+    <Member Name="SearchTextBox">
+      <summary>
+      带有模糊查找(DataGridView)的TextBox
+      </summary>
+      <example>使用模糊查找文本框的示例
+      <code>
+         class TestForm : Form
+         {
+             private SearchControls.SearchTextBox searchTextBox1;
+             private System.Windows.Forms.TextBox textBox1;
+             private System.Data.DataTable dataTable1;
+             
+             public TestForm()
+             {
+                 searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+                 searchTextBox1.DataSource = dataTable1; //绑定数据源
+                 searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+                 searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+             }
+         }
+      </code>
+      </example>
+    </Member>
+    <Member Name="MultSelectColumn">
+      <summary>
+      多重选择的列
+      </summary>
+      <remarks>
+      源代码
+      <code>
+        new DataGridViewCheckBoxColumn
+        {
+            Name = "Select",
+            DataPropertyName = "Select",
+            HeaderText = "选择",
+            Width = 30,
+            FalseValue = false,
+            TrueValue = true,
+            ValueType = typeof(bool)
+        };
+      </code>
+      </remarks>
+    </Member>
+    <Member Name="IsMultSelect">
+      <summary>
+      是否多选
+      </summary>
+      <value>
+      <para><c>IsMultSelect</c>为<c>True </c>时，添加多选框</para>
+      <para><c>IsMultSelect</c>为<c>False</c>时，只能单选</para>
+      </value>
+    </Member>
+    <Member Name="IsDisplayColumnHeaders">
+      <summary>
+      是否显示列标题
+      </summary>
+    </Member>
+    <Member Name="IsDisplayRowHeaders">
+      <summary>
+      是否显示行标题
+      </summary>
+    </Member>
+    <Member Name="MultSelectSplit">
+      <summary>
+      多重选择的分隔符
+      </summary>
+    </Member>
+    <Member Name="SubSearchTextBoxes">
+      <summary>
+      附属的文本框集合
+      </summary>
+      <example>添加附属文本框的方法<see cref="SearchControls.SubSearchTextBoxCollection.Add(TextBox, string, string)"/>
+      <code>
+          class TestForm : Form
+          {
+              private SearchControls.SearchTextBox searchTextBox1;
+              private System.Data.DataTable dataTable1;
+              
+              public TestForm()
+              {
+                  searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+                  searchTextBox1.DataSource = dataTable1; //绑定数据源
+                  searchTextBox1.DisplayDataName = "DM";  //需要展示的列名
+                  searchTextBox1.SubSearchTextBoxes.Add(textBox1, "MC", "DM");
+              }
+          }
+      </code>
+      </example>
+    </Member>
+    <Member Name="SearchGrid">
+      <summary>
+      模糊查找的DataGridView表<see cref="DataGridView"/>
+      </summary>
+    </Member>
+    <Member Name="Columns">
+      <summary>
+      模糊查找表格的列<see cref="DataGridViewColumnCollection"/>
+      </summary>
+    </Member>
+    <Member Name="CurrentRow">
+      <summary>
+      根据文本框的内容返回表格当前的行<see cref="DataGridViewRow"/>
+      </summary>
+      <remarks>
+      源代码
+      <code>
+          public partial class SearchTextBox : TextBox
+          {
+              public DataGridViewRow CurrentRow
+              {
+                  get
+                  {
+                      DataGridViewRow dgvr;
+                      if (string.IsNullOrWhiteSpace(this.Text)) return SearchGrid.CurrentRow;
+                      if (string.IsNullOrWhiteSpace(DisplayDataName)) 
+                      {
+                          dgvr = SearchGrid.Rows.Cast&lt;DataGridViewRow&gt;()
+                                  .FirstOrDefault(_dgvr => 
+                                      _dgvr.Cells.Cast&lt;DataGridViewCell&gt;().Select(_dgvc=>_dgvc.Value.ToString()).Any(item=>item.Equals(this.Text))
+                                  );
+                      }
+                      else
+                      {
+                          dgvr = SearchGrid.Rows.Cast&lt;DataGridViewRow&gt;().FirstOrDefault(_dgvr => _dgvr.Cells[DisplayDataName].Value.Equals(this.Text));
+                      }
+                      return dgvr == null ? SearchGrid.CurrentRow : dgvr;
+                  }
+              }
+          }
+      </code>
+      </remarks>
+    </Member>
+    <Member Name="IsUp">
+      <summary>
+      是否将表朝上
+      </summary>
+      <value>
+      <para><c>IsUp</c>为true 时，表在文本框的上面</para>
+      <para><c>IsUp</c>为false时，表在文本框的下面</para>
+      </value>
+    </Member>
+    <Member Name="DisplayDataName">
+      <summary>
+      需要在文本框中展示的对应的列名
+      </summary>
+      <remarks>
+      当选择完之后需要自动写入文本框内的列名
+      </remarks>
+    </Member>
+    <Member Name="AutoInputDataName">
+      <summary>
+      自动输入对应的列名
+      </summary>
+      <remarks>
+      根据文本框中的内容是否与对应的列中的数据一致，自动选择对应的内容
+      </remarks>
+    </Member>
+    <Member Name="IsTextChanged">
+      <summary>
+      是否进行模糊查找
+      </summary>
+      <value>
+      <para><c>IsTextChanged</c>为<c>True </c>时，自动对所有列中的内容进行模糊查找</para>
+      <para><c>IsTextChanged</c>为<c>false</c>时，不会进行模糊查找</para>
+      </value>
+    </Member>
+    <Member Name="IsAutoInput">
+      <summary>
+      是否当输入内容完全正确时，自动触发选择相应内容
+      </summary>
+      <seealso cref="AutoInputDataName"/>
+    </Member>
+    <Member Name="DisplayRowCount">
+      <summary>
+      想要显示的行数
+      </summary>
+    </Member>
+    <Member Name="IsAutoReset">
+      <summary>
+      模糊查找框显示的时候是否自动还原到原来的状态
+      </summary>
+      <value>
+      <para><c>IsAutoReset</c>为<c>True </c>时，列表显示时自动还原到初始状态，显示列表全部内容</para>
+      <para><c>IsAutoReset</c>为<c>false</c>时，列表显示时是模糊查找以后的状态</para>
+      </value>
+      <seealso cref="Reset"/>
+    </Member>
+    <Member Name="DataSource">
+      <summary>
+      设置或者获取SearchGrid的数据源<see cref="DataGridView.DataSource"/>
+      </summary>
+    </Member>
+    <Member Name="DataMember">
+      <summary>
+      获取或设置 System.Windows.Forms.DataGridView 正在为其显示数据的数据源中的列表或表的名称。
+      </summary>
+    </Member>
+    <Member Name="GridSelectingEventHandler">
+      <summary>
+      当表格被点击或者按确定时，执行委托方法
+      </summary>
+      <example>
+      事件执行普通方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelecting += searchTextBox1_GridSelecting;
+          }
+          
+          private void searchTextBox1_GridSelecting(object sender, GridSelectingEventArgs e)
+          {
+              e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+              if (sender is TextBox tb)
+              {
+                  //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                  tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+      
+                  textBox1.Focus();
+              }
+          }
+      }
+      </code>
+      事件执行的Linq方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelecting += (sender, e) => 
+              {
+                  e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                  if (sender is TextBox tb)
+                  {
+                      //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                      tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+      
+                      textBox1.Focus();
+                  }
+              };
+          }
+      }
+      </code>
+      </example>
+    </Member>
+    <Member Name="GridSelecting">
+      <summary>
+      当正在选择某一行时发生（鼠标点击和键盘确定键都会触发）。
+      </summary>
+      <example>
+      事件执行普通方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelecting += searchTextBox1_GridSelecting;
+          }
+          
+          private void searchTextBox1_GridSelecting(object sender, GridSelectingEventArgs e)
+          {
+              e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+              if (sender is TextBox tb)
+              {
+                  //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                  tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+      
+                  textBox1.Focus();
+              }
+          }
+      }
+      </code>
+      事件执行的Linq方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelecting += (sender, e) => 
+              {
+                  e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                  if (sender is TextBox tb)
+                  {
+                      //tb.Text = e.SearchGrid["MC", e.RowIndex].Value.ToString();
+                      tb.Text = e.CurrentRow.Cells["MC"].Value.ToString();
+      
+                      textBox1.Focus();
+                  }
+              };
+          }
+      }
+      </code>
+      </example>
+      <seealso cref="GridSelectingEventHandler"/>
+    </Member>
+    <Member Name="OnGridSelecting">
+      <summary>
+      引发 SearchControls.SearchTextBox.GridSelecting 事件。
+      </summary>
+      <param name="e">包含事件数据的 System.ComponentModel.CollectionChangeEventArgs。</param>
+    </Member>
+    <Member Name="GridSelectedEventHandler">
+      <summary>
+      当表格被点击或者按确定之后，执行委托方法
+      </summary>
+      <example>
+      事件执行普通方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelected += searchTextBox1_GridSelected;
+          }
+          
+          private void searchTextBox1_GridSelecting(object sender, GridSelectedEventArgs e)
+          {
+              if (sender is TextBox tb)
+              {
+                  //需要处理的步骤
+                  textBox1.Focus();
+              }
+          }
+      }
+      </code>
+      事件执行的Linq方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelected += (sender, e) => 
+              {
+                  e.Handled = true;  //已经处理此事件(手动设置选择以后需要处理的步骤)
+                  if (sender is TextBox tb)
+                  {
+                      //需要处理的步骤
+                      textBox1.Focus();
+                  }
+              };
+          }
+      }
+      </code>
+      </example>
+    </Member>
+    <Member Name="GridSelected">
+      <summary>
+      当选择完某一行时发生（鼠标点击和键盘确定键都会触发）。
+      </summary>
+      <example>
+      事件执行普通方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelected += searchTextBox1_GridSelected;
+          }
+          
+          private void searchTextBox1_GridSelected(object sender, GridSelectedEventArgs e)
+          {
+              if (sender is TextBox tb)
+              {
+                  //相要处理的方法
+                  textBox1.Focus();
+              }
+          }
+      }
+      </code>
+      事件执行的Linq方法
+      <code>
+      class TestForm : Form
+      {
+          private SearchControls.SearchTextBox searchTextBox1;
+          private System.Windows.Forms.TextBox textBox1;
+          private System.Data.DataTable dataTable1;
+              
+          public TestForm()
+          {
+              searchTextBox1 = new SearchControls.SearchTextBox(); //初始化
+              searchTextBox1.DataSource = dataTable1; //绑定数据源
+              searchTextBox1.DisplayDataName = "MC";  //需要展示的列名
+              searchTextBox1.AutoInputDataName = "DM"; //需要自动输入的列名
+              
+              searchTextBox1.GridSelected += (sender, e) => 
+              {
+                  if (sender is TextBox tb)
+                  {
+                      //相要处理的方法
+                      textBox1.Focus();
+                  }
+              };
+          }
+      }
+      </code>
+      </example>
+      <seealso cref="GridSelectedEventHandler"/>
+    </Member>
+    <Member Name="OnGridSelected">
+      <summary>
+      引发 SearchControls.SearchTextBox.GridSelected 事件。
+      </summary>
+      <param name="e">包含事件数据的 SearchControls.GridSelectedEventArgs。</param>
+    </Member>
+    <Member Name="SearchGridLocationSizeChangedEventHandler">
+      <summary>
+      当表格调整完位置和高宽后，执行对应的事件
+      </summary>
+    </Member>
+    <Member Name="SearchGridLocationSizeChanged">
+      <summary>
+      当表格调整完位置和高宽后
+      </summary>
+    </Member>
+    <Member Name="OnSearchGridLocationSizeChanged">
+      <summary>
+      引发 SearchControls.SearchTextBox.SearchGridLocationSizeChanged 事件。
+      </summary>
+      <param name="e">包含事件数据的System.EventArgs</param>
+    </Member>
+    <Member Name="Reset">
+      <summary>
+      将模糊查找还原到原来的状态
+      </summary>
+      <remarks>
+      <c>DataTable.DefaultView.RowFilter = "";</c>
+      </remarks>
+    </Member>
+    <Member Name="ReversalSearchState">
+      <summary>
+      反转搜索状态
+      </summary>
+    </Member>
+    <Member Name="GetSelectedText">
+      <summary>
+      获得光标所在处的词组信息
+      </summary>
+      <param name="Texts">用;分隔的数组</param>
+      <param name="LocationStart">词组最开始的位置</param>
+      <param name="Index">光标所在的数组的位置</param>
+    </Member>
+    <Member Name="ShowSearchGrid">
+      <summary>
+      显示并设置网格高宽
+      </summary>
+    </Member>
+    <Member Name="SetSearchGridSize">
+      <summary>
+      设置网格大小
+      </summary>
+    </Member>
+    <Member Name="SetSearchGridLocation">
+      <summary>
+      设置网格位置
+      </summary>
+    </Member>
+    <Member Name="IGrid">
+      <summary>
+      模糊查找表的窗口接口(主要用来调整窗口的大小、位置、显示、隐藏)
+      </summary>
+    </Member>
+    <Member Name="IDataText">
+      <summary>
+      文本框和表之间的接口
+      </summary>
+    </Member>
+    <Member Name="IMultiSelect">
+      <summary>
+      多选的相关属性的接口
+      </summary>
+    </Member>
+    <Member Name="SearchDataGridView">
+      <summary>
+      带有模糊查找(DataGridView)的DataGridView
+      </summary>
+      <example>单元格中使用模糊查找的示例
+      <code>
+         class TestForm : Form
+         {
+             private SearchControls.SearchDataGridView SearchDataGridView1;
+             private System.Data.DataSet dataSet1;
+             
+             public TestForm()
+             {
+                 SearchDataGridView1 = new SearchControls.SearchTextBox(); //初始化
+                 SearchDataGridView1.DataSource = dataSet1; //绑定数据源
+             }
+         }
+      </code>
+      </example>
+    </Member>
+  </Members>
+</Tab>

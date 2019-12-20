@@ -1,0 +1,291 @@
+﻿using SearchControls.Interface;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
+
+namespace SearchControls.SearchGridForm
+{
+    /// <summary>
+    /// 模糊查找表的窗口
+    /// </summary>
+    public partial class SearchForm : Form
+    {
+        private IGrid _grid;
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IGrid"]/*'/>
+        public IGrid Grid
+        {
+            get => _grid;
+            set
+            {
+                if (value != null)
+                {
+                    _grid = value;
+                    if (_grid is Control c)
+                    {
+                        c.Leave += Hide_event2;
+                        c.HandleCreated += (sender, e) =>
+                        {
+                            if (c.TopLevelControl != null)
+                            {
+                                c.TopLevelControl.Move += (_sender, _e) => SetSearchGridLocation();
+                                c.TopLevelControl.Enter += Hide_event;
+                                c.TopLevelControl.Click += Hide_event;
+                                c.TopLevelControl.VisibleChanged += (_sender, _e) =>
+                                {
+                                    if (!c.TopLevelControl.Visible) Visible = false;
+                                };
+
+                                if (c.TopLevelControl is Form f)
+                                {
+                                    if (f.Visible) Click_Add_Visible_event(c);
+                                    else f.Load += (_sender, _e) => Click_Add_Visible_event(c);
+                                }
+                            }
+                        };
+                    }
+                    if (_grid is SearchTextBox stb)
+                    {
+                        stb.SubSearchTextBoxes.CollectionChanged += SubSearchTextBoxes_CollectionChanged;
+                    }
+                }
+            }
+        }
+
+        private SubSearchTextBoxCollection SubSearchTextBoxes => _grid is ISubSearchTextBoxes sstb ? sstb.SubSearchTextBoxes : null;
+
+        /// <summary>
+        /// 模糊查找表的窗口
+        /// </summary>
+        public SearchForm()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// 显示窗口时不将其激活
+        /// </summary>
+        protected override bool ShowWithoutActivation => true;
+
+        private const int WM_MOUSEACTIVATE = 0x21;
+        private const int MA_NOACTIVATE = 3;
+        /// <summary>
+        /// 处理 Windows 消息。
+        /// </summary>
+        /// <param name="m">一个 Windows 消息对象。</param>
+        [DebuggerStepThrough]
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg.Equals(WM_MOUSEACTIVATE))
+            {
+                m.Result = new IntPtr(MA_NOACTIVATE);
+                return;
+            }
+            base.WndProc(ref m);
+        }
+
+        private bool _IsAutoReset = true;
+        /// <summary>
+        /// 引发 System.Windows.Forms.Control.VisibleChanged 事件。
+        /// </summary>
+        /// <param name="e">包含事件数据的 System.EventArgs。</param>
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            if (SearchGrid.DataSource == null) Visible = false;
+            if (Visible)
+            {
+                if (SearchGrid.DataText.IsAutoReset && _IsAutoReset) SearchGrid.DataText.Reset();
+                _grid.ShowSearchGrid();
+            }
+            base.OnVisibleChanged(e);
+        }
+
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ShowSearchGrid"]/*'/>
+        public void ShowSearchGrid()
+        {
+            #region 显示并设置网格位置和高宽
+
+            _grid.SetSearchGridSize();
+
+            _grid.SetSearchGridLocation();
+
+            _grid.OnSearchGridLocationSizeChanged(new SearchFormLocationSizeEventArgs(this));
+
+            #endregion
+        }
+
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridSize"]/*'/>
+        public void SetSearchGridSize()
+        {
+            if (SearchGrid.RowCount > 0)
+            {
+                if (!Visible)
+                {
+                    _IsAutoReset = false;
+                    Visible = true;
+                    _IsAutoReset = true;
+                    return;
+                }
+                SearchGrid.ClearSelection();
+                SearchGrid.Rows[0].Selected = true;     // 选中网格第一行
+            }
+            else
+            {
+                Visible = false;
+            }
+
+            Width = SearchGrid.RowCount <= _grid.DisplayRowCount
+                                            ? SearchGrid.Columns.GetColumnsWidth(DataGridViewElementStates.Visible) + 3
+                                            : SearchGrid.Columns.GetColumnsWidth(DataGridViewElementStates.Visible) + 20;  // 计算有展示的列的总宽
+
+            if (SearchGrid.ColumnHeadersVisible) Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3 + SearchGrid.ColumnHeadersHeight;
+            else Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;  // 重新设置网格总高
+        }
+
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
+        public void SetSearchGridLocation()
+        {
+            if (!Bounds.Equals(Rectangle.Empty))
+            {
+                int Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;
+                if (_grid.IsUp || _grid.Bounds.Y + _grid.Bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
+                {
+                    Location = new Point(_grid.Bounds.X, _grid.Bounds.Y - Height);
+                }
+                else
+                {
+                    Location = new Point(_grid.Bounds.X, _grid.Bounds.Y + _grid.Bounds.Height);
+                }
+            }
+        }
+
+        private void Show_event(object sender, EventArgs e)
+        {
+            if (!Visible) Show((_grid as Control).TopLevelControl);
+        }
+
+        private void Hide_event(object sender, EventArgs e)
+        {
+            #region 隐藏小表
+
+            if (sender is Control cl)
+            {
+                if (cl.Text != "退出")
+                {
+                    if (Visible) Visible = false;
+                }
+            }
+
+            #endregion
+        }
+
+        private void Hide_event2(object sender, EventArgs e)
+        {
+            #region 隐藏小表
+
+            if (sender is Control cl)
+            {
+                if (cl.Text != "退出" && (SubSearchTextBoxes == null || SubSearchTextBoxes.Select(sstb => sstb.TextBox).All(tb => !tb.Focused)) && !Focused)
+                {
+                    if (Visible) Visible = false;
+                }
+            }
+
+            #endregion
+        }
+
+        private void Click_Add_Visible_event(Control cl)
+        {
+            if (cl != null && cl.Parent != null && cl.TopLevelControl != null)
+            {
+                SubSearchTextBoxCollection stbc = new SubSearchTextBoxCollection();
+                if (_grid is SearchTextBox stb) stbc = stb.SubSearchTextBoxes;
+                cl.Parent.Controls.Cast<Control>().Where(c => !c.Equals(_grid) && stbc.Select(sstb => sstb.TextBox).All(tb => !tb.Equals(c))).ToList().ForEach(c =>
+                {
+                    c.Enter += Hide_event;
+                    c.Click += Hide_event;
+                });
+                if (cl.Parent != TopLevelControl)
+                {
+                    Click_Add_Visible_event(cl.Parent);
+                }
+            }
+        }
+
+        private void SubSearchTextBoxes_CollectionChanged(object sender, CollectionChangeEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case CollectionChangeAction.Add:
+                    if (e.Element is SubSearchTextBox sstb)
+                    {
+                        sstb.TextBox.Enter -= Hide_event;
+                        sstb.TextBox.Click -= Hide_event;
+                        sstb.TextBox.Click += Show_event;
+                        sstb.TextBox.Enter += Show_event;
+                        sstb.TextBox.Leave += Hide_event2;
+                    }
+                    else if (e.Element is IEnumerable<SubSearchTextBox> sstbs)
+                    {
+                        sstbs.ToList().ForEach(_sstb =>
+                        {
+                            _sstb.TextBox.Enter -= Hide_event;
+                            _sstb.TextBox.Click -= Hide_event;
+                            _sstb.TextBox.Click += Show_event;
+                            _sstb.TextBox.Enter += Show_event;
+                            _sstb.TextBox.Leave += Hide_event2;
+                        });
+                    }
+                    break;
+                case CollectionChangeAction.Remove:
+                    if (e.Element is SubSearchTextBox sstbr)
+                    {
+                        sstbr.TextBox.Enter += Hide_event;
+                        sstbr.TextBox.Click += Hide_event;
+                        sstbr.TextBox.Click -= Show_event;
+                        sstbr.TextBox.Enter -= Show_event;
+                        sstbr.TextBox.Leave -= Hide_event2;
+                    }
+                    else if (e.Element is IEnumerable<SubSearchTextBox> sstbs)
+                    {
+                        sstbs.ToList().ForEach(_sstb =>
+                        {
+                            _sstb.TextBox.Enter += Hide_event;
+                            _sstb.TextBox.Click += Hide_event;
+                            _sstb.TextBox.Click -= Show_event;
+                            _sstb.TextBox.Enter -= Show_event;
+                            _sstb.TextBox.Leave -= Hide_event2;
+                        });
+                    }
+                    break;
+                case CollectionChangeAction.Refresh:
+                    if (sender is SubSearchTextBoxCollection sstbc)
+                    {
+                        sstbc.ForEach(_sstb =>
+                        {
+                            _sstb.TextBox.Enter += Hide_event;
+                            _sstb.TextBox.Click += Hide_event;
+                            _sstb.TextBox.Click -= Show_event;
+                            _sstb.TextBox.Enter -= Show_event;
+                            _sstb.TextBox.Leave -= Hide_event2;
+                        });
+                    }
+                    break;
+            }
+        }
+
+        internal void AddEvent()
+        {
+            if (SearchGrid.DataText.textBox != null)
+            {
+                SearchGrid.DataText.textBox.Enter += (sender, e) => Show_event(sender, e);
+            }
+        }
+    }
+}

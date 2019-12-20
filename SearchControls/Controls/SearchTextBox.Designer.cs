@@ -32,7 +32,6 @@
             // 
             // SearchTextBox
             // 
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
             this.ResumeLayout(false);
 
         }

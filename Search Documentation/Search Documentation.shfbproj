@@ -60,6 +60,8 @@
       <NamespaceSummaryItem name="PinYinConverter" isDocumented="True">中文转换为拼音
 为DataTable表添加拼音首字母列</NamespaceSummaryItem>
       <NamespaceSummaryItem name="SearchControls" isDocumented="True">模糊查找的控件类</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SearchControls.Interface" isDocumented="True">模糊查找表的接口</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SearchControls.SearchGridForm" isDocumented="True">模糊查找表</NamespaceSummaryItem>
     </NamespaceSummaries>
     <VisibleItems>Protected, ProtectedInternalAsProtected, EditorBrowsableNever, NonBrowsable</VisibleItems>
   </PropertyGroup>

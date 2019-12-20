@@ -1,4 +1,4 @@
-﻿namespace SearchControls
+﻿namespace SearchControls.SearchGridForm
 {
     partial class SearchGrid
     {

@@ -72,12 +72,12 @@ namespace PinYinConverter
                 (result) => result.Select(r => string.Join(" ", r.Select(s => string.Concat(s[0], s.Substring(1).ToLower()))))).ToArray();
 
         /// <summary>
-        /// 创建拼音列
+        /// 创建多音首字母列
         /// </summary>
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="dataColumns">需要创建的对应列</param>
         /// <returns>拼音列</returns>
-        public static DataColumn[] CreatePinYinDataColumn(DataTable dataTable, DataColumn[] dataColumns)
+        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, DataColumn[] dataColumns)
         {
             DataColumn[] PinYinDataColumns = dataColumns.Select(dc => new DataColumn("PY_" + dc.ColumnName)).ToArray();
             dataTable.Columns.AddRange(PinYinDataColumns);
@@ -92,12 +92,12 @@ namespace PinYinConverter
         }
 
         /// <summary>
-        /// 创建拼音列
+        /// 创建多音首字母列
         /// </summary>
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="columnNames">需要创建的对应列名</param>
         /// <returns>拼音列</returns>
-        public static DataColumn[] CreatePinYinDataColumn(DataTable dataTable, string[] columnNames)
-            => CreatePinYinDataColumn(dataTable, columnNames.Select(cn => dataTable.Columns[cn]).ToArray());
+        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, string[] columnNames)
+            => CreateManyInitialsDataColumn(dataTable, columnNames.Select(cn => dataTable.Columns[cn]).ToArray());
     }
 }

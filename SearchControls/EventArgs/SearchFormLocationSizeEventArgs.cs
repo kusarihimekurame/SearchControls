@@ -8,21 +8,21 @@ using System.Windows.Forms;
 namespace SearchControls
 {
     /// <summary>
-    /// 子窗口的位置和大小发生变动时所需的参数
+    /// 搜索窗口的位置和大小发生变动时所需的参数
     /// </summary>
-    public class SubFormLocationSizeEventArgs : EventArgs
+    public class SearchFormLocationSizeEventArgs : EventArgs
     {
         /// <summary>
-        /// 子窗口
+        /// 搜索窗口
         /// </summary>
-        public Form SubForm { get; }
+        public Form SearchForm { get; }
         /// <summary>
         /// 初始化 SubFormLocationSizeEventArgs 类的新实例
         /// </summary>
-        /// <param name="subForm">子窗口</param>
-        public SubFormLocationSizeEventArgs(Form subForm)
+        /// <param name="searchForm">搜索窗口</param>
+        public SearchFormLocationSizeEventArgs(Form searchForm)
         {
-            SubForm = subForm;
+            SearchForm = searchForm;
         }
     }
 }
