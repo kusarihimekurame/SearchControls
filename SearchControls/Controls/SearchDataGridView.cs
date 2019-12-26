@@ -51,7 +51,11 @@ namespace SearchControls
         public bool IsAutoReset { get; set; }
         TextBox IDataText.textBox => EditingControl as TextBox;
 
-        private SearchForm SearchForm;
+        SearchForm IGrid.SearchForm => SearchForm;
+        private readonly SearchForm SearchForm;
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        SearchGrid IDataText.SearchGrid => SearchForm.SearchGrid;
+#endif
         private SearchGrid _SearchGrid => SearchForm.SearchGrid;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchGrid"]/*'/>
         [
@@ -184,11 +188,8 @@ namespace SearchControls
         {
             InitializeComponent();
 
-            SearchForm = new SearchForm();
+            SearchForm = new SearchForm(this);
             SearchGrid.RowsDefaultCellStyle.BackColor = Color.Bisque;
-            SearchForm.Grid = this;
-
-            _SearchGrid.DataText = this;
 
             Columns.CollectionChanged += Columns_CollectionChanged;
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SearchControls.SearchGridForm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -10,6 +11,11 @@ namespace SearchControls.Interface
     /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IGrid"]/*'/>
     public interface IGrid
     {
+        /// <summary>
+        /// <para>实现默认接口用</para>
+        /// <para><c>SearchForm IGrid.SearchForm => SearchForm;</c></para>
+        /// </summary>
+        SearchForm SearchForm { get; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DisplayRowCount"]/*'/>
         [
             DefaultValue(15),
@@ -29,11 +35,23 @@ namespace SearchControls.Interface
         /// </summary>
         Rectangle Bounds { get; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ShowSearchGrid"]/*'/>
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        void ShowSearchGrid() => SearchForm.ShowSearchGrid();
+#else
         void ShowSearchGrid();
+#endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridSize"]/*'/>
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        void SetSearchGridSize() => SearchForm.SetSearchGridSize();
+#else
         void SetSearchGridSize();
+#endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        void SetSearchGridLocation() => SearchForm.SetSearchGridLocation();
+#else
         void SetSearchGridLocation();
+#endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchGridLocationSizeChanged"]/*'/>
         [
             Category("Search"),

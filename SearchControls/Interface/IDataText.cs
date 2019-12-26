@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SearchControls.SearchGridForm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
@@ -9,6 +10,13 @@ namespace SearchControls.Interface
     /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IDataText"]/*'/>
     public interface IDataText
     {
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        /// <summary>
+        /// <para>实现默认接口用</para>
+        /// <para><c>SearchGrid IDataText.SearchGrid => SearchForm.SearchGrid;</c></para>
+        /// </summary>
+        SearchGrid SearchGrid { get; }
+#endif
         /// <summary>
         /// 对应的文本框
         /// </summary>
@@ -47,9 +55,17 @@ namespace SearchControls.Interface
         ]
         bool IsAutoReset { get; set; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        void Reset() => SearchGrid.Reset();
+#else
         void Reset();
+#endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ReversalSearchState"]/*'/>
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        void ReversalSearchState() => SearchGrid.ReversalSearchState();
+#else
         void ReversalSearchState();
+#endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="GridSelecting"]/*'/>
         [
             Category("Search"),

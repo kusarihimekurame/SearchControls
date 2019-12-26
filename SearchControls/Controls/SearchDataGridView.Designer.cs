@@ -48,6 +48,7 @@
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             this.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.RowTemplate.Height = 23;
+            this.Size = new System.Drawing.Size(250, 250);
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
 

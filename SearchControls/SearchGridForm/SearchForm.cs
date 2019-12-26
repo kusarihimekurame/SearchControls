@@ -19,7 +19,7 @@ namespace SearchControls.SearchGridForm
     {
         private IGrid _grid;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IGrid"]/*'/>
-        public IGrid Grid
+        internal IGrid Grid
         {
             get => _grid;
             set
@@ -61,11 +61,16 @@ namespace SearchControls.SearchGridForm
         private SubSearchTextBoxCollection SubSearchTextBoxes => _grid is ISubSearchTextBoxes sstb ? sstb.SubSearchTextBoxes : null;
 
         /// <summary>
-        /// 模糊查找表的窗口
+        /// <para>模糊查找表的窗口</para>
+        /// <para><c>SearchForm = new SearchFrom(this);</c></para>
         /// </summary>
-        public SearchForm()
+        /// <param name="control">需要附加的控件(包含接口IGrid、IDataText)</param>
+        public SearchForm(Control control) : base()
         {
             InitializeComponent();
+            if (control is IGrid grid) Grid = grid;
+            if (control is IDataText dataText) SearchGrid.DataText = dataText;
+            if (control is IMultiSelect multiSelect) SearchGrid.MultiSelect = multiSelect;
         }
 
         /// <summary>
@@ -107,7 +112,7 @@ namespace SearchControls.SearchGridForm
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ShowSearchGrid"]/*'/>
-        public void ShowSearchGrid()
+        public virtual void ShowSearchGrid()
         {
             #region 显示并设置网格位置和高宽
 
@@ -121,7 +126,7 @@ namespace SearchControls.SearchGridForm
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridSize"]/*'/>
-        public void SetSearchGridSize()
+        public virtual void SetSearchGridSize()
         {
             if (SearchGrid.RowCount > 0)
             {
@@ -149,7 +154,7 @@ namespace SearchControls.SearchGridForm
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
-        public void SetSearchGridLocation()
+        public virtual void SetSearchGridLocation()
         {
             if (!Bounds.Equals(Rectangle.Empty))
             {
@@ -165,8 +170,9 @@ namespace SearchControls.SearchGridForm
             }
         }
 
-        private void Show_event(object sender, EventArgs e)
+        private void TextBox_Enter(object sender, EventArgs e)
         {
+            SearchGrid.IsEnter = true;
             if (!Visible) Show((_grid as Control).TopLevelControl);
         }
 
@@ -227,8 +233,8 @@ namespace SearchControls.SearchGridForm
                     {
                         sstb.TextBox.Enter -= Hide_event;
                         sstb.TextBox.Click -= Hide_event;
-                        sstb.TextBox.Click += Show_event;
-                        sstb.TextBox.Enter += Show_event;
+                        //sstb.TextBox.Click += Show_event;
+                        sstb.TextBox.Enter += TextBox_Enter;
                         sstb.TextBox.Leave += Hide_event2;
                     }
                     else if (e.Element is IEnumerable<SubSearchTextBox> sstbs)
@@ -237,8 +243,8 @@ namespace SearchControls.SearchGridForm
                         {
                             _sstb.TextBox.Enter -= Hide_event;
                             _sstb.TextBox.Click -= Hide_event;
-                            _sstb.TextBox.Click += Show_event;
-                            _sstb.TextBox.Enter += Show_event;
+                            //_sstb.TextBox.Click += Show_event;
+                            _sstb.TextBox.Enter += TextBox_Enter;
                             _sstb.TextBox.Leave += Hide_event2;
                         });
                     }
@@ -248,8 +254,8 @@ namespace SearchControls.SearchGridForm
                     {
                         sstbr.TextBox.Enter += Hide_event;
                         sstbr.TextBox.Click += Hide_event;
-                        sstbr.TextBox.Click -= Show_event;
-                        sstbr.TextBox.Enter -= Show_event;
+                        //sstbr.TextBox.Click -= Show_event;
+                        sstbr.TextBox.Enter -= TextBox_Enter;
                         sstbr.TextBox.Leave -= Hide_event2;
                     }
                     else if (e.Element is IEnumerable<SubSearchTextBox> sstbs)
@@ -258,8 +264,8 @@ namespace SearchControls.SearchGridForm
                         {
                             _sstb.TextBox.Enter += Hide_event;
                             _sstb.TextBox.Click += Hide_event;
-                            _sstb.TextBox.Click -= Show_event;
-                            _sstb.TextBox.Enter -= Show_event;
+                            //_sstb.TextBox.Click -= Show_event;
+                            _sstb.TextBox.Enter -= TextBox_Enter;
                             _sstb.TextBox.Leave -= Hide_event2;
                         });
                     }
@@ -271,8 +277,8 @@ namespace SearchControls.SearchGridForm
                         {
                             _sstb.TextBox.Enter += Hide_event;
                             _sstb.TextBox.Click += Hide_event;
-                            _sstb.TextBox.Click -= Show_event;
-                            _sstb.TextBox.Enter -= Show_event;
+                            //_sstb.TextBox.Click -= Show_event;
+                            _sstb.TextBox.Enter -= TextBox_Enter;
                             _sstb.TextBox.Leave -= Hide_event2;
                         });
                     }
@@ -284,7 +290,7 @@ namespace SearchControls.SearchGridForm
         {
             if (SearchGrid.DataText.textBox != null)
             {
-                SearchGrid.DataText.textBox.Enter += (sender, e) => Show_event(sender, e);
+                SearchGrid.DataText.textBox.Enter += TextBox_Enter;
             }
         }
     }

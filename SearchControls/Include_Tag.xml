@@ -487,16 +487,22 @@
     </Member>
     <Member Name="Reset">
       <summary>
-      将模糊查找还原到原来的状态
+        <para>将模糊查找还原到原来的状态</para>
+        <para><c>DataTable.DefaultView.RowFilter = "";</c></para>
       </summary>
       <remarks>
-      <c>DataTable.DefaultView.RowFilter = "";</c>
+        <para>默认实现</para>
+        <para><c>public virtual void Reset() => _SearchGrid.Reset();</c></para>
       </remarks>
     </Member>
     <Member Name="ReversalSearchState">
       <summary>
       反转搜索状态
       </summary>
+      <remarks>
+        <para>默认实现</para>
+        <para><c>public virtual void ReversalSearchState() => _SearchGrid.ReversalSearchState();</c></para>
+      </remarks>
     </Member>
     <Member Name="GetSelectedText">
       <summary>
@@ -510,16 +516,28 @@
       <summary>
       显示并设置网格高宽
       </summary>
+      <remarks>
+        <para>默认实现</para>
+        <para><c>public virtual void ShowSearchGrid() => SearchForm.ShowSearchGrid();</c></para>
+      </remarks>
     </Member>
     <Member Name="SetSearchGridSize">
       <summary>
       设置网格大小
       </summary>
+      <remarks>
+        <para>默认实现</para>
+        <para><c>public virtual void SetSearchGridSize() => SearchForm.SetSearchGridSize();</c></para>
+      </remarks>
     </Member>
     <Member Name="SetSearchGridLocation">
       <summary>
       设置网格位置
       </summary>
+      <remarks>
+        <para>默认实现</para>
+        <para><c>SetSearchGridLocation() => SearchForm.SetSearchGridLocation();</c></para>
+      </remarks>
     </Member>
     <Member Name="IGrid">
       <summary>

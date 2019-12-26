@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netcoreapp3.0;net48;net472;net461;net46;net452;net451;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;netcoreapp3.0;net48;net472;net461;net46;net452;net451;net45</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
     <StartupObject />
@@ -30,12 +30,12 @@ The control of fuzzy searching by table.
     <Version>1.1.0.1</Version>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
     <PackageReference Include="wilx.System.Linq.Dynamic.Core" Version="2.1.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' ">
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' AND '$(TargetFramework)' != 'netcoreapp3.1'">
     <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
     <PackageReference Include="System.Linq.Dynamic" Version="1.0.7" />
     <Reference Include="PresentationCore" />

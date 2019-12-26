@@ -31,7 +31,8 @@ namespace SearchControls
         Rectangle IGrid.Bounds => Parent.RectangleToScreen(Bounds);
         TextBox IDataText.textBox => this;
 
-        private SearchForm SearchForm;
+        SearchForm IGrid.SearchForm => SearchForm;
+        private readonly SearchForm SearchForm;
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="MultSelectColumn"]/*'/>
         [
@@ -116,6 +117,9 @@ namespace SearchControls
             Description("附属的文本框")
         ]
         public SubSearchTextBoxCollection SubSearchTextBoxes { get; } = new SubSearchTextBoxCollection();
+#if NETCOREAPP3_0 || NETCOREAPP3_1
+        SearchGrid IDataText.SearchGrid => SearchForm.SearchGrid;
+#endif
         private SearchGrid _SearchGrid => SearchForm.SearchGrid;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchGrid"]/*'/>
         [
@@ -360,17 +364,11 @@ namespace SearchControls
         {
             InitializeComponent();
 
-            SearchForm = new SearchForm
-            {
-                Grid = this
-            };
-
-            _SearchGrid.DataText = this;
-            _SearchGrid.MultiSelect = this;
+            SearchForm = new SearchForm(this);
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>
-        public void Reset() => _SearchGrid.Reset();
+        public virtual void Reset() => _SearchGrid.Reset();
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ReversalSearchState"]/*'/>
         public virtual void ReversalSearchState() => _SearchGrid.ReversalSearchState();
