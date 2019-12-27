@@ -21,12 +21,23 @@ namespace SearchControls
         /// <param name="dataGridViewCellStyle">用于确定寄宿控件外观的单元格样式。</param>
         public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
         {
+            base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
+            if (DataGridView is SearchDataGridView sdgv && sdgv.SearchGrid is SearchGrid sg)
+            {
+                sg.Add_TextBoxEvent();
+            }
+        }
+
+        /// <summary>
+        /// 从 System.Windows.Forms.DataGridView 中删除单元格的编辑控件。
+        /// </summary>
+        public override void DetachEditingControl()
+        {
             if (DataGridView is SearchDataGridView sdgv && sdgv.SearchGrid is SearchGrid sg)
             {
                 sg.Remove_TextBoxEvent();
-                base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
-                sg.Add_TextBoxEvent();
             }
+            base.DetachEditingControl();
         }
 
         /// <summary>

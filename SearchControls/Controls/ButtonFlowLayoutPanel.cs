@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+#if NET45 || NET451 || NET452
+using System.Data.SqlClient;
+#else
+using Microsoft.Data.SqlClient;
+#endif
 using System.Drawing;
 using System.Linq;
 using System.Text;

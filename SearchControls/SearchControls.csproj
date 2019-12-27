@@ -27,7 +27,7 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.1.0.2</Version>
+    <Version>1.1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
@@ -64,6 +64,42 @@ The control of fuzzy searching by table.
     <None Update="Include_Tag.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
+  </ItemGroup>
+    
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+    <PackageReference Include="Microsoft.Data.SqlClient">
+      <Version>1.1.0</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>
