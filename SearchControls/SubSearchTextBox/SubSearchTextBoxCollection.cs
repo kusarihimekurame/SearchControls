@@ -92,7 +92,7 @@ namespace SearchControls
         /// </summary>
         /// <param name="collection">一个集合，其元素应被添加到 System.Collections.Generic.List`1 的末尾。集合自身不能为 null，但它可以包含为 null的元素（如果类型 T 为引用类型）。</param>
         /// <exception cref="Exception">列表中不能出现重复的文本框</exception>
-        public void AddRange(params SubSearchTextBox[] collection) => AddRange(collection);
+        public void AddRange(params SubSearchTextBox[] collection) => AddRange(collection.ToList());
 
         /// <summary>
         /// 从 System.Collections.Generic.List`1 中移除所有元素。
