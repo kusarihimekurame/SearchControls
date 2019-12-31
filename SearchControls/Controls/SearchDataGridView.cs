@@ -66,56 +66,6 @@ namespace SearchControls
         ]
         public DataGridView SearchGrid => SearchForm.SearchGrid;
 
-        private DataSet _OriginSource;
-        private string _DataMember;
-
-        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DataMember"]/*'/>
-        [
-            DefaultValue(""),
-            Editor("System.Windows.Forms.Design.DataMemberListEditor, System.Design, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor)),
-            Category("Search"),
-            Description("获取或设置 System.Windows.Forms.DataGridView 正在为其显示数据的数据源中的列表或表的名称。")
-        ]
-        public new string DataMember
-        {
-            get => _OriginSource == null ? _DataMember : base.DataMember;
-            set
-            {
-                if (_OriginSource != null)
-                {
-                    _DataMember = value;
-                    base.DataSource = _OriginSource.Tables[value];
-                    OnDataMemberChanged(EventArgs.Empty);
-                }
-                else base.DataMember = value;
-            }
-        }
-
-        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DataSource"]/*'/>
-        [
-            DefaultValue(null),
-            AttributeProvider(typeof(IListSource)),
-            Category("Search"),
-            Description("设置或者获取SearchGrid的数据源")
-        ]
-        public new object DataSource
-        {
-            get => _OriginSource ?? base.DataSource;
-            set
-            {
-                if (value is DataSet _ds)
-                {
-                    _OriginSource = _ds;
-                    if (string.IsNullOrEmpty(DataMember)) base.DataSource = _ds.Tables[DataMember];
-                }
-                else
-                {
-                    base.DataSource = value;
-                    _OriginSource = null;
-                }
-            }
-        }
-
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="GridSelecting"]/*'/>
         [
             Category("Search"),
@@ -175,10 +125,7 @@ namespace SearchControls
         ]
         public event SearchGridLocationSizeChangedEventHandler SearchGridLocationSizeChanged;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="OnSearchGridLocationSizeChanged"]/*'/>
-        public virtual void OnSearchGridLocationSizeChanged(SearchFormLocationSizeEventArgs e)
-        {
-            SearchGridLocationSizeChanged?.Invoke(this, e);
-        }
+        public virtual void OnSearchGridLocationSizeChanged(SearchFormLocationSizeEventArgs e) => SearchGridLocationSizeChanged?.Invoke(this, e);
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchDataGridView"]/*'/>
         /// <summary>
@@ -248,7 +195,8 @@ namespace SearchControls
                 }
                 else _SearchGrid.AutoGenerateColumns = true;
 
-                _SearchGrid.DataSource = (stbc.IsMain ? stbc.SearchDataSource : MainColumn.SearchDataSource) ?? DataSource;
+                _SearchGrid.DataSource = (stbc.IsMain ? stbc.SearchDataSource : MainColumn.SearchDataSource) ?? (DataSource is BindingSource bs ? bs.DataSource : DataSource);
+
                 _SearchGrid.DataMember = stbc.IsMain ? stbc.SearchDataMember : MainColumn.SearchDataMember;
 
                 _IsAutoInput = stbc.IsAutoInput;

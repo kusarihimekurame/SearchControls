@@ -261,6 +261,7 @@ namespace SearchControls
             }
         }
 
+        private string dataMember;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DataMember"]/*'/>
         [
             DefaultValue(""),
@@ -270,22 +271,26 @@ namespace SearchControls
         ]
         public string DataMember
         {
-            get => _SearchGrid.DataMember;
+            get => dataMember;
             set
             {
-                Action action = null;
-                action = () =>
+                dataMember = value;
+                if (DataSource is DataSet ds && ds.Tables.Contains(value))
                 {
-                    if (InvokeRequired)
+                    Action action = null;
+                    action = () =>
                     {
-                        Invoke(action);
-                    }
-                    else
-                    {
-                        _SearchGrid.DataMember = value;
-                    }
-                };
-                action();
+                        if (InvokeRequired)
+                        {
+                            Invoke(action);
+                        }
+                        else
+                        {
+                            _SearchGrid.DataMember = value;
+                        }
+                    };
+                    action();
+                }
             }
         }
 
@@ -327,10 +332,7 @@ namespace SearchControls
         ]
         public event GridSelectingEventHandler GridSelecting;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="OnGridSelecting"]/*'/>
-        public virtual void OnGridSelecting(GridSelectingEventArgs e)
-        {
-            GridSelecting?.Invoke(this, e);
-        }
+        public virtual void OnGridSelecting(GridSelectingEventArgs e) => GridSelecting?.Invoke(this, e);
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="GridSelected"]/*'/>
         [
@@ -339,10 +341,7 @@ namespace SearchControls
         ]
         public event GridSelectedEventHandler GridSelected;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="OnGridSelected"]/*'/>
-        public virtual void OnGridSelected(GridSelectedEventArgs e)
-        {
-            GridSelected?.Invoke(this, e);
-        }
+        public virtual void OnGridSelected(GridSelectedEventArgs e) => GridSelected?.Invoke(this, e);
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchGridLocationSizeChanged"]/*'/>
         [
@@ -351,10 +350,7 @@ namespace SearchControls
         ]
         public event SearchGridLocationSizeChangedEventHandler SearchGridLocationSizeChanged;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="OnSearchGridLocationSizeChanged"]/*'/>
-        public virtual void OnSearchGridLocationSizeChanged(SearchFormLocationSizeEventArgs e)
-        {
-            SearchGridLocationSizeChanged?.Invoke(this, e);
-        }
+        public virtual void OnSearchGridLocationSizeChanged(SearchFormLocationSizeEventArgs e) => SearchGridLocationSizeChanged?.Invoke(this, e);
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SearchTextBox"]/*'/>
         /// <summary>

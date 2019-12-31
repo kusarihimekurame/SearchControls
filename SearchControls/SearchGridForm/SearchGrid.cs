@@ -42,7 +42,6 @@ namespace SearchControls.SearchGridForm
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IMultiSelect"]/*'/>
         internal new IMultiSelect MultiSelect { get; set; }
         private object _OriginSource;
-        private string _DataMember;
         private SubSearchTextBoxCollection SubSearchTextBoxes => DataText is ISubSearchTextBoxes sstb ? sstb.SubSearchTextBoxes : null;
 
         /// <summary>
@@ -80,23 +79,14 @@ namespace SearchControls.SearchGridForm
         ]
         public new string DataMember
         {
-            get => _OriginSource == null ? base.DataMember : _DataMember;
+            get => base.DataMember;
             set
             {
-                if (_OriginSource != null)
+                if (AutoGenerateColumns)
                 {
-                    _DataMember = value;
-
-                    base.DataSource = _OriginSource is DataSet ds ? ds.Tables[value] : _OriginSource;
-
-                    if (AutoGenerateColumns)
-                    {
-                        Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
-                    }
-
-                    OnDataMemberChanged(EventArgs.Empty);
+                    Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
                 }
-                else base.DataMember = value;
+                base.DataMember = value;
             }
         }
 
@@ -112,13 +102,7 @@ namespace SearchControls.SearchGridForm
             get => _OriginSource ?? base.DataSource;
             set
             {
-                if (value is DataSet _ds)
-                {
-                    _OriginSource = value;
-                    if (!string.IsNullOrEmpty(DataMember)) base.DataSource = _ds.Tables[DataMember];
-                    _ds.Tables.CollectionChanged += (sender, e) => base.DataSource = _ds.Tables[DataMember];
-                }
-                else if(value is IEnumerable)
+                if (value is IEnumerable)
                 {
                     _OriginSource = value;
                     base.DataSource = value;
@@ -353,14 +337,18 @@ namespace SearchControls.SearchGridForm
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>
         public virtual void Reset()
         {
-            DataTable dt = null;
-            if (DataSource is DataTable _dt) dt = _dt;
-            else if (DataSource is DataView _dv) dt = _dv.Table;
-            else if (DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
+            DataView dv = null;
+            if (DataSource is DataTable _dt) dv = _dt.DefaultView;
+            else if (DataSource is DataView _dv) dv = _dv;
+            else if (DataSource is DataSet _ds) dv = (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView;
             else if (DataSource is IEnumerable) base.DataSource = _OriginSource;
-            if (dt != null)
+            else if (DataSource is BindingSource bs)
             {
-                dt.DefaultView.RowFilter = "";
+                bs.Filter = "";
+            }
+            if (dv != null)
+            {
+                dv.RowFilter = "";
             }
         }
 
@@ -371,24 +359,39 @@ namespace SearchControls.SearchGridForm
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ReversalSearchState"]/*'/>
         public virtual void ReversalSearchState()
         {
-            DataTable dt = null;
-            if (DataSource is DataTable _dt) dt = _dt;
-            else if (DataSource is DataView _dv) dt = _dv.Table;
-            else if (DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
+            DataView dv = null;
+            if (DataSource is DataTable _dt) dv = _dt.DefaultView;
+            else if (DataSource is DataView _dv) dv = _dv;
+            else if (DataSource is DataSet _ds) dv = (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView;
 
-            if (dt != null && (DataText.textBox.Focused || (SubSearchTextBoxes != null && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused))))
+            if (DataText.textBox.Focused || (SubSearchTextBoxes != null && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)))
             {
                 TextBox tb;
                 if (DataText.textBox.Focused) tb = DataText.textBox;
                 else tb = SubSearchTextBoxes.First(sstb => sstb.TextBox.Focused).TextBox;
-                if (string.IsNullOrEmpty(dt.DefaultView.RowFilter))
+                if (dv != null)
                 {
-                    TextBox_TextChanged(tb, null);
+                    if (string.IsNullOrEmpty(dv.RowFilter))
+                    {
+                        TextBox_TextChanged(tb, null);
+                    }
+                    else
+                    {
+                        dv.RowFilter = null;
+                        grid.ShowSearchGrid();
+                    }
                 }
-                else
+                else if(DataSource is BindingSource bs)
                 {
-                    dt.DefaultView.RowFilter = null;
-                    grid.ShowSearchGrid();
+                    if (string.IsNullOrEmpty(bs.Filter))
+                    {
+                        TextBox_TextChanged(tb, null);
+                    }
+                    else
+                    {
+                        bs.Filter = null;
+                        grid.ShowSearchGrid();
+                    }
                 }
             }
         }
@@ -492,7 +495,7 @@ namespace SearchControls.SearchGridForm
                     {
                         if (dt != null)
                         {
-                            cWHERE = Method.CreateRowFilter(dt, tb.Text);
+                            cWHERE = Method.CreateFilter(dt, tb.Text);
                         }
                         else
                         {
@@ -514,7 +517,7 @@ namespace SearchControls.SearchGridForm
 
                     if (dt != null)
                     {
-                        cWHERE = Method.CreateRowFilter(dt, XZ_Texts[Index]);
+                        cWHERE = Method.CreateFilter(dt, XZ_Texts[Index]);
                     }
                     else
                     {
@@ -532,8 +535,12 @@ namespace SearchControls.SearchGridForm
                     if (dt != null)
                     {
                         cWHERE = MultiSelect != null && MultiSelect.IsMultiSelect ? cWHERE + "OR Select = true" : cWHERE;
-                        if (!dt.DefaultView.RowFilter.Equals(cWHERE))
-                            dt.DefaultView.RowFilter = cWHERE;
+                        DataView dv = base.DataSource is DataSet ? (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView : dt.DefaultView;
+                        if (!dv.RowFilter.Equals(cWHERE)) dv.RowFilter = cWHERE;
+                    }
+                    else if (DataSource is BindingSource bs)
+                    {
+                        if (!bs.Filter.Equals(cWHERE)) bs.Filter = cWHERE;
                     }
                     else if (_OriginSource is IEnumerable os)
                     {
@@ -749,11 +756,11 @@ namespace SearchControls.SearchGridForm
 
                             if (Convert.ToBoolean(Rows[index].Cells[MultiSelect.MultiSelectColumn.Name].Value))
                             {
-                                DataTable dt = null;
-                                if (DataSource is DataTable _dt) dt = _dt;
-                                else if (DataSource is DataView _dv) dt = _dv.Table;
-                                else if (DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
-                                if (dt == null || string.IsNullOrEmpty(dt.DefaultView.Sort))
+                                DataView dv = null;
+                                if (DataSource is DataTable _dt) dv = _dt.DefaultView;
+                                else if (DataSource is DataView _dv) dv = _dv;
+                                else if (DataSource is DataSet _ds) dv = (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView;
+                                if ((dv == null && !(DataSource is BindingSource)) || string.IsNullOrEmpty(dv.Sort))
                                 {
                                     Rows[index].Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
                                 }
@@ -762,21 +769,38 @@ namespace SearchControls.SearchGridForm
                                     if (string.IsNullOrEmpty(DataText.DisplayDataName))
                                     {
                                         object displayData = Rows[index].Cells[1].Value;
-                                        DataView dv = dt.DefaultView;
-                                        string sort = dv.Sort;
-                                        dv.Sort = "";
-                                        Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                        dv.Sort = sort;
+                                        if (DataSource is BindingSource bs)
+                                        {
+                                            string sort = bs.Sort;
+                                            bs.Sort = "";
+                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                            bs.Sort = sort;
+                                        }
+                                        else
+                                        {
+                                            string sort = dv.Sort;
+                                            dv.Sort = "";
+                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                            dv.Sort = sort;
+                                        }
                                     }
                                     else
                                     {
                                         object displayData = Columns.Contains(DataText.DisplayDataName) ? this[DataText.DisplayDataName, index].Value : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName));
-                                        DataView dv = dt.DefaultView;
-                                        string sort = dv.Sort;
-                                        dv.Sort = "";
-                                        Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                        dv.Sort = sort;
-                                    }
+                                        if (DataSource is BindingSource bs)
+                                        {
+                                            string sort = bs.Sort;
+                                            bs.Sort = "";
+                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                            bs.Sort = sort;
+                                        }
+                                        else
+                                        {
+                                            string sort = dv.Sort;
+                                            dv.Sort = "";
+                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                            dv.Sort = sort;
+                                        }                              }
                                 }
                             }
                             else

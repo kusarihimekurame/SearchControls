@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace SearchControls
@@ -6,7 +7,7 @@ namespace SearchControls
     /// <summary>
     /// 小表正在选择某项所需的事件参数
     /// </summary>
-    public class GridSelectingEventArgs : EventArgs
+    public class GridSelectingEventArgs : HandledEventArgs
     {
         /// <summary>
         /// 模糊查找的DataGridView表<see cref="DataGridView"/>
@@ -24,10 +25,6 @@ namespace SearchControls
         /// 键盘数据
         /// </summary>
         public KeyEventArgs Key { get; }
-        /// <summary>
-        /// 获取一个值，该值表示是否处理过此事件
-        /// </summary>
-        public bool Handled { get; set; }
         /// <summary>
         /// 初始化 GridSelectedEnterEventArgs 类的新实例。
         /// </summary>

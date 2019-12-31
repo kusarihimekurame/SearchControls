@@ -16,124 +16,227 @@ namespace SearchControls.Controls
 {
     internal partial class ButtonFlowLayoutPanel : FlowLayoutPanel
     {
-        public DataGridView DataGridView { get; set; }
+        private SqlDataAdapter selectSqlDataAdapter;
+        public SqlDataAdapter SelectSqlDataAdapter
+        {
+            get => selectSqlDataAdapter;
+            set
+            {
+                selectSqlDataAdapter = value;
+                if (selectSqlDataAdapter != null)
+                {
+                    selectSqlDataAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                }
+            }
+        }
+        private SqlDataAdapter updateSqlDataAdapter;
+        public SqlDataAdapter UpdateSqlDataAdapter 
+        {
+            get => updateSqlDataAdapter ?? selectSqlDataAdapter;
+            set => updateSqlDataAdapter = value;
+        }
+        public BindingSource BindingSource { get; } = new BindingSource();
+        private string tableName;
+        public string TableName
+        {
+            get => tableName;
+            set
+            {
+                if (DataSet.Tables.Contains(value)) BindingSource.DataMember = value;
+                tableName = value;
+            }
+        }
+        public DataSet DataSet { get; } = new DataSet();
+        private DataGridView dataGridView;
+        public DataGridView DataGridView 
+        {
+            get => dataGridView;
+            set
+            {
+                if (value != null)
+                {
+                    dataGridView = value;
+                    dataGridView.DataSource = BindingSource;
+
+                    BtnDelete.Enabled = true;
+                    BtnInsert.Enabled = true;
+                    BtnFirst.Enabled = true;
+                    BtnLast.Enabled = true;
+                    BtnUp.Enabled = true;
+                    BtnDown.Enabled = true;
+                    BtnFound.Enabled = true;
+                }
+            }
+        }
+
+        public event HandledEventHandler BtnFirstClick;
+        public event HandledEventHandler BtnDownClick;
+        public event HandledEventHandler BtnUpClick;
+        public event HandledEventHandler BtnLastClick;
+        public event HandledEventHandler BtnInsertClick;
+        public event HandledEventHandler BtnDeleteClick;
+        public event HandledEventHandler BtnUpdateClick;
+        public event HandledEventHandler BtnFoundClick;
+        public event HandledEventHandler BtnExcelClick;
+        public event HandledEventHandler BtnWordClick;
+        public event HandledEventHandler BtnCancelClick;
+        public event HandledEventHandler BtnQuitClick;
+        protected virtual void OnBtnFirstClick(HandledEventArgs e) => BtnFirstClick?.Invoke(this, e);
+        protected virtual void OnBtnDownClick(HandledEventArgs e) => BtnDownClick?.Invoke(this, e);
+        protected virtual void OnBtnUpClick(HandledEventArgs e) => BtnUpClick?.Invoke(this, e);
+        protected virtual void OnBtnLastClick(HandledEventArgs e) => BtnLastClick?.Invoke(this, e);
+        protected virtual void OnBtnInsertClick(HandledEventArgs e) => BtnInsertClick?.Invoke(this, e);
+        protected virtual void OnBtnDeleteClick(HandledEventArgs e) => BtnDeleteClick?.Invoke(this, e);
+        protected virtual void OnBtnUpdateClick(HandledEventArgs e) => BtnUpdateClick?.Invoke(this, e);
+        protected virtual void OnBtnFoundClick(HandledEventArgs e) => BtnFoundClick?.Invoke(this, e);
+        protected virtual void OnBtnExcelClick(HandledEventArgs e) => BtnExcelClick?.Invoke(this, e);
+        protected virtual void OnBtnWordClick(HandledEventArgs e) => BtnWordClick?.Invoke(this, e);
+        protected virtual void OnBtnCancelClick(HandledEventArgs e) => BtnCancelClick?.Invoke(this, e);
+        protected virtual void OnBtnQuitClick(HandledEventArgs e) => BtnQuitClick?.Invoke(this, e);
 
         public ButtonFlowLayoutPanel()
         {
             InitializeComponent();
+            BindingSource.DataSource = DataSet;
         }
 
-        public void BtnFirst_Click(object sender, EventArgs e)
+        private void BtnFirst_Click(object sender, EventArgs e)
         {
             #region "第一"按钮btnFirst单击事件
 
-            // 网格显示的总记录数必需 > 0
-            if (DataGridView.RowCount > 0)
-            {
-                DataGridView.CurrentCell = DataGridView[0, 0];
-            }
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnFirstClick(he);
+            if (he.Handled) return;
+
+            First();
 
             #endregion
         }
 
-        public void BtnDown_Click(object sender, EventArgs e)
+        public virtual void First() => BindingSource.MoveFirst();
+
+        private void BtnDown_Click(object sender, EventArgs e)
         {
             #region  "向下"按钮btnDown单击事件(dataGridView1)
 
-            // 网格显示的总记录数必需 > 0
-            if (DataGridView.RowCount > 0)
-            {
-                int row = DataGridView.CurrentRow.Index + 1;
-                if (row > DataGridView.RowCount - 1)      // 如果row大于总行数
-                {
-                    row = 0;
-                }
-                DataGridView.CurrentCell = DataGridView[0, row];
-            }
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnDownClick(he);
+            if (he.Handled) return;
+
+            Down();
 
             #endregion
         }
 
-        public void BtnUp_Click(object sender, EventArgs e)
+        public virtual void Down() => BindingSource.MoveNext();
+
+        private void BtnUp_Click(object sender, EventArgs e)
         {
             #region "向上"按钮btnUp单击事件(dataGridView1)
 
-            // 网格显示的总记录数必需 > 0
-            if (DataGridView.RowCount > 0)
-            {
-                int row = DataGridView.CurrentRow.Index - 1;
-                if (row < 0)
-                {
-                    row = DataGridView.RowCount - 1;
-                }
-                DataGridView.CurrentCell = DataGridView[0, row];
-            }
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnUpClick(he);
+            if (he.Handled) return;
+
+            Up();
 
             #endregion
         }
 
-        public void BtnLast_Click(object sender, EventArgs e)
+        public void Up() => BindingSource.MovePrevious();
+
+        private void BtnLast_Click(object sender, EventArgs e)
         {
             #region "最后"按钮btnLast单击事件
 
-            // 网格显示的总记录数必需 > 0
-            if (DataGridView.RowCount > 0)
-            {
-                int row;
-                row = DataGridView.RowCount - 1;
-                DataGridView.CurrentCell = DataGridView[0, row];
-            }
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnLastClick(he);
+            if (he.Handled) return;
+
+            Last();
 
             #endregion
         }
 
-        public void BtnInsert_Click(object sender, EventArgs e)
+        public virtual void Last() => BindingSource.MoveLast();
+
+        private void BtnInsert_Click(object sender, EventArgs e)
         {
             #region “添加”按钮btnInsert的单击事件
 
-            DataGridView.Rows.Add();
-            //DataRow dr = dataSet.Tables[TableName].NewRow();
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnInsertClick(he);
+            if (he.Handled) return;
 
-            //if (DataGridView.DataSource is DataTable dt  dataSet.Tables[TableName].DefaultView.RowFilter != "")
-            //    dataSet.Tables[TableName].DefaultView.RowFilter += "OR " + PrimaryKey[0].ColumnName + " = " + dr[PrimaryKey[0].ColumnName];
-
-            //dataSet.Tables[TableName].Rows.Add(dr); //在dt表的末尾添加一条白记录(其中NID列已赋值)
-            DataGridView.CurrentCell = DataGridView[DataGridView.CurrentCell.ColumnIndex, DataGridView.Rows.Cast<DataGridViewRow>().Last(dgvr => !dgvr.IsNewRow).Index];    // 将焦点移到最后新添加的一行
+            Insert();
 
             #endregion
         }
 
-        public void BtnDelete_Click(object sender, EventArgs e)
+        public virtual void Insert()
+        {
+            #region “添加”按钮方法
+
+            DataRowView drv = BindingSource.AddNew() as DataRowView;
+            if (BindingSource.Filter != "")
+                BindingSource.Filter += "OR " + DataSet.Tables[TableName].PrimaryKey[0].ColumnName + " = " + drv[DataSet.Tables[TableName].PrimaryKey[0].ColumnName];
+
+            #endregion
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
         {
             #region "删除"按钮btnDelete单击事件
 
-            DataGridView.Rows.Remove(DataGridView.CurrentRow);
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnDeleteClick(he);
+            if (he.Handled) return;
 
-            //string cNid = dataGridView.CurrentRow.Cells[PrimaryKey[0].ColumnName].Value.ToString(); //当前网格NID列的值   
-
-            //if (cNid != "")
-            //{
-            //    int ColumnIndex = dataGridView.CurrentCell.ColumnIndex;
-            //    int RowIndex = dataGridView.CurrentCell.RowIndex - 1;
-            //    if (RowIndex < 0) RowIndex = 0;
-
-            //    DataRow dr = dataSet.Tables[TableName].Rows.Find(cNid);  //用Find()方法在dt表中定位 “dt表NID列的值 = 网格NID列的值” 的行(dr是DataRow行，包含该行各列的值)
-
-            //    //dr[PrimaryKey[0].ColumnName] = cNid; //求当前行中"NID"行的值
-            //    dr.Delete(); //删除dt表中被Find()定位后的dr行
-
-            //    if (dataGridView.RowCount == 0) dataGridView.AllowUserToAddRows = true;
-            //    dataGridView.CurrentCell = dataGridView[ColumnIndex, RowIndex];    // 将焦点移到删除的单元格的上面一格
-
-            //    dataGridView_CellValueChanged(null, null);
-            //}
+            Delete();
 
             #endregion
         }
 
-        public void BtnUpdate_Click(object sender, EventArgs e)
+        public virtual void Delete() => BindingSource.RemoveCurrent();
+
+        private void BtnUpdate_Click(object sender, EventArgs e)
         {
             #region "提交"按钮btnUpdate单击事件
+
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnUpdateClick(he);
+            if (he.Handled) return;
+
+            BtnUpdate.Enabled = false;
+            Update();
+            BtnUpdate.Enabled = true;
+
+            #endregion
+        }
+
+        public virtual void Update()
+        {
+            #region "提交"按钮btnUpdate单击事件
+
+            
+            if (DataSet.Tables[TableName].GetChanges() == null)
+            {
+
+            }
+            else
+            {
+                try
+                {
+                    UpdateSqlDataAdapter.InsertCommand = updateSqlDataAdapter.InsertCommand ?? new SqlCommandBuilder(updateSqlDataAdapter).GetInsertCommand();
+                    UpdateSqlDataAdapter.DeleteCommand = updateSqlDataAdapter.DeleteCommand ?? new SqlCommandBuilder(updateSqlDataAdapter).GetDeleteCommand();
+                    UpdateSqlDataAdapter.UpdateCommand = updateSqlDataAdapter.UpdateCommand ?? new SqlCommandBuilder(updateSqlDataAdapter).GetUpdateCommand();
+
+                    int val = UpdateSqlDataAdapter.Update(DataSet, TableName);
+
+                    DataSet.Tables[TableName].AcceptChanges();
+                }
+                catch { }
+            }
 
             //if (dataSet.GetChanges() == null)
             //{
@@ -166,9 +269,26 @@ namespace SearchControls.Controls
         }
 
         bool IsHavTask = false;
-        public async void BtnFound_Click(object sender, EventArgs e)
+        private void BtnFound_Click(object sender, EventArgs e)
         {
             #region "查询"按钮btnFound单击事件
+
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnFoundClick(he);
+            if (he.Handled) return;
+
+            Found();
+
+            #endregion
+        }
+
+        public virtual void Found()
+        {
+            #region "查询"按钮btnFound单击事件
+
+            selectSqlDataAdapter.Fill(DataSet, TableName);
+
+            if (!BindingSource.DataMember.Equals(TableName)) BindingSource.DataMember = TableName;
 
             //if (e != null)
             //{
@@ -255,6 +375,10 @@ namespace SearchControls.Controls
         {
             #region 导出Excel按钮单击事件
 
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnExcelClick(he);
+            if (he.Handled) return;
+
             //BtnExcel.Enabled = false;
             //BtnQuit.Enabled = false;
             //toolProgressBarStatus.Text = "正在转换Excel";
@@ -333,6 +457,10 @@ namespace SearchControls.Controls
         {
             #region 导出Word按钮单击事件
 
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnWordClick(he);
+            if (he.Handled) return;
+
             //btnWord.Enabled = false; //按钮变暗(使其不可用，防止两次单击按钮)
             //btnQuit.Enabled = false; //按钮变暗(使其不可用，word转换过程中退出会造成出错）
             //toolProgressBarStatus.Text = "正在转换Word";
@@ -400,24 +528,34 @@ namespace SearchControls.Controls
             #endregion
         }
 
-        public void BtnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             #region "撤销"按钮btnCancel单击事件
-            //dataSet.Tables[TableName].RejectChanges(); //取消对DataTable的更改
-            //dataGridView_CellValueChanged(null, null);
+
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnCancelClick(he);
+            if (he.Handled) return;
+
+            Cancel();
+
             #endregion
         }
 
-        public void BtnQuit_Click(object sender, EventArgs e)
+        public virtual void Cancel() => DataSet.Tables[TableName].RejectChanges();
+
+        private void BtnQuit_Click(object sender, EventArgs e)
         {
             #region 退出按钮事件
 
-            if (TopLevelControl is Form f)
-            {
-                f.Close();
-            }
+            HandledEventArgs he = new HandledEventArgs();
+            OnBtnDownClick(he);
+            if (he.Handled) return;
+
+            Quit();
 
             #endregion
         }
+
+        public virtual void Quit() => (TopLevelControl as Form)?.Close();
     }
 }

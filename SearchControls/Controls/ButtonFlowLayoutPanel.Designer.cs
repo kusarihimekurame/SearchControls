@@ -1,4 +1,6 @@
-﻿namespace SearchControls.Controls
+﻿using System.ComponentModel;
+
+namespace SearchControls.Controls
 {
     partial class ButtonFlowLayoutPanel
     {
@@ -59,6 +61,7 @@
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnDelete.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnDelete.Enabled = false;
             this.BtnDelete.Location = new System.Drawing.Point(56, 36);
             this.BtnDelete.Margin = new System.Windows.Forms.Padding(2);
             this.BtnDelete.Name = "btnDelete";
@@ -85,6 +88,7 @@
             // 
             this.BtnInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnInsert.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnInsert.Enabled = false;
             this.BtnInsert.Location = new System.Drawing.Point(2, 36);
             this.BtnInsert.Margin = new System.Windows.Forms.Padding(2);
             this.BtnInsert.Name = "btnInsert";
@@ -124,6 +128,7 @@
             // 
             this.BtnLast.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnLast.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnLast.Enabled = false;
             this.BtnLast.Location = new System.Drawing.Point(164, 2);
             this.BtnLast.Margin = new System.Windows.Forms.Padding(2);
             this.BtnLast.Name = "btnLast";
@@ -137,6 +142,7 @@
             // 
             this.BtnUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnUp.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnUp.Enabled = false;
             this.BtnUp.Location = new System.Drawing.Point(110, 2);
             this.BtnUp.Margin = new System.Windows.Forms.Padding(2);
             this.BtnUp.Name = "btnUp";
@@ -150,6 +156,7 @@
             // 
             this.BtnDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnDown.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnDown.Enabled = false;
             this.BtnDown.Location = new System.Drawing.Point(56, 2);
             this.BtnDown.Margin = new System.Windows.Forms.Padding(2);
             this.BtnDown.Name = "btnDown";
@@ -163,6 +170,7 @@
             // 
             this.BtnFirst.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnFirst.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnFirst.Enabled = false;
             this.BtnFirst.Location = new System.Drawing.Point(2, 2);
             this.BtnFirst.Margin = new System.Windows.Forms.Padding(2);
             this.BtnFirst.Name = "btnFirst";
@@ -176,6 +184,7 @@
             // 
             this.BtnFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.BtnFound.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.BtnFound.Enabled = false;
             this.BtnFound.Location = new System.Drawing.Point(110, 70);
             this.BtnFound.Margin = new System.Windows.Forms.Padding(2);
             this.BtnFound.Name = "btnFound";
