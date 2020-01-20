@@ -29,7 +29,7 @@ namespace SearchControls
     public partial class SearchTextBox : TextBox, IGrid, IDataText, IMultiSelect, ISubSearchTextBoxes
     {
         Rectangle IGrid.Bounds => Parent.RectangleToScreen(Bounds);
-        TextBox IDataText.textBox => this;
+        TextBox IDataText.TextBox => this;
 
         SearchForm IGrid.SearchForm => SearchForm;
         private readonly SearchForm SearchForm;

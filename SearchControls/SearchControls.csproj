@@ -27,7 +27,7 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.1.0.4</Version>
+    <Version>1.2.0.0-beta</Version>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
@@ -58,6 +58,10 @@ The control of fuzzy searching by table.
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+    
+  <ItemGroup>
+    <PackageReference Include="NPOI" Version="2.4.1" />
   </ItemGroup>
     
   <ItemGroup>

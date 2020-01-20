@@ -36,7 +36,7 @@ namespace SearchControls.SearchGridForm
                     sstb.SubSearchTextBoxes.CollectionChanged += SubSearchTextBoxes_CollectionChanged;
                 }
                 if (TopLevelControl is SearchForm sf) sf.AddEvent();
-                if (value.textBox != null) Add_TextBoxEvent();
+                if (value.TextBox != null) Add_TextBoxEvent();
             }
         }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IMultiSelect"]/*'/>
@@ -135,10 +135,11 @@ namespace SearchControls.SearchGridForm
         /// </summary>
         public void Add_TextBoxEvent()
         {
-            DataText.textBox.TextChanged += TextBox_TextChanged;
-            DataText.textBox.MouseClick += TextBox_MouseClick;
-            DataText.textBox.MouseDoubleClick += TextBox_MouseDoubleClick;
-            DataText.textBox.KeyDown += TextBox_KeyDown;
+            DataText.TextBox.KeyPress += TextBox_KeyPress;
+            DataText.TextBox.TextChanged += TextBox_TextChanged;
+            DataText.TextBox.MouseClick += TextBox_MouseClick;
+            DataText.TextBox.MouseDoubleClick += TextBox_MouseDoubleClick;
+            DataText.TextBox.KeyDown += TextBox_KeyDown;
         }
 
         /// <summary>
@@ -147,17 +148,18 @@ namespace SearchControls.SearchGridForm
         public void Remove_TextBoxEvent()
         {
             PropertyInfo propertyInfo = typeof(Control).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic);
-            EventHandlerList eventHandlerList = (EventHandlerList)propertyInfo.GetValue(DataText.textBox);
+            EventHandlerList eventHandlerList = (EventHandlerList)propertyInfo.GetValue(DataText.TextBox);
             FieldInfo fieldInfo = typeof(Control).GetField("EventKeyDown", BindingFlags.Static | BindingFlags.NonPublic);
             Delegate d = eventHandlerList[fieldInfo.GetValue(null)];
             if (d != null)
             {
                 for (int i = 0; i < d.GetInvocationList().Count(); i++)
                 {
-                    DataText.textBox.TextChanged -= TextBox_TextChanged;
-                    DataText.textBox.MouseClick -= TextBox_MouseClick;
-                    DataText.textBox.MouseDoubleClick -= TextBox_MouseDoubleClick;
-                    DataText.textBox.KeyDown -= TextBox_KeyDown;
+                    DataText.TextBox.KeyPress -= TextBox_KeyPress;
+                    DataText.TextBox.TextChanged -= TextBox_TextChanged;
+                    DataText.TextBox.MouseClick -= TextBox_MouseClick;
+                    DataText.TextBox.MouseDoubleClick -= TextBox_MouseDoubleClick;
+                    DataText.TextBox.KeyDown -= TextBox_KeyDown;
                 }
             }
         }
@@ -364,10 +366,10 @@ namespace SearchControls.SearchGridForm
             else if (DataSource is DataView _dv) dv = _dv;
             else if (DataSource is DataSet _ds) dv = (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView;
 
-            if (DataText.textBox.Focused || (SubSearchTextBoxes != null && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)))
+            if (DataText.TextBox.Focused || (SubSearchTextBoxes != null && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Focused)))
             {
                 TextBox tb;
-                if (DataText.textBox.Focused) tb = DataText.textBox;
+                if (DataText.TextBox.Focused) tb = DataText.TextBox;
                 else tb = SubSearchTextBoxes.First(sstb => sstb.TextBox.Focused).TextBox;
                 if (dv != null)
                 {
@@ -448,9 +450,13 @@ namespace SearchControls.SearchGridForm
             }
         }
 
+        private bool isKeyInput = false;
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            if (DataSource == null && RowCount.Equals(0) || !DataText.IsTextChanged) return;
+            if (DataSource == null && RowCount.Equals(0) || (DataSource is DataSet && string.IsNullOrEmpty(DataMember)) || !DataText.IsTextChanged) return;
+
+            if (!isKeyInput) return;
+            else isKeyInput = false;
 
             DataTable dt = null;
             if (DataSource is DataTable _dt) dt = _dt;
@@ -463,7 +469,7 @@ namespace SearchControls.SearchGridForm
 
                 if (string.IsNullOrEmpty(tb.Text))
                 {
-                    Text = "";
+                    DataText.TextBox.Text = "";
                     if (SubSearchTextBoxes != null) SubSearchTextBoxes.ToList().ForEach(sstb => sstb.TextBox.Text = "");
                 }
 
@@ -582,9 +588,9 @@ namespace SearchControls.SearchGridForm
                     string _DisplayDataName = string.Empty;
                     TextBox tb = null;
                     SubSearchTextBox sstb = SubSearchTextBoxes == null ? null : SubSearchTextBoxes.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
-                    if (DataText.textBox.Focused)
+                    if (DataText.TextBox.Focused)
                     {
-                        tb = DataText.textBox;
+                        tb = DataText.TextBox;
                         _DisplayDataName = DataText.DisplayDataName;
                     }
                     else if (sstb != null)
@@ -664,7 +670,7 @@ namespace SearchControls.SearchGridForm
                 case Keys.Enter:
                     if (RowCount > 0)
                     {
-                        DataText.textBox.TextChanged -= TextBox_TextChanged;
+                        DataText.TextBox.TextChanged -= TextBox_TextChanged;
                         SubSearchTextBoxes?.ForEach(_sstb =>
                         {
                             _sstb.TextBox.TextChanged -= TextBox_TextChanged;
@@ -672,7 +678,7 @@ namespace SearchControls.SearchGridForm
 
                         TextBox tb = null;
                         SubSearchTextBox sstb = SubSearchTextBoxes?.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
-                        if (DataText.textBox.Focused) tb = DataText.textBox;
+                        if (DataText.TextBox.Focused) tb = DataText.TextBox;
                         else if (sstb != null) tb = sstb.TextBox;
 
                         GridSelectingEventArgs row = new GridSelectingEventArgs(this, index, e);
@@ -685,7 +691,7 @@ namespace SearchControls.SearchGridForm
                             {
                                 if (Convert.ToBoolean(CurrentRow.Cells[MultiSelect.MultiSelectColumn.Name].Value))
                                 {
-                                    DataText.textBox.Text = DataText.textBox.Text.Substring(0, DataText.textBox.Text.Length - 1);
+                                    DataText.TextBox.Text = DataText.TextBox.Text.Substring(0, DataText.TextBox.Text.Length - 1);
                                     SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
                                     {
                                         _sstb.TextBox.Text = _sstb.TextBox.Text.Substring(0, Text.Length - 1);
@@ -695,9 +701,9 @@ namespace SearchControls.SearchGridForm
                                 {
                                     if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                     {
-                                        DataText.textBox.Text = Columns.Contains(DataText.DisplayDataName)
-                                            ? DataText.textBox.Text + this[DataText.DisplayDataName, index].Value.ToString().Trim()
-                                            : DataText.textBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
+                                        DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
+                                            ? DataText.TextBox.Text + this[DataText.DisplayDataName, index].Value.ToString().Trim()
+                                            : DataText.TextBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
                                     }
                                     SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
                                     {
@@ -711,7 +717,7 @@ namespace SearchControls.SearchGridForm
                             {
                                 if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                 {
-                                    DataText.textBox.Text = Columns.Contains(DataText.DisplayDataName)
+                                    DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
                                         ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
                                         : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
                                 }
@@ -732,7 +738,7 @@ namespace SearchControls.SearchGridForm
                             DataText.OnGridSelected(rowed);
                         }
 
-                        if (DataText.textBox != null) DataText.textBox.TextChanged += TextBox_TextChanged;
+                        if (DataText.TextBox != null) DataText.TextBox.TextChanged += TextBox_TextChanged;
                         SubSearchTextBoxes?.ForEach(_sstb =>
                         {
                             _sstb.TextBox.TextChanged += TextBox_TextChanged;
@@ -748,7 +754,7 @@ namespace SearchControls.SearchGridForm
                     {
                         if (RowCount > 0)
                         {
-                            DataText.textBox.TextChanged -= TextBox_TextChanged;
+                            DataText.TextBox.TextChanged -= TextBox_TextChanged;
                             SubSearchTextBoxes.ForEach(_sstb =>
                             {
                                 _sstb.TextBox.TextChanged -= TextBox_TextChanged;
@@ -807,7 +813,7 @@ namespace SearchControls.SearchGridForm
                             {
                                 TextBox tb = null;
                                 SubSearchTextBox sstb = SubSearchTextBoxes.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
-                                if (DataText.textBox.Focused) tb = DataText.textBox;
+                                if (DataText.TextBox.Focused) tb = DataText.TextBox;
                                 else if (sstb != null) tb = sstb.TextBox;
 
                                 GridSelectingEventArgs row = new GridSelectingEventArgs(this, index, e);
@@ -819,7 +825,7 @@ namespace SearchControls.SearchGridForm
                                     TextBox_MouseDoubleClick(tb, null);
                                     if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                     {
-                                        DataText.textBox.SelectedText = Columns.Contains(DataText.DisplayDataName)
+                                        DataText.TextBox.SelectedText = Columns.Contains(DataText.DisplayDataName)
                                             ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
                                             : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
                                     }
@@ -831,11 +837,11 @@ namespace SearchControls.SearchGridForm
                                     });
                                 }
 
-                                if (!string.IsNullOrWhiteSpace(DataText.textBox.Text) && !DataText.textBox.Text[DataText.textBox.TextLength - 1].Equals(MultiSelect.MultiSelectSplit[MultiSelect.MultiSelectSplit.Length - 1]))
+                                if (!string.IsNullOrWhiteSpace(DataText.TextBox.Text) && !DataText.TextBox.Text[DataText.TextBox.TextLength - 1].Equals(MultiSelect.MultiSelectSplit[MultiSelect.MultiSelectSplit.Length - 1]))
                                 {
-                                    DataText.textBox.Text += MultiSelect.MultiSelectSplit;
-                                    DataText.textBox.SelectionLength = 0;
-                                    DataText.textBox.SelectionStart = DataText.textBox.TextLength;
+                                    DataText.TextBox.Text += MultiSelect.MultiSelectSplit;
+                                    DataText.TextBox.SelectionLength = 0;
+                                    DataText.TextBox.SelectionStart = DataText.TextBox.TextLength;
                                 }
                                 SubSearchTextBoxes.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.TextBox.Text) && !_sstb.TextBox.Text.Substring(_sstb.TextBox.TextLength - 1, 1).Equals(MultiSelect.MultiSelectSplit)).ToList().ForEach(_sstb =>
                                 {
@@ -846,7 +852,7 @@ namespace SearchControls.SearchGridForm
                                 DataText.OnGridSelected(rowed);
                             }
 
-                            DataText.textBox.TextChanged += TextBox_TextChanged;
+                            DataText.TextBox.TextChanged += TextBox_TextChanged;
                             SubSearchTextBoxes.ForEach(_sstb =>
                             {
                                 _sstb.TextBox.TextChanged += TextBox_TextChanged;
@@ -863,6 +869,7 @@ namespace SearchControls.SearchGridForm
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
+            isKeyInput = true;
             if (MultiSelect != null && MultiSelect.IsMultiSelect && e.KeyChar.Equals(' '))
             {
                 e.Handled = true;

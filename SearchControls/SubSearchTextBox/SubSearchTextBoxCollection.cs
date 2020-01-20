@@ -71,8 +71,9 @@ namespace SearchControls
         /// <param name="textBox">附属的文本框</param>
         /// <param name="displayDataName">要绑定显示的列名</param>
         /// <param name="autoInputDataName">自动输入的列名</param>
+        /// <param name="isMoveGrid">模糊查找的表是否移到副表位置</param>
         /// <exception cref="Exception">列表中不能出现重复的文本框</exception>
-        public void Add(TextBox textBox, string displayDataName, string autoInputDataName = null) => Add(new SubSearchTextBox(textBox, displayDataName, autoInputDataName));
+        public void Add(TextBox textBox, string displayDataName, string autoInputDataName = null, bool isMoveGrid = false) => Add(new SubSearchTextBox(textBox, displayDataName, autoInputDataName, isMoveGrid));
 
         /// <summary>
         /// 将指定集合的元素添加到 System.Collections.Generic.List`1 的末尾。

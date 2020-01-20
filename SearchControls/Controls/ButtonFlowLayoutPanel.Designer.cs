@@ -44,164 +44,128 @@ namespace SearchControls.Controls
             this.BtnQuit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // btnCancel
+            // BtnCancel
             // 
             this.BtnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnCancel.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnCancel.Location = new System.Drawing.Point(110, 36);
-            this.BtnCancel.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnCancel.Name = "btnCancel";
-            this.BtnCancel.Size = new System.Drawing.Size(50, 30);
+            this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.TabIndex = 6;
             this.BtnCancel.Text = "撤销";
             this.BtnCancel.UseVisualStyleBackColor = false;
             this.BtnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
-            // btnDelete
+            // BtnDelete
             // 
             this.BtnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnDelete.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnDelete.Enabled = false;
             this.BtnDelete.Location = new System.Drawing.Point(56, 36);
-            this.BtnDelete.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnDelete.Name = "btnDelete";
-            this.BtnDelete.Size = new System.Drawing.Size(50, 30);
+            this.BtnDelete.Name = "BtnDelete";
             this.BtnDelete.TabIndex = 5;
             this.BtnDelete.Text = "删除";
             this.BtnDelete.UseVisualStyleBackColor = false;
             this.BtnDelete.Click += new System.EventHandler(this.BtnDelete_Click);
             // 
-            // btnUpdate
+            // BtnUpdate
             // 
             this.BtnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnUpdate.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnUpdate.Location = new System.Drawing.Point(164, 36);
-            this.BtnUpdate.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnUpdate.Name = "btnUpdate";
-            this.BtnUpdate.Size = new System.Drawing.Size(50, 30);
+            this.BtnUpdate.Name = "BtnUpdate";
             this.BtnUpdate.TabIndex = 7;
             this.BtnUpdate.Text = "提交";
             this.BtnUpdate.UseVisualStyleBackColor = false;
             this.BtnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
-            // btnInsert
+            // BtnInsert
             // 
             this.BtnInsert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnInsert.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnInsert.Enabled = false;
             this.BtnInsert.Location = new System.Drawing.Point(2, 36);
-            this.BtnInsert.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnInsert.Name = "btnInsert";
-            this.BtnInsert.Size = new System.Drawing.Size(50, 30);
+            this.BtnInsert.Name = "BtnInsert";
             this.BtnInsert.TabIndex = 4;
             this.BtnInsert.Text = "添加";
             this.BtnInsert.UseVisualStyleBackColor = false;
             this.BtnInsert.Click += new System.EventHandler(this.BtnInsert_Click);
             // 
-            // btnWord
+            // BtnWord
             // 
             this.BtnWord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnWord.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnWord.Location = new System.Drawing.Point(56, 70);
-            this.BtnWord.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnWord.Name = "btnWord";
-            this.BtnWord.Size = new System.Drawing.Size(50, 30);
+            this.BtnWord.Name = "BtnWord";
             this.BtnWord.TabIndex = 9;
             this.BtnWord.Text = "WORD";
             this.BtnWord.UseVisualStyleBackColor = false;
             this.BtnWord.Click += new System.EventHandler(this.BtnWord_Click);
             // 
-            // btnExcel
+            // BtnExcel
             // 
             this.BtnExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnExcel.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnExcel.Location = new System.Drawing.Point(2, 70);
-            this.BtnExcel.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnExcel.Name = "btnExcel";
-            this.BtnExcel.Size = new System.Drawing.Size(50, 30);
+            this.BtnExcel.Name = "BtnExcel";
             this.BtnExcel.TabIndex = 8;
             this.BtnExcel.Text = "EXCEL";
             this.BtnExcel.UseVisualStyleBackColor = false;
             this.BtnExcel.Click += new System.EventHandler(this.BtnExcel_Click);
             // 
-            // btnLast
+            // BtnLast
             // 
             this.BtnLast.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnLast.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnLast.Enabled = false;
             this.BtnLast.Location = new System.Drawing.Point(164, 2);
-            this.BtnLast.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnLast.Name = "btnLast";
-            this.BtnLast.Size = new System.Drawing.Size(50, 30);
+            this.BtnLast.Name = "BtnLast";
             this.BtnLast.TabIndex = 3;
             this.BtnLast.Text = "最后";
             this.BtnLast.UseVisualStyleBackColor = false;
             this.BtnLast.Click += new System.EventHandler(this.BtnLast_Click);
             // 
-            // btnUp
+            // BtnUp
             // 
             this.BtnUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnUp.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnUp.Enabled = false;
             this.BtnUp.Location = new System.Drawing.Point(110, 2);
-            this.BtnUp.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnUp.Name = "btnUp";
-            this.BtnUp.Size = new System.Drawing.Size(50, 30);
+            this.BtnUp.Name = "BtnUp";
             this.BtnUp.TabIndex = 2;
             this.BtnUp.Text = "向上";
             this.BtnUp.UseVisualStyleBackColor = false;
             this.BtnUp.Click += new System.EventHandler(this.BtnUp_Click);
             // 
-            // btnDown
+            // BtnDown
             // 
             this.BtnDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnDown.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnDown.Enabled = false;
             this.BtnDown.Location = new System.Drawing.Point(56, 2);
-            this.BtnDown.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnDown.Name = "btnDown";
-            this.BtnDown.Size = new System.Drawing.Size(50, 30);
+            this.BtnDown.Name = "BtnDown";
             this.BtnDown.TabIndex = 1;
             this.BtnDown.Text = "向下";
             this.BtnDown.UseVisualStyleBackColor = false;
             this.BtnDown.Click += new System.EventHandler(this.BtnDown_Click);
             // 
-            // btnFirst
+            // BtnFirst
             // 
             this.BtnFirst.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnFirst.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnFirst.Enabled = false;
             this.BtnFirst.Location = new System.Drawing.Point(2, 2);
-            this.BtnFirst.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnFirst.Name = "btnFirst";
-            this.BtnFirst.Size = new System.Drawing.Size(50, 30);
+            this.BtnFirst.Name = "BtnFirst";
             this.BtnFirst.TabIndex = 0;
             this.BtnFirst.Text = "第一";
             this.BtnFirst.UseVisualStyleBackColor = false;
             this.BtnFirst.Click += new System.EventHandler(this.BtnFirst_Click);
             // 
-            // btnFound
+            // BtnFound
             // 
             this.BtnFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnFound.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnFound.Enabled = false;
             this.BtnFound.Location = new System.Drawing.Point(110, 70);
-            this.BtnFound.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnFound.Name = "btnFound";
-            this.BtnFound.Size = new System.Drawing.Size(50, 30);
+            this.BtnFound.Name = "BtnFound";
             this.BtnFound.TabIndex = 10;
             this.BtnFound.Text = "查找";
             this.BtnFound.UseVisualStyleBackColor = false;
             this.BtnFound.Click += new System.EventHandler(this.BtnFound_Click);
             // 
-            // btnQuit
+            // BtnQuit
             // 
             this.BtnQuit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnQuit.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BtnQuit.Location = new System.Drawing.Point(164, 70);
-            this.BtnQuit.Margin = new System.Windows.Forms.Padding(2);
-            this.BtnQuit.Name = "btnQuit";
-            this.BtnQuit.Size = new System.Drawing.Size(50, 30);
+            this.BtnQuit.Name = "BtnQuit";
             this.BtnQuit.TabIndex = 11;
             this.BtnQuit.Text = "退出";
             this.BtnQuit.UseVisualStyleBackColor = false;
@@ -223,9 +187,7 @@ namespace SearchControls.Controls
             this.Controls.Add(this.BtnFound);
             this.Controls.Add(this.BtnQuit);
             this.Location = new System.Drawing.Point(1, 240);
-            this.Name = "ButtonFlowLayoutPanel";
             this.Size = new System.Drawing.Size(216, 102);
-            this.TabIndex = 68;
             this.ResumeLayout(false);
         }
 

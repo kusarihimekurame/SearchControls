@@ -50,5 +50,26 @@ namespace SearchControls
             }
             return string.Join("AND ", rowFilter);
         }
+
+        /// <summary>
+        /// 根据DataView视图以及字段列名，创建新的DataTable表
+        /// </summary>
+        /// <param name="dataView">视图表</param>
+        /// <param name="columnNames">原有列名</param>
+        /// <param name="headerTexts">新的列名</param>
+        /// <returns></returns>
+        public static DataTable DataViewToTable(DataView dataView, string[] columnNames, string[] headerTexts)
+        {
+            if (columnNames == null && headerTexts == null) return dataView.ToTable();
+            else
+            {
+                DataTable dataTable = dataView.ToTable(false, columnNames);
+                for (int i = 0; i < dataTable.Columns.Count; i++)
+                {
+                    dataTable.Columns[i].ColumnName = headerTexts[i];
+                }
+                return dataTable;
+            }
+        }
     }
 }

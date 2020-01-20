@@ -153,19 +153,35 @@ namespace SearchControls.SearchGridForm
             else Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;  // 重新设置网格总高
         }
 
+        private Rectangle bounds;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
         public virtual void SetSearchGridLocation()
         {
             if (!Bounds.Equals(Rectangle.Empty))
             {
                 int Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;
-                if (_grid.IsUp || _grid.Bounds.Y + _grid.Bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
+
+                if (bounds.IsEmpty)
                 {
-                    Location = new Point(_grid.Bounds.X, _grid.Bounds.Y - Height);
+                    if (_grid.IsUp || _grid.Bounds.Y + _grid.Bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
+                    {
+                        Location = new Point(_grid.Bounds.X, _grid.Bounds.Y - Height);
+                    }
+                    else
+                    {
+                        Location = new Point(_grid.Bounds.X, _grid.Bounds.Y + _grid.Bounds.Height);
+                    }
                 }
                 else
                 {
-                    Location = new Point(_grid.Bounds.X, _grid.Bounds.Y + _grid.Bounds.Height);
+                    if (_grid.IsUp || bounds.Y + bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
+                    {
+                        Location = new Point(bounds.X, bounds.Y - Height);
+                    }
+                    else
+                    {
+                        Location = new Point(bounds.X, bounds.Y + bounds.Height);
+                    }
                 }
             }
         }
@@ -173,7 +189,11 @@ namespace SearchControls.SearchGridForm
         private void TextBox_Enter(object sender, EventArgs e)
         {
             SearchGrid.IsEnter = true;
-            if (!Visible) Show((_grid as Control).TopLevelControl);
+            if (!Visible)
+            {
+                bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
+                Show((_grid as Control).TopLevelControl);
+            }
         }
 
         private void Hide_event(object sender, EventArgs e)
@@ -288,9 +308,9 @@ namespace SearchControls.SearchGridForm
 
         internal void AddEvent()
         {
-            if (SearchGrid.DataText.textBox != null)
+            if (SearchGrid.DataText.TextBox != null)
             {
-                SearchGrid.DataText.textBox.Enter += TextBox_Enter;
+                SearchGrid.DataText.TextBox.Enter += TextBox_Enter;
             }
         }
     }

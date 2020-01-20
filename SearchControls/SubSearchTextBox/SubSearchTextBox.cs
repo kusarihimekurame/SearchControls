@@ -58,16 +58,28 @@ namespace SearchControls
             }
         }
         /// <summary>
+        /// 模糊查找的表是否移到副表位置
+        /// </summary>
+        [
+            DefaultValue(false),
+            Category("Item"),
+            Description("模糊查找的表是否移到副表位置"),
+            DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)
+        ]
+        public bool IsMoveGrid { get; set; } = false;
+        /// <summary>
         /// 类的初始化
         /// </summary>
         /// <param name="textBox">附属的文本框</param>
         /// <param name="displayDataName">要展示的列名</param>
         /// <param name="autoInputDataName">自动输入的列名</param>
-        public SubSearchTextBox(TextBox textBox, string displayDataName, string autoInputDataName = null)
+        /// <param name="isMoveGrid">模糊查找的表是否移到副表位置</param>
+        public SubSearchTextBox(TextBox textBox, string displayDataName, string autoInputDataName = null, bool isMoveGrid = false)
         {
             TextBox = textBox;
             DisplayDataName = displayDataName;
             AutoInputDataName = autoInputDataName;
+            IsMoveGrid = isMoveGrid;
         }
 
         /// <summary>

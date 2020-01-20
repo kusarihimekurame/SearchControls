@@ -20,7 +20,7 @@ namespace SearchControls.Interface
         /// <summary>
         /// 对应的文本框
         /// </summary>
-        TextBox textBox { get; }
+        TextBox TextBox { get; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsTextChanged"]/*'/>
         [
             DefaultValue(true),

@@ -49,7 +49,7 @@ namespace SearchControls
             Description("模糊查找框显示的时候是否自动还原到原来的状态")
         ]
         public bool IsAutoReset { get; set; }
-        TextBox IDataText.textBox => EditingControl as TextBox;
+        TextBox IDataText.TextBox => EditingControl as TextBox;
 
         SearchForm IGrid.SearchForm => SearchForm;
         private readonly SearchForm SearchForm;

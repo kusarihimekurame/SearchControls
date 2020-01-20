@@ -88,6 +88,27 @@ namespace PinYinConverter
                     dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
                 }
             }
+            dataTable.AcceptChanges();
+
+            dataTable.RowChanged += DataTable_RowChanged;
+
+            void DataTable_RowChanged(object sender,DataRowChangeEventArgs e)
+            {
+                dataTable.RowChanged -= DataTable_RowChanged;
+                switch (e.Action)
+                {
+                    case DataRowAction.Change:
+                    case DataRowAction.Add:
+                        foreach (DataColumn pydc in PinYinDataColumns)
+                        {
+                            string py = string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" });
+                            if (!e.Row.Field<string>(pydc).Equals(py)) e.Row.SetField(pydc, py);
+                        }
+                        break;
+                }
+                dataTable.RowChanged += DataTable_RowChanged;
+            }
+
             return PinYinDataColumns;
         }
 
@@ -97,7 +118,7 @@ namespace PinYinConverter
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="columnNames">需要创建的对应列名</param>
         /// <returns>拼音列</returns>
-        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, string[] columnNames)
+        public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, params string[] columnNames)
             => CreateManyInitialsDataColumn(dataTable, columnNames.Select(cn => dataTable.Columns[cn]).ToArray());
     }
 }
