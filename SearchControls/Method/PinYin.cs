@@ -102,7 +102,7 @@ namespace PinYinConverter
                         foreach (DataColumn pydc in PinYinDataColumns)
                         {
                             string py = string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" });
-                            if (!e.Row.Field<string>(pydc).Equals(py)) e.Row.SetField(pydc, py);
+                            if (!string.IsNullOrEmpty(e.Row.Field<string>(pydc)) && !e.Row.Field<string>(pydc).Equals(py)) e.Row.SetField(pydc, py);
                         }
                         break;
                 }

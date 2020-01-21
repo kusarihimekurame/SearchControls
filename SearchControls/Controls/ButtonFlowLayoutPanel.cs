@@ -277,6 +277,7 @@ namespace SearchControls.Controls
         ]
         public void SetFlowIndex(Control control, int index)
         {
+            if (Controls.Contains(control)) Controls.SetChildIndex(control, index);
             ControlAdded += (sender, e) =>
               {
                   if (e.Control.Equals(control))
