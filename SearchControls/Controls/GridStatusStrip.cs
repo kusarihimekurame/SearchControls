@@ -9,9 +9,15 @@ using System.Windows.Forms;
 
 namespace SearchControls.Controls
 {
+    /// <summary>
+    /// 表示 Windows 状态栏控件。
+    /// </summary>
     public partial class GridStatusStrip : StatusStrip
     {
         private DataGridView dataGridView;
+        /// <summary>
+        /// 绑定网格，为了显示网格状态
+        /// </summary>
         public DataGridView DataGridView
         {
             get => dataGridView;
@@ -33,11 +39,17 @@ namespace SearchControls.Controls
             }
         }
 
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public GridStatusStrip()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 数据刷新
+        /// </summary>
         public void DataRefresh()
         {
             object dataSource;

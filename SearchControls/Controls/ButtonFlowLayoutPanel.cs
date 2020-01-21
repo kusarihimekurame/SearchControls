@@ -25,12 +25,16 @@ namespace SearchControls.Controls
 {
     [ComVisible(true)]
     [ProvideProperty("FlowBreak", typeof(Control))]
+    [ProvideProperty("FlowIndex", typeof(Control))]
     [DefaultProperty("FlowDirection")]
     [Designer("System.Windows.Forms.Design.FlowLayoutPanelDesigner")]
     [Docking(DockingBehavior.Ask)]
     public partial class ButtonFlowLayoutPanel : FlowLayoutPanel
     {
         private Color buttonBackColor;
+        /// <summary>
+        /// 按钮的背景色。
+        /// </summary>
         [
             DefaultValue(typeof(Color), "ButtonFace"),
             Category("ButtonStyle"),
@@ -51,6 +55,9 @@ namespace SearchControls.Controls
             }
         }
         private FlatStyle buttonFlatStyle;
+        /// <summary>
+        /// 确定当用户将鼠标移动到按钮上并单击时该按钮的外观。
+        /// </summary>
         [
             DefaultValue(typeof(FlatStyle), "Standard"),
             Category("ButtonStyle"),
@@ -71,6 +78,9 @@ namespace SearchControls.Controls
             }
         }
         private bool buttonUseVisualStyleBackColor;
+        /// <summary>
+        /// 确定在支持视觉样式的情况下，是否使用视觉样式绘制背景。
+        /// </summary>
         [
             DefaultValue(false),
             Category("ButtonStyle"),
@@ -90,7 +100,9 @@ namespace SearchControls.Controls
                 ResumeLayout(false);
             }
         }
-
+        /// <summary>
+        /// 用于显示按钮中的文本的字体。
+        /// </summary>
         [
             Localizable(true),
             Category("ButtonStyle"),
@@ -111,6 +123,9 @@ namespace SearchControls.Controls
             }
         }
         private Color buttonForeColor;
+        /// <summary>
+        /// 按钮的前景色，用于显示文本。
+        /// </summary>
         [
             DefaultValue(typeof(Color), "ControlText"),
             Category("ButtonStyle"),
@@ -131,10 +146,13 @@ namespace SearchControls.Controls
             }
         }
         private Padding buttonMargin;
+        /// <summary>
+        /// 指定此控件与另一控件的边距之间的距离。
+        /// </summary>
         [
             DefaultValue(typeof(Padding), "2, 2, 2, 2"),
             Category("ButtonStyle"),
-            Description("按钮的前景色，用于显示文本。")
+            Description("指定此控件与另一控件的边距之间的距离。")
         ]
         public Padding ButtonMargin
         {
@@ -151,10 +169,13 @@ namespace SearchControls.Controls
             }
         }
         private Size buttonSize;
+        /// <summary>
+        /// 控件的大小(以像素为单位)。
+        /// </summary>
         [
             DefaultValue(typeof(Size), "50, 30"),
             Category("ButtonStyle"),
-            Description("按钮的前景色，用于显示文本。")
+            Description("控件的大小(以像素为单位)。")
         ]
         public Size ButtonSize
         {
@@ -172,6 +193,10 @@ namespace SearchControls.Controls
         }
 
         private IButtonFlowLayoutPanelMethod method;
+        /// <summary>
+        /// 自定义按钮群的方法用的接口
+        /// </summary>
+        [Description("自定义按钮群的方法用的接口")]
         public IButtonFlowLayoutPanelMethod Method
         {
             get => method;
@@ -186,6 +211,9 @@ namespace SearchControls.Controls
         }
 
         private readonly Button[] buttons;
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public ButtonFlowLayoutPanel()
         {
             InitializeComponent();
@@ -201,6 +229,10 @@ namespace SearchControls.Controls
             Controls.CopyTo(buttons, 0);
         }
 
+        /// <summary>
+        /// 引发 System.Windows.Forms.Control.ControlAdded 事件。
+        /// </summary>
+        /// <param name="e">包含事件数据的 System.Windows.Forms.ControlEventArgs。</param>
         protected override void OnControlAdded(ControlEventArgs e)
         {
             base.OnControlAdded(e);
@@ -218,31 +250,89 @@ namespace SearchControls.Controls
                 ResumeLayout(false);
             }
 
-            for (int i = 0; i < buttons.Count(); i++)
-            {
-                if (e.Control.Location.Equals(buttons[i].Location))
-                {
-                    Controls.SetChildIndex(e.Control, i);
-                    break;
-                }
-            }
             for (int i = 0; i < Controls.Count; i++)
             {
                 Controls[i].TabIndex = i;
             }
         }
 
+        /// <summary>
+        /// 父控件中的位置
+        /// </summary>
+        /// <param name="control">子控件</param>
+        /// <returns>父控件中的位置</returns>
+        [
+            DisplayName("FlowIndex"),
+            Description("父控件中的位置")
+        ]
+        public int GetFlowIndex(Control control) => Controls.GetChildIndex(control);
+        /// <summary>
+        /// 父控件中的位置
+        /// </summary>
+        /// <param name="control">子控件</param>
+        /// <param name="index">设置父控件中的位置</param>
+        [
+            DisplayName("FlowIndex"),
+            Description("父控件中的位置")
+        ]
+        public void SetFlowIndex(Control control, int index)
+        {
+            ControlAdded += (sender, e) =>
+              {
+                  if (e.Control.Equals(control))
+                  {
+                      Controls.SetChildIndex(control, index);
+                  }
+              };
+        }
+
+        /// <summary>
+        /// 点击第一按钮
+        /// </summary>
         protected virtual void BtnFirst_Click(object sender, EventArgs e) => Method?.BtnFirst_Click();
+        /// <summary>
+        /// 点击向下按钮
+        /// </summary>
         protected virtual void BtnDown_Click(object sender, EventArgs e) => Method?.BtnDown_Click();
+        /// <summary>
+        /// 点击向上按钮
+        /// </summary>
         protected virtual void BtnUp_Click(object sender, EventArgs e) => Method?.BtnUp_Click();
+        /// <summary>
+        /// 点击最后按钮
+        /// </summary>
         protected virtual void BtnLast_Click(object sender, EventArgs e) => Method?.BtnLast_Click();
+        /// <summary>
+        /// 点击添加按钮
+        /// </summary>
         protected virtual void BtnInsert_Click(object sender, EventArgs e) => Method?.BtnInsert_Click();
+        /// <summary>
+        /// 点击删除按钮
+        /// </summary>
         protected virtual void BtnDelete_Click(object sender, EventArgs e) => Method?.BtnDelete_Click();
+        /// <summary>
+        /// 点击提交按钮
+        /// </summary>
         protected virtual void BtnUpdate_Click(object sender, EventArgs e) => Method?.BtnUpdate_Click();
+        /// <summary>
+        /// 点击查找按钮
+        /// </summary>
         protected virtual void BtnFound_Click(object sender, EventArgs e) => Method?.BtnFound_Click();
+        /// <summary>
+        /// 点击Excel按钮
+        /// </summary>
         protected virtual void BtnExcel_Click(object sender, EventArgs e) => Method?.BtnExcel_Click();
+        /// <summary>
+        /// 点击Word按钮
+        /// </summary>
         protected virtual void BtnWord_Click(object sender, EventArgs e) => Method?.BtnWord_Click();
+        /// <summary>
+        /// 点击撤销按钮
+        /// </summary>
         protected virtual void BtnCancel_Click(object sender, EventArgs e) => Method?.BtnCancel_Click();
+        /// <summary>
+        /// 点击退出按钮
+        /// </summary>
         protected virtual void BtnQuit_Click(object sender, EventArgs e) => Method?.BtnQuit_Click();
     }
 }

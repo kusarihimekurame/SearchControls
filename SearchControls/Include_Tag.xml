@@ -72,7 +72,7 @@
       <summary>
       附属的文本框集合
       </summary>
-      <example>添加附属文本框的方法<see cref="SearchControls.SubSearchTextBoxCollection.Add(TextBox, string, string)"/>
+      <example>添加附属文本框的方法<see cref="SearchControls.SubSearchTextBoxCollection.Add(TextBox, string, string, bool)"/>
       <code>
           class TestForm : Form
           {

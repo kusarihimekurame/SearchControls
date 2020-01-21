@@ -137,29 +137,36 @@ namespace SearchControls.Controls
                       {
                           if (dataGridView.TopLevelControl is Form f)
                           {
-                              f.FormClosing += (f_sender, f_e) =>
+                              EventHandlerList eventHandlerList = (EventHandlerList)typeof(Form).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(f, null);
+                              FieldInfo fieldInfo = typeof(Form).GetField("EVENT_FORMCLOSING", BindingFlags.Static | BindingFlags.NonPublic);
+
+                              Delegate d = eventHandlerList[fieldInfo.GetValue(null)];
+                              if (d == null)
                               {
-                                  if (DataSet.GetChanges() != null)
+                                  f.FormClosing += (f_sender, f_e) =>
                                   {
-                                      DialogResult dr = MessageBox.Show("是否将更改提交到 数据库 中？", f.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                                      switch (dr)
+                                      if (DataSet.GetChanges() != null)
                                       {
-                                          case DialogResult.Yes:
-                                              try
-                                              {
-                                                  BtnUpdate_Click();
-                                              }
-                                              catch
-                                              {
+                                          DialogResult dr = MessageBox.Show("是否将更改提交到 数据库 中？", f.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                                          switch (dr)
+                                          {
+                                              case DialogResult.Yes:
+                                                  try
+                                                  {
+                                                      BtnUpdate_Click();
+                                                  }
+                                                  catch
+                                                  {
+                                                      f_e.Cancel = true;
+                                                  }
+                                                  break;
+                                              case DialogResult.Cancel:
                                                   f_e.Cancel = true;
-                                              }
-                                              break;
-                                          case DialogResult.Cancel:
-                                              f_e.Cancel = true;
-                                              break;
+                                                  break;
+                                          }
                                       }
-                                  }
-                              };
+                                  };
+                              }
                           }
                       };
 
@@ -507,6 +514,19 @@ namespace SearchControls.Controls
         {
             InitializeComponent();
             BindingSource.DataSource = DataSet;
+            DataSet.Tables.CollectionChanged += (sender, e) =>
+              {
+                  if (e.Action.Equals(CollectionChangeAction.Add) && e.Element is DataTable dt && dt.TableName.Equals(TableName))
+                  {
+                      Action action = null;
+                      action = new Action(() =>
+                      {
+                          if (buttonFlowLayoutPanel.InvokeRequired) buttonFlowLayoutPanel.Invoke(action);
+                          else if (!BindingSource.DataMember.Equals(TableName)) BindingSource.DataMember = TableName;
+                      });
+                      action();
+                  }
+              };
         }
         /// <summary>
         /// 点击第一按钮
@@ -759,14 +779,6 @@ namespace SearchControls.Controls
             {
                 Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
             }
-
-            Action action = null;
-            action = new Action(() =>
-            {
-                if (buttonFlowLayoutPanel.InvokeRequired) buttonFlowLayoutPanel.Invoke(action);
-                else if (!BindingSource.DataMember.Equals(TableName)) BindingSource.DataMember = TableName;
-            });
-            action();
 
             #endregion
         }
