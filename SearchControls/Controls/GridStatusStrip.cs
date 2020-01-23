@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace SearchControls.Controls
+namespace SearchControls
 {
     /// <summary>
     /// 表示 Windows 状态栏控件。
@@ -45,6 +45,7 @@ namespace SearchControls.Controls
         public GridStatusStrip()
         {
             InitializeComponent();
+            SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
         }
 
         /// <summary>
@@ -76,8 +77,8 @@ namespace SearchControls.Controls
             if (dt != null && dt.GetChanges() != null)
             {
                 if (ToolUpdateStatus.ForeColor.Equals(Color.Red)) ToolUpdateStatus.ForeColor = Color.Black;
-                ToolChangeRecordCount.Text = string.Format("更改的记录数：{0}条", dt.GetChanges().Rows.Count);
-                ToolUpdateStatus.Text = "未提交";
+                ToolChangeRecordCount.Text = dt.GetChanges() == null ? string.Empty : string.Format("更改的记录数：{0}条", dt.GetChanges().Rows.Count);
+                ToolUpdateStatus.Text = string.IsNullOrEmpty(ToolChangeRecordCount.Text) ? string.Empty : "未提交";
             }
             else
             {

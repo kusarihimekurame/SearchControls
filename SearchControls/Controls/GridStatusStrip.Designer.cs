@@ -1,4 +1,4 @@
-﻿namespace SearchControls.Controls
+﻿namespace SearchControls
 {
     partial class GridStatusStrip
     {
@@ -67,6 +67,7 @@
             // 
             this.ToolStripProgressBar.Margin = new System.Windows.Forms.Padding(2, 3, 0, 3);
             this.ToolStripProgressBar.Name = "ToolStripProgressBar";
+            this.ToolStripProgressBar.Step = 1;
             this.ToolStripProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
             // ToolProgressBarStatus

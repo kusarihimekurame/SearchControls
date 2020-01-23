@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace SearchControls.Controls
+namespace SearchControls
 {
     partial class ButtonFlowLayoutPanel
     {

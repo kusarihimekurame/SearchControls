@@ -21,14 +21,21 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using SearchControls.Interface;
 
-namespace SearchControls.Controls
+namespace SearchControls
 {
-    [ComVisible(true)]
-    [ProvideProperty("FlowBreak", typeof(Control))]
-    [ProvideProperty("FlowIndex", typeof(Control))]
-    [DefaultProperty("FlowDirection")]
-    [Designer("System.Windows.Forms.Design.FlowLayoutPanelDesigner")]
-    [Docking(DockingBehavior.Ask)]
+    /// <summary>
+    /// 按钮群
+    /// </summary>
+    [
+        DisplayName("ButtonFlowLayoutPanel"),
+        Description("按钮群"),
+        ComVisible(true),
+        ProvideProperty("FlowBreak", typeof(Control)),
+        ProvideProperty("FlowIndex", typeof(Control)),
+        DefaultProperty("FlowDirection"),
+        Designer("System.Windows.Forms.Design.FlowLayoutPanelDesigner"),
+        Docking(DockingBehavior.Ask)
+    ]
     public partial class ButtonFlowLayoutPanel : FlowLayoutPanel
     {
         private Color buttonBackColor;
@@ -290,50 +297,74 @@ namespace SearchControls.Controls
         /// <summary>
         /// 点击第一按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnFirst_Click(object sender, EventArgs e) => Method?.BtnFirst_Click();
         /// <summary>
         /// 点击向下按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnDown_Click(object sender, EventArgs e) => Method?.BtnDown_Click();
         /// <summary>
         /// 点击向上按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnUp_Click(object sender, EventArgs e) => Method?.BtnUp_Click();
         /// <summary>
         /// 点击最后按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnLast_Click(object sender, EventArgs e) => Method?.BtnLast_Click();
         /// <summary>
         /// 点击添加按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnInsert_Click(object sender, EventArgs e) => Method?.BtnInsert_Click();
         /// <summary>
         /// 点击删除按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnDelete_Click(object sender, EventArgs e) => Method?.BtnDelete_Click();
         /// <summary>
         /// 点击提交按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnUpdate_Click(object sender, EventArgs e) => Method?.BtnUpdate_Click();
         /// <summary>
         /// 点击查找按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnFound_Click(object sender, EventArgs e) => Method?.BtnFound_Click();
         /// <summary>
         /// 点击Excel按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnExcel_Click(object sender, EventArgs e) => Method?.BtnExcel_Click();
         /// <summary>
         /// 点击Word按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnWord_Click(object sender, EventArgs e) => Method?.BtnWord_Click();
         /// <summary>
         /// 点击撤销按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnCancel_Click(object sender, EventArgs e) => Method?.BtnCancel_Click();
         /// <summary>
         /// 点击退出按钮
         /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">不包含事件数据的对象。</param>
         protected virtual void BtnQuit_Click(object sender, EventArgs e) => Method?.BtnQuit_Click();
     }
 }

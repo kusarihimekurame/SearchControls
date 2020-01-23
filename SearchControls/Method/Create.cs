@@ -57,7 +57,7 @@ namespace SearchControls
         /// <param name="dataView">视图表</param>
         /// <param name="columnNames">原有列名</param>
         /// <param name="headerTexts">新的列名</param>
-        /// <returns></returns>
+        /// <returns>新的DataTable表</returns>
         public static DataTable DataViewToTable(DataView dataView, string[] columnNames, string[] headerTexts)
         {
             if (columnNames == null && headerTexts == null) return dataView.ToTable();

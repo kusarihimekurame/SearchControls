@@ -1,4 +1,4 @@
-﻿namespace SearchControls.Controls
+﻿namespace SearchControls
 {
     partial class ButtonFlowLayoutPanelMethod
     {

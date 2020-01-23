@@ -11,7 +11,6 @@ namespace SearchControls.Export
     /// <typeparam name="T">进度更新值的类型。</typeparam>
     public class Progress<T> : IProgress<T>
     {
-        private readonly Control c;
         /// <summary>
         /// 进度条发生变动时的事件
         /// </summary>
@@ -32,32 +31,24 @@ namespace SearchControls.Export
         /// <param name="value">进度更新之后的值。</param>
         public void Report(T value)
         {
-            if (c.InvokeRequired)
+            try
             {
-                try
-                {
-                    if (ProgressChanged != null)
-                        c.Invoke(ProgressChanged, this, value);
-                    else
-                        c.Invoke(Handler, value);
-                }
-                catch { }
+                ProgressChanged?.Invoke(this, value);
+                Handler?.Invoke(value);
             }
+            catch { }
         }
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="control">需要访问UI的控件</param>
-        public Progress(Control control)
+        public Progress()
         {
-            c = control;
         }
         /// <summary>
         /// 初始化
         /// </summary>
-        /// <param name="control">需要访问UI的控件</param>
         /// <param name="handler">进度条发生变动时的执行的方法</param>
-        public Progress(Control control, Action<T> handler) : this(control)
+        public Progress(Action<T> handler) : this()
         {
             Handler = handler;
         }

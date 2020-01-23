@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace SearchControls.Controls
+namespace SearchControls
 {
     /// <summary>
     /// 按钮群的方法
@@ -77,6 +77,10 @@ namespace SearchControls.Controls
         /// <summary>
         /// 查询用的<see cref="SqlDataAdapter"/>
         /// </summary>
+        /// <remarks>
+        /// <para><see cref="MissingSchemaAction"/>默认为MissingSchemaAction.AddWithKey(抓取主键)</para>
+        /// <para><see cref="LoadOption"/>FillLoadOption默认为LoadOption.OverwriteChanges</para>
+        /// </remarks>
         public SqlDataAdapter SelectSqlDataAdapter
         {
             get => selectSqlDataAdapter;
@@ -86,6 +90,7 @@ namespace SearchControls.Controls
                 if (selectSqlDataAdapter != null)
                 {
                     selectSqlDataAdapter.MissingSchemaAction = MissingSchemaAction.AddWithKey;
+                    selectSqlDataAdapter.FillLoadOption = LoadOption.OverwriteChanges;
                 }
             }
         }
@@ -132,7 +137,6 @@ namespace SearchControls.Controls
                 if (value != null)
                 {
                     dataGridView = value;
-                    dataGridView.DataSource = BindingSource;
                     dataGridView.ParentChanged += (sender, e) =>
                       {
                           if (dataGridView.TopLevelControl is Form f)
@@ -145,7 +149,7 @@ namespace SearchControls.Controls
                               {
                                   f.FormClosing += (f_sender, f_e) =>
                                   {
-                                      if (DataSet.GetChanges() != null)
+                                      if (!DataGridView.Rows.Cast<DataGridViewRow>().Count(dgvr => !dgvr.IsNewRow).Equals(0) && DataSet.GetChanges() != null)
                                       {
                                           DialogResult dr = MessageBox.Show("是否将更改提交到 数据库 中？", f.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                                           switch (dr)
@@ -183,13 +187,6 @@ namespace SearchControls.Controls
         {
             if (isSetButtonFlowLayoutPanel) return;
             isSetButtonFlowLayoutPanel = true;
-            buttonFlowLayoutPanel.BtnDelete.Enabled = true;
-            buttonFlowLayoutPanel.BtnInsert.Enabled = true;
-            buttonFlowLayoutPanel.BtnFirst.Enabled = true;
-            buttonFlowLayoutPanel.BtnLast.Enabled = true;
-            buttonFlowLayoutPanel.BtnUp.Enabled = true;
-            buttonFlowLayoutPanel.BtnDown.Enabled = true;
-            buttonFlowLayoutPanel.BtnFound.Enabled = true;
 
             dataGridView.KeyDown += (sender, e) =>
             {
@@ -519,11 +516,11 @@ namespace SearchControls.Controls
                   if (e.Action.Equals(CollectionChangeAction.Add) && e.Element is DataTable dt && dt.TableName.Equals(TableName))
                   {
                       Action action = null;
-                      action = new Action(() =>
+                      action = () =>
                       {
                           if (buttonFlowLayoutPanel.InvokeRequired) buttonFlowLayoutPanel.Invoke(action);
                           else if (!BindingSource.DataMember.Equals(TableName)) BindingSource.DataMember = TableName;
-                      });
+                      };
                       action();
                   }
               };
@@ -755,11 +752,52 @@ namespace SearchControls.Controls
             OnBtnFoundClick(he);
             if (he.Handled) return;
 
-            buttonFlowLayoutPanel.BtnFound.Enabled = false;
+            buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
+              {
+                  if (!b.Equals(buttonFlowLayoutPanel.BtnQuit)) b.Enabled = false;
+              });
+            //buttonFlowLayoutPanel.BtnDelete.Enabled = false;
+            //buttonFlowLayoutPanel.BtnInsert.Enabled = false;
+            //buttonFlowLayoutPanel.BtnFirst.Enabled = false;
+            //buttonFlowLayoutPanel.BtnLast.Enabled = false;
+            //buttonFlowLayoutPanel.BtnUp.Enabled = false;
+            //buttonFlowLayoutPanel.BtnDown.Enabled = false;
+            //buttonFlowLayoutPanel.BtnCancel.Enabled = false;
+            //buttonFlowLayoutPanel.BtnUpdate.Enabled = false;
+            //buttonFlowLayoutPanel.BtnExcel.Enabled = false;
+            //buttonFlowLayoutPanel.BtnWord.Enabled = false;
+            //buttonFlowLayoutPanel.BtnFound.Enabled = false;
+
+            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+            if (gridStatusStrip != null)
+            {
+                gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Marquee;
+                gridStatusStrip.ToolProgressBarStatus.Text = "正在查询";
+            }
 
             await FoundAsync();
 
-            buttonFlowLayoutPanel.BtnFound.Enabled = true;
+            if(gridStatusStrip != null)
+            {
+                gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Continuous;
+                gridStatusStrip.ToolProgressBarStatus.Text = "查询完成";
+            }
+
+            //buttonFlowLayoutPanel.BtnDelete.Enabled = true;
+            //buttonFlowLayoutPanel.BtnInsert.Enabled = true;
+            //buttonFlowLayoutPanel.BtnFirst.Enabled = true;
+            //buttonFlowLayoutPanel.BtnLast.Enabled = true;
+            //buttonFlowLayoutPanel.BtnUp.Enabled = true;
+            //buttonFlowLayoutPanel.BtnDown.Enabled = true;
+            //buttonFlowLayoutPanel.BtnCancel.Enabled = true;
+            //buttonFlowLayoutPanel.BtnUpdate.Enabled = true;
+            //buttonFlowLayoutPanel.BtnExcel.Enabled = true;
+            //buttonFlowLayoutPanel.BtnWord.Enabled = true;
+            //buttonFlowLayoutPanel.BtnFound.Enabled = true;
+            buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
+            {
+                if (!b.Equals(buttonFlowLayoutPanel.BtnQuit)) b.Enabled = true;
+            });
             DataSet.Tables[TableName].AcceptChanges();
 
             #endregion
@@ -772,7 +810,6 @@ namespace SearchControls.Controls
             #region "查找"按钮btnFound单击事件
 
             selectSqlDataAdapter.SelectCommand?.Cancel();
-            selectSqlDataAdapter.FillLoadOption = LoadOption.OverwriteChanges;
             selectSqlDataAdapter.Fill(DataSet, TableName);
 
             if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
@@ -780,13 +817,21 @@ namespace SearchControls.Controls
                 Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
             }
 
+            Action action = null;
+            action = () =>
+              {
+                  if (dataGridView.InvokeRequired) dataGridView.Invoke(action);
+                  else if (dataGridView.DataSource == null) dataGridView.DataSource = BindingSource;
+              };
+            action();
+
             #endregion
         }
         /// <summary>
         /// <see cref="Found()"/>的线程
         /// </summary>
         /// <returns>线程</returns>
-        public Task FoundAsync() => Task.Run(Found);
+        public Task FoundAsync() => Task.Factory.StartNew(Found, TaskCreationOptions.PreferFairness);
         /// <summary>
         /// 点击Excel按钮
         /// </summary>
@@ -798,9 +843,12 @@ namespace SearchControls.Controls
             OnBtnExcelClick(he);
             if (he.Handled) return;
 
+            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+
             if (buttonFlowLayoutPanel.BtnExcel.Text.Equals("取消"))
             {
                 buttonFlowLayoutPanel.BtnExcel.Text = "EXCEL";
+                if (gridStatusStrip != null) gridStatusStrip.ToolProgressBarStatus.Text = "已经取消转换";
                 return;
             }
 
@@ -817,23 +865,35 @@ namespace SearchControls.Controls
 
             buttonFlowLayoutPanel.BtnExcel.Text = "取消";
 
-            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
             if (gridStatusStrip != null)
             {
-                gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Excel";
                 gridStatusStrip.ToolProgressBarStatus.ForeColor = Color.Black;
-                gridStatusStrip.ToolStripProgressBar.Value = 0;
-                gridStatusStrip.ToolStripProgressBar.Maximum = BindingSource.Count;
+                if (gridStatusStrip.ToolProgressBarStatus.Text.Contains("正在转换"))
+                {
+                    gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Word和Excel";
+                    gridStatusStrip.ToolStripProgressBar.Maximum += BindingSource.Count;
+                }
+                else
+                {
+                    gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Excel";
+                    gridStatusStrip.ToolStripProgressBar.Value = 0;
+                    gridStatusStrip.ToolStripProgressBar.Maximum = BindingSource.Count;
+                }
             }
 
             try
             {
-                Export.Progress<ExcelProgressEventArgs> progress = new Export.Progress<ExcelProgressEventArgs>(buttonFlowLayoutPanel, epe =>
+                int rowindex = 0;
+                Export.Progress<ExcelProgressEventArgs> progress = new Export.Progress<ExcelProgressEventArgs>(epe =>
                 {
-                    if (gridStatusStrip != null)
+                    if (!rowindex.Equals(epe.RowIndex))
                     {
-                        if (!gridStatusStrip.ToolStripProgressBar.Value.Equals(epe.RowIndex)) gridStatusStrip.ToolStripProgressBar.Value++;
-                        if (buttonFlowLayoutPanel.BtnExcel.Text.Equals("EXCEL")) epe.CancellationTokenSource.Cancel();
+                        rowindex = epe.RowIndex;
+                        if (gridStatusStrip != null && !gridStatusStrip.IsDisposed) gridStatusStrip.Invoke(new Action(() => gridStatusStrip.ToolStripProgressBar.PerformStep()));
+                    }
+                    if (buttonFlowLayoutPanel.BtnExcel.Text.Equals("EXCEL"))
+                    {
+                        epe.CancellationTokenSource.Cancel();
                     }
                 });
 
@@ -843,7 +903,6 @@ namespace SearchControls.Controls
                 {
                     if (gridStatusStrip != null)
                     {
-                        gridStatusStrip.ToolStripProgressBar.Value = gridStatusStrip.ToolStripProgressBar.Maximum;
                         gridStatusStrip.ToolProgressBarStatus.Text = "转换Excel成功";
                         gridStatusStrip.ToolProgressBarStatus.ForeColor = Color.Black;
                     }
@@ -911,9 +970,12 @@ namespace SearchControls.Controls
             OnBtnWordClick(he);
             if (he.Handled) return;
 
+            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+
             if (buttonFlowLayoutPanel.BtnWord.Text.Equals("取消"))
             {
                 buttonFlowLayoutPanel.BtnWord.Text = "WORD";
+                if (gridStatusStrip != null) gridStatusStrip.ToolProgressBarStatus.Text = "已经取消转换";
                 return;
             }
 
@@ -930,23 +992,35 @@ namespace SearchControls.Controls
 
             buttonFlowLayoutPanel.BtnWord.Text = "取消";
 
-            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
             if (gridStatusStrip != null)
             {
-                gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Word";
                 gridStatusStrip.ToolProgressBarStatus.ForeColor = Color.Black;
-                gridStatusStrip.ToolStripProgressBar.Value = 0;
-                gridStatusStrip.ToolStripProgressBar.Maximum = BindingSource.Count;
+                if (gridStatusStrip.ToolProgressBarStatus.Text.Contains("正在转换"))
+                {
+                    gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Excel和Word";
+                    gridStatusStrip.ToolStripProgressBar.Maximum += BindingSource.Count;
+                }
+                else
+                {
+                    gridStatusStrip.ToolProgressBarStatus.Text = "正在转换Word";
+                    gridStatusStrip.ToolStripProgressBar.Value = 0;
+                    gridStatusStrip.ToolStripProgressBar.Maximum = BindingSource.Count;
+                }
             }
 
             try
             {
-                Export.Progress<WordProgressEventArgs> progress = new Export.Progress<WordProgressEventArgs>(buttonFlowLayoutPanel, epe =>
+                int rowindex = 0;
+                Export.Progress<WordProgressEventArgs> progress = new Export.Progress<WordProgressEventArgs>(epe =>
                 {
-                    if (gridStatusStrip != null)
+                    if (!rowindex.Equals(epe.RowIndex))
                     {
-                        if (!gridStatusStrip.ToolStripProgressBar.Value.Equals(epe.RowIndex)) gridStatusStrip.ToolStripProgressBar.Value++;
-                        if (buttonFlowLayoutPanel.BtnWord.Text.Equals("WORD")) epe.CancellationTokenSource.Cancel();
+                        rowindex = epe.RowIndex;
+                        if (gridStatusStrip != null && !gridStatusStrip.IsDisposed) gridStatusStrip.Invoke(new Action(() => gridStatusStrip.ToolStripProgressBar.PerformStep()));
+                    }
+                    if (buttonFlowLayoutPanel.BtnWord.Text.Equals("WORD"))
+                    {
+                        epe.CancellationTokenSource.Cancel();
                     }
                 });
 
@@ -956,7 +1030,6 @@ namespace SearchControls.Controls
                 {
                     if (gridStatusStrip != null)
                     {
-                        gridStatusStrip.ToolStripProgressBar.Value = gridStatusStrip.ToolStripProgressBar.Maximum;
                         gridStatusStrip.ToolProgressBarStatus.Text = "转换Word成功";
                         gridStatusStrip.ToolProgressBarStatus.ForeColor = Color.Black;
                     }
