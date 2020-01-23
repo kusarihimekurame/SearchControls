@@ -18,7 +18,7 @@ namespace SearchControls.Export
     /// 以NPOI为基础的类（为了将DataTable表格导入到新的Excel文件中）
     /// </summary>
     /// <example>
-    /// 利用示例
+    /// 利用示例(<see cref="ResetDefault"/>、<see cref="DataTableToExcelAsync(IProgress{ExcelProgressEventArgs})"/>、<see cref="SaveAs(string, bool)"/>)
     /// <code>
     /// Export.Progress&lt;ExcelProgressEventArgs&gt; progress = new Export.Progress&lt;ExcelProgressEventArgs&gt;(epe =>
     /// {
@@ -26,9 +26,9 @@ namespace SearchControls.Export
     /// });
     /// using (Excel excel = new Excel(DataView, 需要转换的列名数组, 需要显示的列名数组, 标题，页名))
     /// {
-    ///     excel.ResetDefault();
-    ///     await excel.DataTableToWordAsync(progress);
-    ///     excel.SaveAs(path, true);
+    ///     excel.ResetDefault(); 
+    ///     await excel.DataTableToExcelAsync(progress); 
+    ///     excel.SaveAs(path, true); 
     /// }
     /// </code>
     /// </example>
@@ -81,7 +81,7 @@ namespace SearchControls.Export
         /// 以NPOI为基础的类的构造函数（为了将DataTable表格导入到新的Excel文件中）
         /// </summary>
         /// <example>
-        /// 利用示例
+        /// 利用示例(<see cref="ResetDefault"/>、<see cref="DataTableToExcelAsync(IProgress{ExcelProgressEventArgs})"/>、<see cref="SaveAs(string, bool)"/>)
         /// <code>
         /// Export.Progress&lt;ExcelProgressEventArgs&gt; progress = new Export.Progress&lt;ExcelProgressEventArgs&gt;(epe =>
         /// {
@@ -89,9 +89,9 @@ namespace SearchControls.Export
         /// });
         /// using (Excel excel = new Excel(DataView, 需要转换的列名数组, 需要显示的列名数组, 标题，页名))
         /// {
-        ///     excel.ResetDefault();
-        ///     await excel.DataTableToWordAsync(progress);
-        ///     excel.SaveAs(path, true);
+        ///     excel.ResetDefault(); 
+        ///     await excel.DataTableToExcelAsync(progress); 
+        ///     excel.SaveAs(path, true); 
         /// }
         /// </code>
         /// </example>

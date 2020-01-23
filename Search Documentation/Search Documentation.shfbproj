@@ -56,24 +56,26 @@
     <ProjectSummary>模糊查找的控件类</ProjectSummary>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False">模糊查找的控件类</NamespaceSummaryItem>
-<NamespaceSummaryItem name="Search" isDocumented="False">模糊查找的控件类</NamespaceSummaryItem>
-<NamespaceSummaryItem name="PinYinConverter" isDocumented="True">中文转换为拼音
+      <NamespaceSummaryItem name="Search" isDocumented="False">模糊查找的控件类</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="PinYinConverter" isDocumented="True">中文转换为拼音
 为DataTable表添加拼音首字母列</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SearchControls" isDocumented="True">模糊查找的控件类</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SearchControls.Interface" isDocumented="True">模糊查找表的接口</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SearchControls.SearchGridForm" isDocumented="True">模糊查找表</NamespaceSummaryItem>
-<NamespaceSummaryItem name="SearchControls.Export" isDocumented="True">DataTable转换为Excel或Word的类</NamespaceSummaryItem></NamespaceSummaries>
+      <NamespaceSummaryItem name="SearchControls" isDocumented="True">模糊查找的控件类</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SearchControls.Interface" isDocumented="True">模糊查找表的接口</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SearchControls.SearchGridForm" isDocumented="True">模糊查找表</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="SearchControls.Export" isDocumented="True">DataTable转换为Excel或Word的类</NamespaceSummaryItem>
+    </NamespaceSummaries>
     <VisibleItems>Protected, SealedProtected, ProtectedInternalAsProtected</VisibleItems>
     <ComponentConfigurations>
       <ComponentConfig id="Reflection Index Data (ESENT Cache)" enabled="True" xmlns="">
         <component id="Reflection Index Data (ESENT Cache)">
           <index name="reflection" value="/reflection/apis/api" key="@id" cache="15" localCacheSize="2500" frameworkCachePath="{@LocalDataFolder}Cache\ReflectionIndexCache" projectCachePath="">
-	<data base="{@FrameworkReflectionDataFolder}" recurse="true" files="*.xml" duplicateWarning="false" groupId="ReflectionIndexCache">
+            <data base="{@FrameworkReflectionDataFolder}" recurse="true" files="*.xml" duplicateWarning="false" groupId="ReflectionIndexCache">
 		{@ReferenceLinkNamespaceFiles}
 	</data>
-	<data files="reflection.xml" groupId="Project_Ref_{@UniqueID}" />
-</index>
-<copy name="reflection" source="*" target="/document/reference" /></component>
+            <data files="reflection.xml" groupId="Project_Ref_{@UniqueID}" />
+          </index>
+          <copy name="reflection" source="*" target="/document/reference" />
+        </component>
       </ComponentConfig>
     </ComponentConfigurations>
   </PropertyGroup>

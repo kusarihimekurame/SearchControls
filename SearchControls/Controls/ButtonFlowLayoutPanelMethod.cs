@@ -75,12 +75,10 @@ namespace SearchControls
         public UpDownMethod DownMethod { get; set; } = UpDownMethod.Loop;
         private SqlDataAdapter selectSqlDataAdapter;
         /// <summary>
-        /// 查询用的<see cref="SqlDataAdapter"/>
+        /// <para>查询用的<see cref="SqlDataAdapter"/></para>
+        /// <para>MissingSchemaAction默认为<see cref="MissingSchemaAction"/>.AddWithKey(抓取主键)</para>
+        /// <para>FillLoadOption默认为<see cref="LoadOption"/>.OverwriteChanges</para>
         /// </summary>
-        /// <remarks>
-        /// <para><see cref="MissingSchemaAction"/>默认为MissingSchemaAction.AddWithKey(抓取主键)</para>
-        /// <para><see cref="LoadOption"/>FillLoadOption默认为LoadOption.OverwriteChanges</para>
-        /// </remarks>
         public SqlDataAdapter SelectSqlDataAdapter
         {
             get => selectSqlDataAdapter;
