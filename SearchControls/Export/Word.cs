@@ -129,7 +129,7 @@ namespace SearchControls.Export
         /// <returns>以Twip为单位的整数</returns>
         public static ulong CMToTwip(double CM) => Convert.ToUInt64(Math.Round(CM * 0.3937008 * 1440, 0));
 
-        private CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
         /// <summary>
         /// 以NPOI为基础的类的构造函数（为了将DataTable表格导入到新的Word文件中）
         /// </summary>

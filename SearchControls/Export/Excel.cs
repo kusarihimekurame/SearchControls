@@ -76,7 +76,7 @@ namespace SearchControls.Export
                 if (!string.IsNullOrEmpty(title)) Sheet.Header.Center = $"&16{title}";
             }
         }
-        private CancellationTokenSource cts = new CancellationTokenSource();
+        private readonly CancellationTokenSource cts = new CancellationTokenSource();
         /// <summary>
         /// 以NPOI为基础的类的构造函数（为了将DataTable表格导入到新的Excel文件中）
         /// </summary>

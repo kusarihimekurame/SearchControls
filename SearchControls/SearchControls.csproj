@@ -18,7 +18,7 @@ The control of fuzzy searching by table.
     <RepositoryUrl>https://github.com/kusarihimekurame/SearchControls</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <NeutralLanguage></NeutralLanguage>
+    <NeutralLanguage>zh</NeutralLanguage>
     <PackageId>SearchControls</PackageId>
     <Product>SearchControls</Product>
     <RootNamespace>SearchControls</RootNamespace>
@@ -27,9 +27,27 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.0.1</Version>
-    <PackageReleaseNotes>1.2.0.1
-修正错误的注释</PackageReleaseNotes>
+    <Version>1.2.0.3</Version>
+    <PackageReleaseNotes>1.2.0.3
+更新SqlClient至1.1.1
+
+1.2.0.2
+追加版本说明
+
+1.2.0.1
+修正错误的注释
+
+1.2
+追加:
+操控表格的按钮群(ButtonFlowLayoutPanel)、
+按钮群的按钮方法(ButtonFlowLayoutPanelMethod)、按钮方法的接口(IButtonFlowLayoutPanelMethod)
+状态栏(GridStatusStrip)、
+以NOPI为基础,将DataTable转换为Excel、Word(命名空间:Export)
+
+1.1
+模糊查找文本框控件(SearchTextBox)、
+模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
+    <PackageTags>Search Control</PackageTags>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
@@ -72,39 +90,9 @@ The control of fuzzy searching by table.
     </None>
   </ItemGroup>
     
-  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net45' AND '$(TargetFramework)' != 'net451' AND '$(TargetFramework)' != 'net452'">
     <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' == 'net461'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.0'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
-    </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.0</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
   </ItemGroup>
 

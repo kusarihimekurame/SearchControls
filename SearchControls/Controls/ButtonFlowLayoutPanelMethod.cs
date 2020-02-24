@@ -852,8 +852,10 @@ namespace SearchControls
 
             if (string.IsNullOrEmpty(FilePath))
             {
-                FolderBrowserDialog dialog = new FolderBrowserDialog();
-                dialog.Description = "请选择文件夹";
+                FolderBrowserDialog dialog = new FolderBrowserDialog
+                {
+                    Description = "请选择文件夹"
+                };
                 if (dialog.ShowDialog().Equals(DialogResult.OK))
                 {
                     FilePath = dialog.SelectedPath;
@@ -979,8 +981,10 @@ namespace SearchControls
 
             if (string.IsNullOrEmpty(FilePath))
             {
-                FolderBrowserDialog dialog = new FolderBrowserDialog();
-                dialog.Description = "请选择文件夹";
+                FolderBrowserDialog dialog = new FolderBrowserDialog
+                {
+                    Description = "请选择文件夹"
+                };
                 if (dialog.ShowDialog().Equals(DialogResult.OK))
                 {
                     FilePath = dialog.SelectedPath;
