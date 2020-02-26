@@ -767,7 +767,7 @@ namespace SearchControls
             //buttonFlowLayoutPanel.BtnFound.Enabled = false;
 
             GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
-            if (gridStatusStrip != null)
+            if (gridStatusStrip != null && !gridStatusStrip.IsDisposed)
             {
                 gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Marquee;
                 gridStatusStrip.ToolProgressBarStatus.Text = "正在查询";
@@ -775,7 +775,7 @@ namespace SearchControls
 
             await FoundAsync();
 
-            if(gridStatusStrip != null)
+            if(gridStatusStrip != null && !gridStatusStrip.IsDisposed)
             {
                 gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Continuous;
                 gridStatusStrip.ToolProgressBarStatus.Text = "查询完成";

@@ -450,13 +450,9 @@ namespace SearchControls.SearchGridForm
             }
         }
 
-        private bool isKeyInput = false;
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
             if (DataSource == null && RowCount.Equals(0) || (DataSource is DataSet && string.IsNullOrEmpty(DataMember)) || !DataText.IsTextChanged) return;
-
-            if (!isKeyInput) return;
-            else isKeyInput = false;
 
             DataTable dt = null;
             if (DataSource is DataTable _dt) dt = _dt;
@@ -869,7 +865,6 @@ namespace SearchControls.SearchGridForm
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-            isKeyInput = true;
             if (MultiSelect != null && MultiSelect.IsMultiSelect && e.KeyChar.Equals(' '))
             {
                 e.Handled = true;

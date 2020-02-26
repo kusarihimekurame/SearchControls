@@ -16,8 +16,8 @@ namespace Example
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new SearchTextBox());
-            Application.Run(new searchDataGridView());
+            Application.Run(new searchTextBox());
+            //Application.Run(new searchDataGridView());
         }
     }
 }

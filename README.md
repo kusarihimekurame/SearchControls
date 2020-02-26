@@ -8,6 +8,9 @@ The control of fuzzy searching by table.
 
 # Release Notes
 
+1.2.0.4
+修正bug
+
 1.2.0.3
 更新SqlClient至1.1.1
 
