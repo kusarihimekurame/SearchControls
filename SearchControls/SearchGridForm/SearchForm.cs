@@ -191,7 +191,7 @@ namespace SearchControls.SearchGridForm
             SearchGrid.IsEnter = true;
             if (!Visible)
             {
-                bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
+                //bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
                 Show((_grid as Control).TopLevelControl);
             }
         }

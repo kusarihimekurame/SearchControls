@@ -7,6 +7,8 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+1.2.0.5
+修正窗口不跟随文本框移动的bug
 
 1.2.0.4
 修正bug
