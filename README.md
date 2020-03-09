@@ -9,7 +9,8 @@ The control of fuzzy searching by table.
 # Release Notes
 
 1.2.0.7
-创建多音列方法CreateManyInitialsDataColumn添加多线程方案CreateManyInitialsDataColumnAsync
+给创建多音列的方法CreateManyInitialsDataColumn
+添加多线程方案CreateManyInitialsDataColumnAsync
 
 1.2.0.6
 按钮群添加IsEscQuit
