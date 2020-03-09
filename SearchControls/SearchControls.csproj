@@ -27,8 +27,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.0.5</Version>
-    <PackageReleaseNotes>1.2.0.5
+    <Version>1.2.0.6</Version>
+    <PackageReleaseNotes>1.2.0.6
+按钮群添加IsEscQuit
+按钮群方法添加查找和更新的错误事件
+
+1.2.0.5
 修正窗口不跟随文本框移动的bug
 
 1.2.0.4
@@ -54,6 +58,7 @@ The control of fuzzy searching by table.
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
+    <AssemblyVersion>1.2.0.6</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">

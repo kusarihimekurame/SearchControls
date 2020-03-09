@@ -227,9 +227,9 @@ namespace SearchControls
                         case Keys.S | Keys.Control:
                             if (buttonFlowLayoutPanel.BtnUpdate.Enabled) BtnUpdate_Click();
                             break;
-                        case Keys.Escape:
-                            if (buttonFlowLayoutPanel.BtnQuit.Enabled) BtnQuit_Click();
-                            break;
+                        //case Keys.Escape:
+                        //    if (buttonFlowLayoutPanel.BtnQuit.Enabled) BtnQuit_Click();
+                        //    break;
                     }
                 }
             };
@@ -289,11 +289,19 @@ namespace SearchControls
         /// </summary>
         public event HandledEventHandler BtnUpdateClick;
         /// <summary>
+        /// 当更新中出现错误时
+        /// </summary>
+        public event ErrorEventHandler ErrorUpdate;
+        /// <summary>
         /// <para>当查找按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
         public event HandledEventHandler BtnFoundClick;
+        /// <summary>
+        /// 当查找中出现错误时
+        /// </summary>
+        public event ErrorEventHandler ErrorFound;
         /// <summary>
         /// <para>当Excel按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
@@ -422,12 +430,54 @@ namespace SearchControls
         /// 查找按钮点击事件
         /// </summary>
         /// <param name="e">当e.Handle = true时为重写事件，添加事件时e.Handle默认为true。</param>
+        protected virtual void OnErrorUpdate(ErrorEventArgs e)
+        {
+            if (ErrorUpdate != null)
+            {
+                ErrorUpdate(this, e);
+            }
+            else
+            {
+                GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+                if (gridStatusStrip != null)
+                {
+                    gridStatusStrip.ToolUpdateStatus.Text = e.GetException().Message;
+                    gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Red;
+                }
+                else MessageBox.Show(e.GetException().Message);
+            }
+        }
+        /// <summary>
+        /// 查找按钮点击事件
+        /// </summary>
+        /// <param name="e">当e.Handle = true时为重写事件，添加事件时e.Handle默认为true。</param>
         protected virtual void OnBtnFoundClick(HandledEventArgs e)
         {
             if (BtnFoundClick != null)
             {
                 e.Handled = true;
                 BtnFoundClick(this, e);
+            }
+        }
+        /// <summary>
+        /// 当查找中出现错误时
+        /// </summary>
+        /// <param name="e">为 System.IO.FileSystemWatcher.Error 事件提供数据。</param>
+        protected virtual void OnErrorFound(ErrorEventArgs e)
+        {
+            if (ErrorFound != null)
+            {
+                ErrorFound(this, e);
+            }
+            else
+            {
+                GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+                if (gridStatusStrip != null)
+                {
+                    gridStatusStrip.ToolUpdateStatus.Text = e.GetException().Message;
+                    gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Red;
+                }
+                else MessageBox.Show(e.GetException().Message);
             }
         }
         /// <summary>
@@ -683,23 +733,21 @@ namespace SearchControls
             GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
 
             buttonFlowLayoutPanel.BtnUpdate.Enabled = false;
-            try
+
+            int val = SqlUpdate();
+            if (!val.Equals(0))
             {
-                int val = SqlUpdate();
                 if (gridStatusStrip != null)
                 {
                     gridStatusStrip.ToolUpdateStatus.Text = string.Format("更新成功，共计更新{0}条记录", val);
                     gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Black;
                 }
-            }
-            catch (Exception ex)
-            {
-                if (gridStatusStrip != null)
+                else
                 {
-                    gridStatusStrip.ToolUpdateStatus.Text = ex.Message;
-                    gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Red;
+                    MessageBox.Show(string.Format("更新成功，共计更新{0}条记录", val));
                 }
             }
+
             buttonFlowLayoutPanel.BtnUpdate.Enabled = true;
 
             #endregion
@@ -715,7 +763,8 @@ namespace SearchControls
             BindingSource.EndEdit();
             if (DataSet.Tables[TableName].GetChanges() == null)
             {
-                throw new Exception("没有更改任何记录，请更改后再按“提交”按钮");
+                OnErrorUpdate(new ErrorEventArgs(new Exception("没有更改任何记录，请更改后再按“提交”按钮")));
+                return 0;
             }
             else
             {
@@ -733,7 +782,8 @@ namespace SearchControls
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(string.Format("更新失败:{0}", ex.Message));
+                    OnErrorUpdate(new ErrorEventArgs(new Exception(string.Format("更新失败:{0}", ex.Message), ex)));
+                    return 0;
                 }
             }
 
@@ -808,20 +858,27 @@ namespace SearchControls
             #region "查找"按钮btnFound单击事件
 
             selectSqlDataAdapter.SelectCommand?.Cancel();
-            selectSqlDataAdapter.Fill(DataSet, TableName);
-
-            if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
+            try
             {
-                Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
-            }
+                selectSqlDataAdapter.Fill(DataSet, TableName);
 
-            Action action = null;
-            action = () =>
-              {
-                  if (dataGridView.InvokeRequired) dataGridView.Invoke(action);
-                  else if (dataGridView.DataSource == null) dataGridView.DataSource = BindingSource;
-              };
-            action();
+                if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
+                {
+                    Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
+                }
+
+                Action action = null;
+                action = () =>
+                  {
+                      if (dataGridView.InvokeRequired) dataGridView.Invoke(action);
+                      else if (dataGridView.DataSource == null) dataGridView.DataSource = BindingSource;
+                  };
+                action();
+            }
+            catch (Exception ex)
+            {
+                OnErrorFound(new ErrorEventArgs(ex));
+            }
 
             #endregion
         }

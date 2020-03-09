@@ -38,6 +38,31 @@ namespace SearchControls
     ]
     public partial class ButtonFlowLayoutPanel : FlowLayoutPanel
     {
+        private bool isEscQuit = true;
+        /// <summary>
+        /// 按Esc是否退出
+        /// </summary>
+        public bool IsEscQuit
+        {
+            get => isEscQuit;
+            set
+            {
+                isEscQuit = value;
+                if (TopLevelControl is Form f)
+                {
+                    if (value)
+                    {
+                        if (f.CancelButton == null || !f.CancelButton.Equals(BtnQuit))
+                            f.CancelButton = BtnQuit;
+                    }
+                    else
+                    {
+                        if (f.CancelButton != null && f.CancelButton.Equals(BtnQuit))
+                            f.CancelButton = null;
+                    }
+                }
+            }
+        }
         private Color buttonBackColor;
         /// <summary>
         /// 按钮的背景色。
@@ -234,6 +259,19 @@ namespace SearchControls
 
             buttons = new Button[Controls.Count];
             Controls.CopyTo(buttons, 0);
+        }
+
+        /// <summary>
+        /// 引发 System.Windows.Forms.Control.VisibleChanged 事件
+        /// </summary>
+        /// <param name="e">包含事件数据的 System.Windows.Forms.ControlEventArgs。</param>
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (IsEscQuit && TopLevelControl is Form f && (f.CancelButton == null || !f.CancelButton.Equals(BtnQuit)))
+            {
+                f.CancelButton = BtnQuit;
+            }
         }
 
         /// <summary>

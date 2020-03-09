@@ -583,7 +583,7 @@ namespace SearchControls.SearchGridForm
                 {
                     string _DisplayDataName = string.Empty;
                     TextBox tb = null;
-                    SubSearchTextBox sstb = SubSearchTextBoxes == null ? null : SubSearchTextBoxes.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
+                    SubSearchTextBox sstb = SubSearchTextBoxes?.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
                     if (DataText.TextBox.Focused)
                     {
                         tb = DataText.TextBox;

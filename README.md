@@ -7,6 +7,10 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+1.2.0.6
+按钮群添加IsEscQuit
+按钮群方法添加查找和更新的错误事件
+
 1.2.0.5
 修正窗口不跟随文本框移动的bug
 
