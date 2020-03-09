@@ -81,15 +81,18 @@ namespace PinYinConverter
         {
             DataColumn[] PinYinDataColumns = dataColumns.Select(dc => new DataColumn("PY_" + dc.ColumnName)).ToArray();
             dataTable.Columns.AddRange(PinYinDataColumns);
-            foreach (DataRow dr in dataTable.Rows)
+            try
             {
-                foreach (DataColumn pydc in PinYinDataColumns)
+                foreach (DataRow dr in dataTable.Rows)
                 {
-                    dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                    foreach (DataColumn pydc in PinYinDataColumns)
+                    {
+                        dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                    }
                 }
+                dataTable.AcceptChanges();
             }
-            dataTable.AcceptChanges();
-
+            catch { }
             dataTable.RowChanged += DataTable_RowChanged;
 
             void DataTable_RowChanged(object sender,DataRowChangeEventArgs e)

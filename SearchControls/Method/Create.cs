@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SearchControls
 {
@@ -19,12 +20,26 @@ namespace SearchControls
         /// <returns>拼音列</returns>
         public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, params DataColumn[] dataColumns) => PinYinConverter.PinYin.CreateManyInitialsDataColumn(dataTable, dataColumns);
         /// <summary>
+        /// 创建多音首字母列(多线程)
+        /// </summary>
+        /// <param name="dataTable">需要创建列的对应表单DataTable</param>
+        /// <param name="dataColumns">需要创建的对应列</param>
+        /// <returns>拼音列</returns>
+        public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params DataColumn[] dataColumns) => Task.Run(() => CreateManyInitialsDataColumn(dataTable, dataColumns));
+        /// <summary>
         /// 创建多音首字母列
         /// </summary>
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="columnNames">需要创建的对应列名</param>
         /// <returns>拼音列</returns>
         public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, params string[] columnNames) => PinYinConverter.PinYin.CreateManyInitialsDataColumn(dataTable, columnNames);
+        /// <summary>
+        /// 创建多音首字母列(多线程)
+        /// </summary>
+        /// <param name="dataTable">需要创建列的对应表单DataTable</param>
+        /// <param name="columnNames">需要创建的对应列名</param>
+        /// <returns>拼音列</returns>
+        public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params string[] columnNames) => Task.Run(() => CreateManyInitialsDataColumn(dataTable, columnNames));
 
         /// <summary>
         /// 根据列名进行模糊查找

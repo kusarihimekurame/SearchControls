@@ -7,6 +7,10 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+
+1.2.0.7
+创建多音列方法CreateManyInitialsDataColumn添加多线程方案CreateManyInitialsDataColumnAsync
+
 1.2.0.6
 按钮群添加IsEscQuit
 按钮群方法添加 查找和更新中发生错误时的事件
