@@ -79,8 +79,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SearchControls, Version=1.2.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SearchControls.1.2.0.4\lib\net48\SearchControls.dll</HintPath>
+    <Reference Include="SearchControls, Version=1.2.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SearchControls.1.2.0.8-alpha\lib\net48\SearchControls.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

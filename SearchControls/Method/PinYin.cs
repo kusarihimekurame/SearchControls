@@ -85,9 +85,12 @@ namespace PinYinConverter
             {
                 foreach (DataRow dr in dataTable.Rows)
                 {
-                    foreach (DataColumn pydc in PinYinDataColumns)
+                    lock (dr)
                     {
-                        dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                        foreach (DataColumn pydc in PinYinDataColumns)
+                        {
+                            dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                        }
                     }
                 }
                 dataTable.AcceptChanges();

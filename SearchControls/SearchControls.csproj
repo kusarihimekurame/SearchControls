@@ -27,7 +27,7 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.0.7</Version>
+    <Version>1.2.0.8-alpha</Version>
     <PackageReleaseNotes>1.2.0.7
 给创建多音列的方法CreateManyInitialsDataColumn
 添加多线程方案CreateManyInitialsDataColumnAsync
