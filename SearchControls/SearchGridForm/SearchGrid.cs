@@ -932,5 +932,25 @@ namespace SearchControls.SearchGridForm
                     break;
             }
         }
+
+        /// <summary>
+        /// <para>设置当前处于活动状态的单元格。</para>
+        /// <para>防止线程访问（线程中操作数据源DaTaTable时会触发）</para>
+        /// </summary>
+        /// <param name="columnIndex">包含单元格的列的索引。</param>
+        /// <param name="rowIndex">包含该单元格的行的索引。</param>
+        /// <param name="setAnchorCellAddress">如果将新的当前单元格用作使用 Shift 键选择的后续多个单元格的定位单元格，则为 true；否则为 false。</param>
+        /// <param name="validateCurrentCell">如果要验证旧的当前单元格中的值并在验证失败时取消更改，则为 true；否则为 false。</param>
+        /// <param name="throughMouseClick">如果当前的单元格是通过单击鼠标设置的，则为 true；否则为 false。</param>
+        /// <returns>如果当前单元格设置成功，则为 true；否则为 false。</returns>
+        protected override bool SetCurrentCellAddressCore(int columnIndex, int rowIndex, bool setAnchorCellAddress, bool validateCurrentCell, bool throughMouseClick)
+        {
+            if (InvokeRequired)
+            {
+                BeginInvoke(new MethodInvoker(() => SetCurrentCellAddressCore(columnIndex, rowIndex, setAnchorCellAddress, validateCurrentCell, throughMouseClick)));
+                return false;
+            }
+            else return base.SetCurrentCellAddressCore(columnIndex, rowIndex, setAnchorCellAddress, validateCurrentCell, throughMouseClick);
+        }
     }
 }

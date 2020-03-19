@@ -138,7 +138,7 @@ namespace SearchControls.SearchGridForm
                     return;
                 }
                 SearchGrid.ClearSelection();
-                SearchGrid.Rows[0].Selected = true;     // 选中网格第一行
+                SearchGrid.Rows[SearchGrid.FirstDisplayedCell.RowIndex].Selected = true;
             }
             else
             {
