@@ -138,7 +138,7 @@ namespace SearchControls.SearchGridForm
                     return;
                 }
                 SearchGrid.ClearSelection();
-                SearchGrid.Rows[SearchGrid.FirstDisplayedCell.RowIndex].Selected = true;
+                SearchGrid.Rows[SearchGrid.FirstDisplayedCell?.RowIndex ?? 0].Selected = true;
             }
             else
             {
