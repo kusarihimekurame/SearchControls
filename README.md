@@ -7,11 +7,14 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+1.2.0.10
+修复移动滚动条时出现异常的Bug
+
 1.2.0.9
-修复bug
+修复重新出现搜索框时没有出现焦点的bug
 
 1.2.0.8
-修复bug
+修复由线程造成的异常bug
 
 1.2.0.7
 给创建多音列的方法CreateManyInitialsDataColumn

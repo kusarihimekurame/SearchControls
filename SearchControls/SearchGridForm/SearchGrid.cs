@@ -173,7 +173,7 @@ namespace SearchControls.SearchGridForm
             base.OnScroll(e);
             if (e.ScrollOrientation.Equals(ScrollOrientation.VerticalScroll))
             {
-                int index = Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Selected).Index;
+                int index = Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr => dgvr.Selected)?.Index ?? 0;
                 if (index < FirstDisplayedScrollingRowIndex || index > FirstDisplayedScrollingRowIndex + DisplayedRowCount(false) - 1)
                 {
                     switch(e.Type)
