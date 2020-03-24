@@ -7,6 +7,9 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+1.2.0.11
+修复bug，处理DataError事件
+
 1.2.0.10
 修复移动滚动条时出现异常的Bug
 

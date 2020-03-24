@@ -639,7 +639,7 @@ namespace SearchControls.SearchGridForm
             #region 键盘事件
 
             int index = 0;
-            if (RowCount > 0) index = SelectedRows[0].Index;   // 获取选择的行数
+            if (RowCount > 0 && SelectedRows.Count > 0) index = SelectedRows[0].Index;   // 获取选择的行数
 
             switch (e.KeyCode)
             {
@@ -950,7 +950,29 @@ namespace SearchControls.SearchGridForm
                 BeginInvoke(new MethodInvoker(() => SetCurrentCellAddressCore(columnIndex, rowIndex, setAnchorCellAddress, validateCurrentCell, throughMouseClick)));
                 return false;
             }
-            else return base.SetCurrentCellAddressCore(columnIndex, rowIndex, setAnchorCellAddress, validateCurrentCell, throughMouseClick);
+            else
+            {
+                try
+                {
+                    return base.SetCurrentCellAddressCore(columnIndex, rowIndex, setAnchorCellAddress, validateCurrentCell, throughMouseClick);
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 引发 System.Windows.Forms.DataGridView.DataError 事件。
+        /// </summary>
+        /// <param name="displayErrorDialogIfNoHandler">如果要在没有 System.Windows.Forms.DataGridView.DataError 事件的处理程序的情况下显示错误对话框，则为 true。</param>
+        /// <param name="e">包含事件数据的 System.Windows.Forms.DataGridViewDataErrorEventArgs。</param>
+        protected override void OnDataError(bool displayErrorDialogIfNoHandler, DataGridViewDataErrorEventArgs e)
+        {
+            if (e.Exception.Message.Equals("给定关键字不在字典中。"))
+                displayErrorDialogIfNoHandler = false;
+            base.OnDataError(displayErrorDialogIfNoHandler, e);
         }
     }
 }
