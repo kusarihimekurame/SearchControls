@@ -47,27 +47,28 @@
             this.searchDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.searchDataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
             this.searchDataGridView1.IsAutoReset = false;
-            this.searchDataGridView1.Location = new System.Drawing.Point(188, 0);
+            this.searchDataGridView1.Location = new System.Drawing.Point(191, 0);
             this.searchDataGridView1.MultiSelect = false;
             this.searchDataGridView1.Name = "searchDataGridView1";
             this.searchDataGridView1.RowHeadersVisible = false;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.PowderBlue;
             this.searchDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.searchDataGridView1.RowTemplate.Height = 23;
-            this.searchDataGridView1.Size = new System.Drawing.Size(612, 450);
+            this.searchDataGridView1.Size = new System.Drawing.Size(404, 219);
             this.searchDataGridView1.TabIndex = 0;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(47, 393);
+            this.textBox1.Location = new System.Drawing.Point(50, 185);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(135, 21);
             this.textBox1.TabIndex = 1;
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 390);
+            this.label1.Location = new System.Drawing.Point(15, 182);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 24);
             this.label1.TabIndex = 2;
@@ -77,7 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(595, 219);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.searchDataGridView1);
