@@ -465,8 +465,8 @@ namespace SearchControls.SearchGridForm
 
                 if (string.IsNullOrEmpty(tb.Text))
                 {
-                    DataText.TextBox.Text = "";
                     if (SubSearchTextBoxes != null) SubSearchTextBoxes.ToList().ForEach(sstb => sstb.TextBox.Text = "");
+                    DataText.TextBox.Text = "";
                 }
 
                 string[] XZ_Texts = MultiSelect == null ? null : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);

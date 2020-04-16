@@ -34,6 +34,7 @@ namespace SearchControls.SearchGridForm
                         {
                             if (c.TopLevelControl != null)
                             {
+                                c.TopLevelControl.SizeChanged += (_sender, _e) => SetSearchGridLocation();
                                 c.TopLevelControl.Move += (_sender, _e) => SetSearchGridLocation();
                                 c.TopLevelControl.Enter += Hide_event;
                                 c.TopLevelControl.Click += Hide_event;
@@ -161,28 +162,18 @@ namespace SearchControls.SearchGridForm
             {
                 int Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;
 
-                if (bounds.IsEmpty)
-                {
-                    if (_grid.IsUp || _grid.Bounds.Y + _grid.Bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
-                    {
-                        Location = new Point(_grid.Bounds.X, _grid.Bounds.Y - Height);
-                    }
-                    else
-                    {
-                        Location = new Point(_grid.Bounds.X, _grid.Bounds.Y + _grid.Bounds.Height);
-                    }
-                }
-                else
-                {
-                    if (_grid.IsUp || bounds.Y + bounds.Height + Height > Screen.FromControl(this).Bounds.Height)
-                    {
-                        Location = new Point(bounds.X, bounds.Y - Height);
-                    }
-                    else
-                    {
-                        Location = new Point(bounds.X, bounds.Y + bounds.Height);
-                    }
-                }
+                int x, y;
+                Rectangle _bounds = bounds.IsEmpty ? _grid.Bounds : bounds;
+
+                y = _grid.IsUp || _bounds.Y + _bounds.Height + Height > Screen.FromControl(this).Bounds.Height
+                    ? _bounds.Y - Height
+                    : _bounds.Y + _bounds.Height;
+
+                x = _grid.IsLeft || _bounds.X + SearchGrid.Width > Screen.FromControl(this).Bounds.Width
+                    ? _bounds.X + _bounds.Width - SearchGrid.Width
+                    : _bounds.X;
+
+                Location = new Point(x, y);
             }
         }
 

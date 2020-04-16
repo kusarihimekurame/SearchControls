@@ -7,6 +7,11 @@ The control of fuzzy searching by table.
 利用表格进行模糊查找的控件。
 
 # Release Notes
+1.2.1  
+添加搜索框朝左的选项  
+升级NPOI至2.5.1  
+修复大小发生变化时，搜索框没有移动的问题
+
 1.2.0.11  
 修复bug，处理DataError事件
 

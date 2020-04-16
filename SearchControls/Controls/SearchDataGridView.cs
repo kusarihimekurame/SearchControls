@@ -34,6 +34,7 @@ namespace SearchControls
         string IDataText.DisplayDataName { get => _DisplayDataName; set => _DisplayDataName = value; }
 
         bool IGrid.IsUp { get; set; }
+        bool IGrid.IsLeft { get; set; }
         
         Rectangle IGrid.Bounds => CurrentCell.OwningColumn is DataGridViewSearchTextBoxColumn stbc ?
                                     stbc.IsMain ?

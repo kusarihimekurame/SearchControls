@@ -465,19 +465,27 @@ namespace SearchControls
         /// <param name="e">为 System.IO.FileSystemWatcher.Error 事件提供数据。</param>
         protected virtual void OnErrorFound(ErrorEventArgs e)
         {
-            if (ErrorFound != null)
+            if (dataGridView.InvokeRequired)
             {
-                ErrorFound(this, e);
+                Action<ErrorEventArgs> action = new Action<ErrorEventArgs>(OnErrorFound);
+                dataGridView.Invoke(action, e);
             }
             else
             {
-                GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
-                if (gridStatusStrip != null)
+                if (ErrorFound != null)
                 {
-                    gridStatusStrip.ToolUpdateStatus.Text = e.GetException().Message;
-                    gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Red;
+                    ErrorFound(this, e);
                 }
-                else MessageBox.Show(e.GetException().Message);
+                else
+                {
+                    GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+                    if (gridStatusStrip != null)
+                    {
+                        gridStatusStrip.ToolUpdateStatus.Text = e.GetException().Message;
+                        gridStatusStrip.ToolUpdateStatus.ForeColor = Color.Red;
+                    }
+                    else MessageBox.Show(e.GetException().Message);
+                }
             }
         }
         /// <summary>

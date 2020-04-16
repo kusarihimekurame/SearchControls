@@ -112,7 +112,7 @@ namespace SearchControls.Export
                     Header.GetParagraph(p).Alignment = ParagraphAlignment.CENTER;
                     CT_HdrFtrRef hdrFtrRef = Print.AddNewHeaderReference();
                     hdrFtrRef.type = ST_HdrFtr.@default;
-                    hdrFtrRef.id = Header.GetPackageRelationship().Id;
+                    hdrFtrRef.id = Header.GetXWPFDocument().GetRelationId(Header.Part);
 
                     TitleRun.SetText(title);
                 }

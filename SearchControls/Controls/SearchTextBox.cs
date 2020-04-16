@@ -168,6 +168,13 @@ namespace SearchControls
             Description("是否将表朝上")
         ]
         public bool IsUp { get; set; } = false;
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsLeft"]/*'/>
+        [
+            DefaultValue(false),
+            Category("Search"),
+            Description("是否将表朝左")
+        ]
+        public bool IsLeft { get; set; } = false;
         private string _DisplayDataName;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DisplayDataName"]/*'/>
         [
@@ -196,6 +203,10 @@ namespace SearchControls
             {
                 if (string.IsNullOrWhiteSpace(value)) _AutoInputDataName = DisplayDataName;
                 else _AutoInputDataName = value;
+                foreach (SubSearchTextBox sstb in SubSearchTextBoxes.Where(_sstb => string.IsNullOrEmpty(_sstb.AutoInputDataName)))
+                {
+                    sstb.AutoInputDataName = _AutoInputDataName;
+                }
             }
         }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsTextChanged"]/*'/>
@@ -361,6 +372,18 @@ namespace SearchControls
             InitializeComponent();
 
             SearchForm = new SearchForm(this);
+            SubSearchTextBoxes.CollectionChanged += (sender, e) =>
+              {
+                  switch (e.Action)
+                  {
+                      case CollectionChangeAction.Add:
+                          if (e.Element is SubSearchTextBox sstb && string.IsNullOrEmpty(sstb.AutoInputDataName))
+                          {
+                              sstb.AutoInputDataName = AutoInputDataName;
+                          }
+                          break;
+                  }
+              };
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>

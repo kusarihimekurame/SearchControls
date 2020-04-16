@@ -30,6 +30,13 @@ namespace SearchControls.Interface
             Description("是否将表朝上")
         ]
         bool IsUp { get; set; }
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsLeft"]/*'/>
+        [
+            DefaultValue(false),
+            Category("Search"),
+            Description("是否将表朝左")
+        ]
+        bool IsLeft { get; set; }
         /// <summary>
         /// 需要跟踪的控件的边框Rectangle
         /// </summary>

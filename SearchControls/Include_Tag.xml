@@ -142,6 +142,19 @@
       <para><c>IsUp</c>为false时，表在文本框的下面</para>
       </value>
     </Member>
+    <Member Name="IsLeft">
+      <summary>
+        是否将表朝左
+      </summary>
+      <value>
+        <para>
+          <c>IsLeft</c>为true 时，表在文本框的左边
+        </para>
+        <para>
+          <c>IsLeft</c>为false时，表在文本框的右边
+        </para>
+      </value>
+    </Member>
     <Member Name="DisplayDataName">
       <summary>
       需要在文本框中展示的对应的列名
