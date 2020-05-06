@@ -264,7 +264,6 @@ namespace SearchControls
                         if (IsMultiSelect)
                         {
                             SetMultSelectColumn(true);
-                            SearchGrid.Sort(SearchGrid.Columns[MultiSelectColumn.Name], ListSortDirection.Descending);
                         }
                     }
                 };
@@ -298,6 +297,11 @@ namespace SearchControls
                         else
                         {
                             _SearchGrid.DataMember = value;
+
+                            if (IsMultiSelect)
+                            {
+                                SetMultSelectColumn(true);
+                            }
                         }
                     };
                     action();
@@ -320,6 +324,7 @@ namespace SearchControls
                     {
                         DataColumn dc = new DataColumn("Select", typeof(bool)) { DefaultValue = false };
                         dt.Columns.Add(dc);
+                        SearchGrid.Sort(SearchGrid.Columns[MultiSelectColumn.Name], ListSortDirection.Descending);
                     }
                 }
                 else
@@ -335,6 +340,15 @@ namespace SearchControls
 
             }
         }
+
+        /// <summary>
+        /// 进入控件时发生。
+        /// </summary>
+        [
+            Category("焦点"),
+            Description("在控件成为该窗体的活动控件时发生。")
+        ]
+        public new event EventHandler Enter;
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="GridSelecting"]/*'/>
         [
@@ -384,6 +398,16 @@ namespace SearchControls
                           break;
                   }
               };
+        }
+
+        /// <summary>
+        /// 引发 System.Windows.Forms.Control.Enter 事件。
+        /// </summary>
+        /// <param name="e">包含事件数据的 System.EventArgs。</param>
+        protected override void OnEnter(EventArgs e)
+        {
+            Enter?.Invoke(this, e);
+            base.OnEnter(e);
         }
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>

@@ -153,7 +153,7 @@ namespace SearchControls
             // BtnFound
             // 
             this.BtnFound.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.BtnFound.Enabled = false;
+            this.BtnFound.Enabled = true;
             this.BtnFound.Location = new System.Drawing.Point(110, 70);
             this.BtnFound.Name = "BtnFound";
             this.BtnFound.TabIndex = 10;

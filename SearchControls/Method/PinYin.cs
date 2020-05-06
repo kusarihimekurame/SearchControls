@@ -23,7 +23,7 @@ namespace PinYinConverter
         /// <code>
         /// public static string[] GetInitials(string text) => string.IsNullOrEmpty(text) ? null :
         ///     new List&lt;ChineseChar&gt;(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
-        ///         Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin[0]).Distinct())
+        ///         Select(cc => cc.Pinyins.Take(cc.PinyinCount).Select(pinyin => pinyin[0]).Distinct())
         ///         .Aggregate((IEnumerable&lt;IEnumerable&lt;char&gt;&gt;)new IEnumerable&lt;char&gt;[] { Enumerable.Empty&lt;char&gt;() },
         ///         (accumulator, sequence) =>
         ///             from accseq in accumulator
@@ -34,7 +34,7 @@ namespace PinYinConverter
         /// </remarks>
         public static string[] GetInitials(string text) => string.IsNullOrEmpty(text) ? null :
             new List<ChineseChar>(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
-                Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin[0]).Distinct())
+                Select(cc => cc.Pinyins.Take(cc.PinyinCount).Select(pinyin => pinyin[0]).Distinct())
                 .Aggregate((IEnumerable<IEnumerable<char>>)new IEnumerable<char>[] { Enumerable.Empty<char>() },
                 (accumulator, sequence) =>
                     from accseq in accumulator
@@ -52,7 +52,7 @@ namespace PinYinConverter
         /// <code>
         /// public static string[] GetPinYin(string text) => string.IsNullOrEmpty(text) ? null :
         ///    new List&lt;ChineseChar&gt;(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
-        ///        Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin.Substring(0, pinyin.Length - 1)).Distinct())
+        ///        Select(cc => cc.Pinyins.Take(cc.PinyinCount).Select(pinyin => pinyin.Substring(0, pinyin.Length - 1)).Distinct())
         ///        .Aggregate((IEnumerable&lt;IEnumerable&lt;string&gt;&gt;)new IEnumerable&lt;string>[] { Enumerable.Empty&lt;string&gt;() },
         ///        (accumulator, sequence) =>
         ///            from accseq in accumulator
@@ -63,7 +63,7 @@ namespace PinYinConverter
         /// </remarks>
         public static string[] GetPinYin(string text) => string.IsNullOrEmpty(text) ? null :
             new List<ChineseChar>(text.Where(ch => Regex.IsMatch(ch.ToString(), @"[\u4e00-\u9fbb]")).Select(ch => new ChineseChar(ch))).
-                Select(cc => cc.Pinyins.Where(pinyin => !string.IsNullOrEmpty(pinyin)).Select(pinyin => pinyin.Substring(0, pinyin.Length - 1)).Distinct())
+                Select(cc => cc.Pinyins.Take(cc.PinyinCount).Select(pinyin => pinyin.Substring(0, pinyin.Length - 1)).Distinct())
                 .Aggregate((IEnumerable<IEnumerable<string>>)new IEnumerable<string>[] { Enumerable.Empty<string>() },
                 (accumulator, sequence) =>
                     from accseq in accumulator
@@ -98,11 +98,13 @@ namespace PinYinConverter
             catch { }
             dataTable.RowChanged += DataTable_RowChanged;
 
-            void DataTable_RowChanged(object sender,DataRowChangeEventArgs e)
+            void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
             {
                 dataTable.RowChanged -= DataTable_RowChanged;
                 switch (e.Action)
                 {
+                    case DataRowAction.ChangeOriginal:
+                    case DataRowAction.ChangeCurrentAndOriginal:
                     case DataRowAction.Change:
                     case DataRowAction.Add:
                         foreach (DataColumn pydc in PinYinDataColumns)

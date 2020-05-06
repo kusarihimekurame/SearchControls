@@ -186,53 +186,68 @@ namespace SearchControls
             if (isSetButtonFlowLayoutPanel) return;
             isSetButtonFlowLayoutPanel = true;
 
-            dataGridView.KeyDown += (sender, e) =>
+            //dataGridView.KeyDown += Shortcutkey_KeyDown;
+            if (dataGridView.TopLevelControl == null)
             {
-                if (sender is DataGridView dgv)
+                dataGridView.HandleCreated += (sender, e) =>
+                  {
+                      if (sender is DataGridView dgv && dgv.TopLevelControl != null) dgv.TopLevelControl.KeyDown += Shortcutkey_KeyDown;
+                  };
+            }
+            else dataGridView.TopLevelControl.KeyDown += Shortcutkey_KeyDown;
+        }
+
+        /// <summary>
+        /// 快捷键设定
+        /// </summary>
+        /// <param name="sender">事件源。</param>
+        /// <param name="e">包含事件数据的 System.Windows.Forms.KeyEventArgs。</param>
+        public virtual void Shortcutkey_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (sender is Control)
+            {
+                switch (e.KeyData)
                 {
-                    switch (e.KeyData)
-                    {
-                        case Keys.Insert | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnInsert.Enabled) BtnInsert_Click();
-                            break;
-                        case Keys.Delete | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnDelete.Enabled) BtnDelete_Click();
-                            break;
-                        case Keys.Home:
-                            if (buttonFlowLayoutPanel.BtnFirst.Enabled) BtnFirst_Click();
-                            break;
-                        case Keys.End:
-                            if (buttonFlowLayoutPanel.BtnLast.Enabled) BtnLast_Click();
-                            break;
-                        //case Keys.PageUp:
-                        //    e.Handled = true;
-                        //    if (buttonFlowLayoutPanel.BtnUp.Enabled) BtnUp_Click();
-                        //    break;
-                        //case Keys.PageDown:
-                        //    e.Handled = true;
-                        //    if (buttonFlowLayoutPanel.BtnDown.Enabled) BtnDown_Click();
-                        //    break;
-                        case Keys.F | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnFound.Enabled) BtnFound_Click();
-                            break;
-                        case Keys.W | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnWord.Enabled) BtnWord_Click();
-                            break;
-                        case Keys.E | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnExcel.Enabled) BtnExcel_Click();
-                            break;
-                        case Keys.R | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnCancel.Enabled) BtnCancel_Click();
-                            break;
-                        case Keys.S | Keys.Control:
-                            if (buttonFlowLayoutPanel.BtnUpdate.Enabled) BtnUpdate_Click();
-                            break;
+                    case Keys.Insert | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnInsert.Enabled) BtnInsert_Click();
+                        break;
+                    case Keys.Delete | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnDelete.Enabled) BtnDelete_Click();
+                        break;
+                    case Keys.Home:
+                        if (buttonFlowLayoutPanel.BtnFirst.Enabled) BtnFirst_Click();
+                        break;
+                    case Keys.End:
+                        if (buttonFlowLayoutPanel.BtnLast.Enabled) BtnLast_Click();
+                        break;
+                    //case Keys.PageUp:
+                    //    e.Handled = true;
+                    //    if (buttonFlowLayoutPanel.BtnUp.Enabled) BtnUp_Click();
+                    //    break;
+                    //case Keys.PageDown:
+                    //    e.Handled = true;
+                    //    if (buttonFlowLayoutPanel.BtnDown.Enabled) BtnDown_Click();
+                    //    break;
+                    case Keys.F | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnFound.Enabled) BtnFound_Click();
+                        break;
+                    case Keys.W | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnWord.Enabled) BtnWord_Click();
+                        break;
+                    case Keys.E | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnExcel.Enabled) BtnExcel_Click();
+                        break;
+                    case Keys.R | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnCancel.Enabled) BtnCancel_Click();
+                        break;
+                    case Keys.S | Keys.Control:
+                        if (buttonFlowLayoutPanel.BtnUpdate.Enabled) BtnUpdate_Click();
+                        break;
                         //case Keys.Escape:
                         //    if (buttonFlowLayoutPanel.BtnQuit.Enabled) BtnQuit_Click();
                         //    break;
-                    }
                 }
-            };
+            }
         }
 
         /// <summary>
@@ -797,6 +812,7 @@ namespace SearchControls
 
             #endregion
         }
+        bool isFounding = false;
         /// <summary>
         /// 点击查找按钮
         /// </summary>
@@ -810,19 +826,21 @@ namespace SearchControls
 
             buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
               {
-                  if (!b.Equals(buttonFlowLayoutPanel.BtnQuit)) b.Enabled = false;
+                  switch(b.Name)
+                  {
+                      case nameof(buttonFlowLayoutPanel.BtnQuit):
+                          break;
+                      //case nameof(buttonFlowLayoutPanel.BtnFound):
+                      //    if (b.Text.Equals("取消"))
+                      //        isFounding = true;
+                      //    else
+                      //        b.Text = "取消";
+                      //    break;
+                      default:
+                          b.Enabled = false;
+                          break;
+                  }
               });
-            //buttonFlowLayoutPanel.BtnDelete.Enabled = false;
-            //buttonFlowLayoutPanel.BtnInsert.Enabled = false;
-            //buttonFlowLayoutPanel.BtnFirst.Enabled = false;
-            //buttonFlowLayoutPanel.BtnLast.Enabled = false;
-            //buttonFlowLayoutPanel.BtnUp.Enabled = false;
-            //buttonFlowLayoutPanel.BtnDown.Enabled = false;
-            //buttonFlowLayoutPanel.BtnCancel.Enabled = false;
-            //buttonFlowLayoutPanel.BtnUpdate.Enabled = false;
-            //buttonFlowLayoutPanel.BtnExcel.Enabled = false;
-            //buttonFlowLayoutPanel.BtnWord.Enabled = false;
-            //buttonFlowLayoutPanel.BtnFound.Enabled = false;
 
             GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
             if (gridStatusStrip != null && !gridStatusStrip.IsDisposed)
@@ -839,20 +857,20 @@ namespace SearchControls
                 gridStatusStrip.ToolProgressBarStatus.Text = "查询完成";
             }
 
-            //buttonFlowLayoutPanel.BtnDelete.Enabled = true;
-            //buttonFlowLayoutPanel.BtnInsert.Enabled = true;
-            //buttonFlowLayoutPanel.BtnFirst.Enabled = true;
-            //buttonFlowLayoutPanel.BtnLast.Enabled = true;
-            //buttonFlowLayoutPanel.BtnUp.Enabled = true;
-            //buttonFlowLayoutPanel.BtnDown.Enabled = true;
-            //buttonFlowLayoutPanel.BtnCancel.Enabled = true;
-            //buttonFlowLayoutPanel.BtnUpdate.Enabled = true;
-            //buttonFlowLayoutPanel.BtnExcel.Enabled = true;
-            //buttonFlowLayoutPanel.BtnWord.Enabled = true;
-            //buttonFlowLayoutPanel.BtnFound.Enabled = true;
             buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
             {
-                if (!b.Equals(buttonFlowLayoutPanel.BtnQuit)) b.Enabled = true;
+                switch (b.Name)
+                {
+                    case nameof(buttonFlowLayoutPanel.BtnQuit):
+                        break;
+                    //case nameof(buttonFlowLayoutPanel.BtnFound):
+                    //    b.Text = "查找";
+                    //    isFounding = false;
+                    //    break;
+                    default:
+                        b.Enabled = true;
+                        break;
+                }
             });
             DataSet.Tables[TableName].AcceptChanges();
 
@@ -865,27 +883,38 @@ namespace SearchControls
         {
             #region "查找"按钮btnFound单击事件
 
-            selectSqlDataAdapter.SelectCommand?.Cancel();
-            try
+            if (isFounding)
             {
-                selectSqlDataAdapter.Fill(DataSet, TableName);
-
-                if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
-                {
-                    Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
-                }
-
-                Action action = null;
-                action = () =>
-                  {
-                      if (dataGridView.InvokeRequired) dataGridView.Invoke(action);
-                      else if (dataGridView.DataSource == null) dataGridView.DataSource = BindingSource;
-                  };
-                action();
+                selectSqlDataAdapter.SelectCommand?.Cancel();
             }
-            catch (Exception ex)
+            else
             {
-                OnErrorFound(new ErrorEventArgs(ex));
+                try
+                {
+                    //DataSet.Tables[tableName]?.Clear();
+                    selectSqlDataAdapter.Fill(DataSet, TableName);
+
+                    if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
+                    {
+                        Method.CreateManyInitialsDataColumn(DataSet.Tables[TableName], InitialsDataColumnNames);
+                    }
+
+                    Action action = null;
+                    action = () =>
+                      {
+                          if (dataGridView.InvokeRequired) dataGridView.Invoke(action);
+                          else if (dataGridView.DataSource == null) dataGridView.DataSource = BindingSource;
+                      };
+                    action();
+                }
+                catch (SqlException ex)
+                {
+                    OnErrorFound(new ErrorEventArgs(ex));
+                }
+                catch (Exception ex)
+                {
+                    OnErrorFound(new ErrorEventArgs(ex));
+                }
             }
 
             #endregion

@@ -435,7 +435,7 @@ namespace SearchControls.SearchGridForm
         {
             if (sender is TextBox tb)
             {
-                DataText.ReversalSearchState();
+                if (e != null) DataText.ReversalSearchState();
 
                 if (MultiSelect != null && tb.Text.Contains(MultiSelect.MultiSelectSplit))
                 {
@@ -492,7 +492,7 @@ namespace SearchControls.SearchGridForm
 
                 if (MultiSelect == null || !MultiSelect.IsMultiSelect)
                 {
-                    
+
                     Texts.ToList().ForEach(t =>
                     {
                         if (dt != null)
@@ -526,8 +526,7 @@ namespace SearchControls.SearchGridForm
                         Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc =>
                         {
                             if (!dgvc.Name.Equals(MultiSelect.MultiSelectColumn) && !dgvc.Name.Equals("NID") && (dgvc.ValueType == null || dgvc.ValueType.Equals(typeof(string))))
-                                cWHERE += 
-                                    "OR " + dgvc.Name + ".Contains(\"" + XZ_Texts[Index] + "\") "; //字段模糊查找
+                                cWHERE += "OR " + dgvc.Name + ".Contains(\"" + XZ_Texts[Index] + "\") "; //字段模糊查找
                         });
                     }
                 }
@@ -536,7 +535,7 @@ namespace SearchControls.SearchGridForm
                 {
                     if (dt != null)
                     {
-                        cWHERE = MultiSelect != null && MultiSelect.IsMultiSelect ? cWHERE + "OR Select = true" : cWHERE;
+                        cWHERE = MultiSelect != null && MultiSelect.IsMultiSelect ? cWHERE + (string.IsNullOrEmpty(cWHERE) ? string.Empty : "OR Select = true") : cWHERE;
                         DataView dv = base.DataSource is DataSet ? (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView : dt.DefaultView;
                         if (!dv.RowFilter.Equals(cWHERE)) dv.RowFilter = cWHERE;
                     }
@@ -557,9 +556,16 @@ namespace SearchControls.SearchGridForm
                     grid.ShowSearchGrid();  //显示并调整高宽
                 }
 
+                if (MultiSelect != null && MultiSelect.IsMultiSelect)
+                {
+                    Sort(MultiSelect.MultiSelectColumn, ListSortDirection.Descending);
+                    DataGridViewRow noSelectRow = Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr => !(bool)dgvr.Cells[MultiSelect.MultiSelectColumn.Name].Value);
+                    if (noSelectRow != null) CurrentCell = noSelectRow.Cells[0];
+                }
+
                 #endregion
 
-                if (e != null && DataText.IsAutoInput)
+                if (e != null && DataText.IsAutoInput && (MultiSelect == null || MultiSelect != null && !MultiSelect.IsMultiSelect))
                 {
                     if (RowCount.Equals(1) && !string.IsNullOrWhiteSpace(DataText.AutoInputDataName) && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase))
                         TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
@@ -582,7 +588,7 @@ namespace SearchControls.SearchGridForm
                 if (Columns[e.ColumnIndex].Name.Equals(MultiSelect.MultiSelectColumn.Name) && e.RowIndex >= 0 && !Convert.ToBoolean(Rows[e.RowIndex].Cells[e.ColumnIndex].Value))
                 {
                     string _DisplayDataName = string.Empty;
-                    TextBox tb = null;
+                    TextBox tb;
                     SubSearchTextBox sstb = SubSearchTextBoxes?.FirstOrDefault(_sstb => _sstb.TextBox.Focused);
                     if (DataText.TextBox.Focused)
                     {
@@ -593,6 +599,11 @@ namespace SearchControls.SearchGridForm
                     {
                         tb = sstb.TextBox;
                         _DisplayDataName = sstb.DisplayDataName;
+                    }
+                    else
+                    {
+                        tb = DataText.TextBox;
+                        _DisplayDataName = DataText.DisplayDataName;
                     }
 
                     if (string.IsNullOrEmpty(_DisplayDataName))
@@ -611,6 +622,7 @@ namespace SearchControls.SearchGridForm
                     tb.Select(tb.TextLength, 0);
                 }
             }
+            if (Columns[e.ColumnIndex].Name.Equals(MultiSelect.MultiSelectColumn.Name)) Sort(MultiSelect.MultiSelectColumn, ListSortDirection.Descending);
         }
 
         /// <summary>
@@ -685,29 +697,33 @@ namespace SearchControls.SearchGridForm
                         {
                             if (MultiSelect != null && MultiSelect.IsMultiSelect)
                             {
-                                if (Convert.ToBoolean(CurrentRow.Cells[MultiSelect.MultiSelectColumn.Name].Value))
+                                if (Rows.Cast<DataGridViewRow>().All(dgvr => !(bool)dgvr.Cells[MultiSelect.MultiSelectColumn.Name].Value))
                                 {
-                                    DataText.TextBox.Text = DataText.TextBox.Text.Substring(0, DataText.TextBox.Text.Length - 1);
-                                    SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
-                                    {
-                                        _sstb.TextBox.Text = _sstb.TextBox.Text.Substring(0, Text.Length - 1);
-                                    });
+                                    TextBox_KeyDown(sender, new KeyEventArgs(Keys.Space));
                                 }
-                                else
-                                {
-                                    if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
-                                    {
-                                        DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
-                                            ? DataText.TextBox.Text + this[DataText.DisplayDataName, index].Value.ToString().Trim()
-                                            : DataText.TextBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
-                                    }
-                                    SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
-                                    {
-                                        _sstb.TextBox.Text = Columns.Contains(_sstb.DisplayDataName)
-                                            ? _sstb.TextBox.Text + this[_sstb.DisplayDataName, index].Value.ToString().Trim()
-                                            : _sstb.TextBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)).Value.ToString().Trim();
-                                    });
-                                }
+                                //if (Convert.ToBoolean(CurrentRow.Cells[MultiSelect.MultiSelectColumn.Name].Value))
+                                //{
+                                //    DataText.TextBox.Text = DataText.TextBox.Text.Substring(0, DataText.TextBox.Text.Length - 1);
+                                //    SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
+                                //    {
+                                //        _sstb.TextBox.Text = _sstb.TextBox.Text.Substring(0, Text.Length - 1);
+                                //    });
+                                //}
+                                //else
+                                //{
+                                //    if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
+                                //    {
+                                //        DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
+                                //            ? DataText.TextBox.Text + this[DataText.DisplayDataName, index].Value.ToString().Trim()
+                                //            : DataText.TextBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
+                                //        SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
+                                //        {
+                                //            _sstb.TextBox.Text = Columns.Contains(_sstb.DisplayDataName)
+                                //                ? _sstb.TextBox.Text + this[_sstb.DisplayDataName, index].Value.ToString().Trim()
+                                //                : _sstb.TextBox.Text + Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)).Value.ToString().Trim();
+                                //        });
+                                //    }
+                                //}
                             }
                             else
                             {
@@ -750,11 +766,16 @@ namespace SearchControls.SearchGridForm
                     {
                         if (RowCount > 0)
                         {
+                            GridSelectingEventArgs row = new GridSelectingEventArgs(this, index, e);
+                            GridSelectedEventArgs rowed = new GridSelectedEventArgs(this, index, e);
+
                             DataText.TextBox.TextChanged -= TextBox_TextChanged;
                             SubSearchTextBoxes.ForEach(_sstb =>
                             {
                                 _sstb.TextBox.TextChanged -= TextBox_TextChanged;
                             });
+
+                            DataText.OnGridSelecting(row);
 
                             if (Convert.ToBoolean(Rows[index].Cells[MultiSelect.MultiSelectColumn.Name].Value))
                             {
@@ -762,47 +783,52 @@ namespace SearchControls.SearchGridForm
                                 if (DataSource is DataTable _dt) dv = _dt.DefaultView;
                                 else if (DataSource is DataView _dv) dv = _dv;
                                 else if (DataSource is DataSet _ds) dv = (BindingContext[base.DataSource, base.DataMember] as CurrencyManager).List as DataView;
-                                if ((dv == null && !(DataSource is BindingSource)) || string.IsNullOrEmpty(dv.Sort))
+
+                                if (!e.Handled)
                                 {
-                                    Rows[index].Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                }
-                                else
-                                {
-                                    if (string.IsNullOrEmpty(DataText.DisplayDataName))
+                                    if ((dv == null && !(DataSource is BindingSource)) || string.IsNullOrEmpty(dv.Sort))
                                     {
-                                        object displayData = Rows[index].Cells[1].Value;
-                                        if (DataSource is BindingSource bs)
-                                        {
-                                            string sort = bs.Sort;
-                                            bs.Sort = "";
-                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                            bs.Sort = sort;
-                                        }
-                                        else
-                                        {
-                                            string sort = dv.Sort;
-                                            dv.Sort = "";
-                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                            dv.Sort = sort;
-                                        }
+                                        Rows[index].Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
                                     }
                                     else
                                     {
-                                        object displayData = Columns.Contains(DataText.DisplayDataName) ? this[DataText.DisplayDataName, index].Value : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName));
-                                        if (DataSource is BindingSource bs)
+                                        if (string.IsNullOrEmpty(DataText.DisplayDataName))
                                         {
-                                            string sort = bs.Sort;
-                                            bs.Sort = "";
-                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                            bs.Sort = sort;
+                                            object displayData = Rows[index].Cells[1].Value;
+                                            if (DataSource is BindingSource bs)
+                                            {
+                                                string sort = bs.Sort;
+                                                bs.Sort = "";
+                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                                bs.Sort = sort;
+                                            }
+                                            else
+                                            {
+                                                string sort = dv.Sort;
+                                                dv.Sort = "";
+                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells[1].Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                                dv.Sort = sort;
+                                            }
                                         }
                                         else
                                         {
-                                            string sort = dv.Sort;
-                                            dv.Sort = "";
-                                            Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
-                                            dv.Sort = sort;
-                                        }                              }
+                                            object displayData = Columns.Contains(DataText.DisplayDataName) ? this[DataText.DisplayDataName, index].Value : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName));
+                                            if (DataSource is BindingSource bs)
+                                            {
+                                                string sort = bs.Sort;
+                                                bs.Sort = "";
+                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                                bs.Sort = sort;
+                                            }
+                                            else
+                                            {
+                                                string sort = dv.Sort;
+                                                dv.Sort = "";
+                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+                                                dv.Sort = sort;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             else
@@ -812,10 +838,6 @@ namespace SearchControls.SearchGridForm
                                 if (DataText.TextBox.Focused) tb = DataText.TextBox;
                                 else if (sstb != null) tb = sstb.TextBox;
 
-                                GridSelectingEventArgs row = new GridSelectingEventArgs(this, index, e);
-                                GridSelectedEventArgs rowed = new GridSelectedEventArgs(this, index, e);
-
-                                DataText.OnGridSelecting(row);
                                 if (!row.Handled)
                                 {
                                     TextBox_MouseDoubleClick(tb, null);
@@ -845,7 +867,6 @@ namespace SearchControls.SearchGridForm
                                     _sstb.TextBox.SelectionLength = 0;
                                     _sstb.TextBox.SelectionStart = _sstb.TextBox.TextLength;
                                 });
-                                DataText.OnGridSelected(rowed);
                             }
 
                             DataText.TextBox.TextChanged += TextBox_TextChanged;
@@ -854,7 +875,8 @@ namespace SearchControls.SearchGridForm
                                 _sstb.TextBox.TextChanged += TextBox_TextChanged;
                             });
 
-                            TextBox_TextChanged(this, null);
+                            TextBox_TextChanged(DataText.TextBox, null);
+                            DataText.OnGridSelected(rowed);
                         }
                     }
                     break;

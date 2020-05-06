@@ -27,8 +27,14 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.1</Version>
-    <PackageReleaseNotes>1.2.1
+    <Version>1.2.2</Version>
+    <PackageReleaseNotes>1.2.2
+SearchTextBox添加Enter事件:
+SearchTextBox.Enter在搜索表格出现之前触发,
+((TextBox)SearchTextBox).Enter在搜索表格出现之后触发。
+修复bug。
+
+1.2.1
 添加搜索框朝左的选项
 升级NPOI至2.5.1
 修复大小发生变化时，搜索框没有移动的问题
@@ -79,8 +85,8 @@ The control of fuzzy searching by table.
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <FileVersion>1.2.1.0</FileVersion>
+    <AssemblyVersion>1.2.2.0</AssemblyVersion>
+    <FileVersion>1.2.2.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
@@ -124,9 +130,7 @@ The control of fuzzy searching by table.
   </ItemGroup>
     
   <ItemGroup Condition="'$(TargetFramework)' != 'net45' AND '$(TargetFramework)' != 'net451' AND '$(TargetFramework)' != 'net452'">
-    <PackageReference Include="Microsoft.Data.SqlClient">
-      <Version>1.1.1</Version>
-    </PackageReference>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="1.1.2" />
   </ItemGroup>
 
 </Project>
