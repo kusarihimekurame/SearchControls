@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.3
+
+ButtonFlowLayoutPanelMethod添加FoundCompleted事件  
+修复bug
+
 ### 1.2.2
 
 SearchTextBox添加Enter事件:  

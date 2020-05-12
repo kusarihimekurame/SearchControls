@@ -88,14 +88,15 @@ namespace SearchControls
                      string text = SearchGrid.Columns.Contains(stbc.DisplayDataName)
                          ? SearchGrid[stbc.DisplayDataName, e.RowIndex].Value.ToString().Trim()
                          : e.CurrentRow.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(stbc.DisplayDataName)).Value.ToString().Trim();
-                     if (stbc.Equals(currentColumn))
-                     {
-                         if (!(EditingControl as TextBox).Text.Equals(text)) (EditingControl as TextBox).Text = text;
-                     }
-                     else
-                     {
-                         if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
-                     }
+                     //if (stbc.Equals(currentColumn))
+                     //{
+                     //    if (!(EditingControl as TextBox).Text.Equals(text)) (EditingControl as TextBox).Text = text;
+                     //}
+                     //else
+                     //{
+                     //    if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
+                     //}
+                     if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
                  });
             }
         }

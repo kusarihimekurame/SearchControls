@@ -314,6 +314,10 @@ namespace SearchControls
         /// </summary>
         public event HandledEventHandler BtnFoundClick;
         /// <summary>
+        /// 当查找完成时
+        /// </summary>
+        public event EventHandler FoundCompleted;
+        /// <summary>
         /// 当查找中出现错误时
         /// </summary>
         public event ErrorEventHandler ErrorFound;
@@ -473,6 +477,14 @@ namespace SearchControls
                 e.Handled = true;
                 BtnFoundClick(this, e);
             }
+        }
+        /// <summary>
+        /// 查找完成时的事件
+        /// </summary>
+        /// <param name="e">表示包含事件数据的类的基类，并提供用于不包含事件数据的事件的值。</param>
+        protected virtual void OnFoundCompleted(EventArgs e)
+        {
+            FoundCompleted?.Invoke(this, e);
         }
         /// <summary>
         /// 当查找中出现错误时
@@ -873,6 +885,8 @@ namespace SearchControls
                 }
             });
             DataSet.Tables[TableName].AcceptChanges();
+
+            OnFoundCompleted(new EventArgs());
 
             #endregion
         }
