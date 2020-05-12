@@ -31,6 +31,7 @@ The control of fuzzy searching by table.
     <PackageReleaseNotes>1.2.3
 ButtonFlowLayoutPanelMethod添加FoundCompleted事件
 修复bug
+
 1.2.2
 SearchTextBox添加Enter事件:
 SearchTextBox.Enter在搜索表格出现之前触发,
