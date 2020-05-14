@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.4
+
+ButtonFlowLayoutPanelMethod中重写BtnFoundClick的Handle处理方式，让BtnFoundClick事件专注于重写后台抓取，不用重写UI，UI会自动刷新。  
+修正Bug
+
 ### 1.2.3
 
 ButtonFlowLayoutPanelMethod添加FoundCompleted事件  

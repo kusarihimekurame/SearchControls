@@ -147,7 +147,7 @@ namespace SearchControls
                               {
                                   f.FormClosing += (f_sender, f_e) =>
                                   {
-                                      if (!DataGridView.Rows.Cast<DataGridViewRow>().Count(dgvr => !dgvr.IsNewRow).Equals(0) && DataSet.GetChanges() != null)
+                                      if (buttonFlowLayoutPanel.BtnUpdate.Enabled && !DataGridView.Rows.Cast<DataGridViewRow>().Count(dgvr => !dgvr.IsNewRow).Equals(0) && DataSet.GetChanges() != null)
                                       {
                                           DialogResult dr = MessageBox.Show("是否将更改提交到 数据库 中？", f.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                                           switch (dr)
@@ -834,7 +834,6 @@ namespace SearchControls
 
             HandledEventArgs he = new HandledEventArgs();
             OnBtnFoundClick(he);
-            if (he.Handled) return;
 
             buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
               {
@@ -861,7 +860,7 @@ namespace SearchControls
                 gridStatusStrip.ToolProgressBarStatus.Text = "正在查询";
             }
 
-            await FoundAsync();
+            if (!he.Handled) await FoundAsync();
 
             if(gridStatusStrip != null && !gridStatusStrip.IsDisposed)
             {
@@ -879,12 +878,15 @@ namespace SearchControls
                     //    b.Text = "查找";
                     //    isFounding = false;
                     //    break;
+                    case nameof(buttonFlowLayoutPanel.BtnUpdate):
+                        if (updateSqlDataAdapter != null) b.Enabled = true;
+                        break;
                     default:
                         b.Enabled = true;
                         break;
                 }
             });
-            DataSet.Tables[TableName].AcceptChanges();
+            DataSet.Tables[TableName]?.AcceptChanges();
 
             OnFoundCompleted(new EventArgs());
 
