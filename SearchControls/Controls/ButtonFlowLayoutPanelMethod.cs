@@ -879,7 +879,7 @@ namespace SearchControls
                     //    isFounding = false;
                     //    break;
                     case nameof(buttonFlowLayoutPanel.BtnUpdate):
-                        if (updateSqlDataAdapter != null) b.Enabled = true;
+                        if (UpdateSqlDataAdapter != null) b.Enabled = true;
                         break;
                     default:
                         b.Enabled = true;

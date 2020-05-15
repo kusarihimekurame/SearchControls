@@ -29,6 +29,7 @@ namespace SearchControls
                     if (dataGridView.DataSource is BindingSource bs)
                     {
                         bs.ListChanged += (sender, e) => DataRefresh();
+                        bs.CurrentItemChanged += (sender, e) => DataRefresh();
                     }
                     else
                     {

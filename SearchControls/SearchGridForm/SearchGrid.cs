@@ -729,12 +729,16 @@ namespace SearchControls.SearchGridForm
                             {
                                 if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                 {
+                                    if (!Columns.Contains(DataText.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName))) 
+                                        throw new Exception($"没有找到列名'{DataText.DisplayDataName}',请检查DisplayDataName属性的值是否正确。");
                                     DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
                                         ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
                                         : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
                                 }
                                 SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
                                 {
+                                    if (!Columns.Contains(_sstb.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)))
+                                        throw new Exception($"没有找到列名'{_sstb.DisplayDataName}',请检查子文本框的DisplayDataName属性的值是否正确。");
                                     _sstb.TextBox.Text = Columns.Contains(_sstb.DisplayDataName)
                                         ? this[_sstb.DisplayDataName, index].Value.ToString().Trim()
                                         : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)).Value.ToString().Trim();
