@@ -26,15 +26,32 @@ namespace SearchControls
                 dataGridView = value;
                 if (dataGridView != null)
                 {
-                    if (dataGridView.DataSource is BindingSource bs)
+                    if (dataGridView.DataSource == null)
                     {
-                        bs.ListChanged += (sender, e) => DataRefresh();
-                        bs.CurrentItemChanged += (sender, e) => DataRefresh();
+                        dataGridView.DataSourceChanged += (sender, e) =>
+                          {
+                              if (dataGridView.DataSource is BindingSource bs)
+                              {
+                                  bs.ListChanged += (sender1, e1) => DataRefresh();
+                              }
+                              else
+                              {
+                                  dataGridView.CellValueChanged += (sender1, e1) => DataRefresh();
+                                  dataGridView.Rows.CollectionChanged += (sender1, e1) => DataRefresh();
+                              }
+                          };
                     }
                     else
                     {
-                        dataGridView.CellValueChanged += (sender, e) => DataRefresh();
-                        dataGridView.Rows.CollectionChanged += (sender, e) => DataRefresh();
+                        if (dataGridView.DataSource is BindingSource bs)
+                        {
+                            bs.ListChanged += (sender, e) => DataRefresh();
+                        }
+                        else
+                        {
+                            dataGridView.CellValueChanged += (sender, e) => DataRefresh();
+                            dataGridView.Rows.CollectionChanged += (sender, e) => DataRefresh();
+                        }
                     }
                 }
             }
@@ -58,7 +75,6 @@ namespace SearchControls
             string dataMember;
             if (dataGridView.DataSource is BindingSource bs)
             {
-                bs.EndEdit();
                 ToolRecordCount.Text = string.Format("总记录数：{0}条", bs.Count);
                 dataSource = bs.DataSource;
                 dataMember = bs.DataMember;

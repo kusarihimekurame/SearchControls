@@ -24,6 +24,12 @@ namespace SearchControls
     /// <summary>
     /// 按钮群的方法
     /// </summary>
+    [
+        DisplayName("ButtonFlowLayoutPanelMethod"),
+        Description("按钮群的方法接口"),
+        DefaultEvent("FoundCompleted"),
+        ToolboxItem(true)
+    ]
     public partial class ButtonFlowLayoutPanelMethod : Component , IButtonFlowLayoutPanelMethod
     {
         private ButtonFlowLayoutPanel buttonFlowLayoutPanel;
@@ -42,18 +48,30 @@ namespace SearchControls
         /// <summary>
         /// 文件标题
         /// </summary>
+        [
+            Description("文件标题")
+        ]
         public string FileTitle { get; set; }
         /// <summary>
         /// 文件路径
         /// </summary>
+        [
+            Description("文件路径")
+        ]
         public string FilePath { get; set; }
         /// <summary>
         /// 需要转换为首字母拼音的列名
         /// </summary>
+        [
+            Description("需要转换为首字母拼音的列名")
+        ]
         public string[] InitialsDataColumnNames { get; set; } = new string[0];
         /// <summary>
         /// 向上向下的方式
         /// </summary>
+        [
+            Description("向上向下的方式")
+        ]
         public enum UpDownMethod 
         { 
             /// <summary>
@@ -68,10 +86,16 @@ namespace SearchControls
         /// <summary>
         /// 向上的方式
         /// </summary>
+        [
+            Description("向上的方式")
+        ]
         public UpDownMethod UpMethod { get; set; } = UpDownMethod.Loop;
         /// <summary>
         /// 向下的方式
         /// </summary>
+        [
+            Description("向下的方式")
+        ]
         public UpDownMethod DownMethod { get; set; } = UpDownMethod.Loop;
         private SqlDataAdapter selectSqlDataAdapter;
         /// <summary>
@@ -79,6 +103,9 @@ namespace SearchControls
         /// <para>MissingSchemaAction默认为<see cref="MissingSchemaAction"/>.AddWithKey(抓取主键)</para>
         /// <para>FillLoadOption默认为<see cref="LoadOption"/>.OverwriteChanges</para>
         /// </summary>
+        [
+            Description("查询用的SqlDataAdapter")
+        ]
         public SqlDataAdapter SelectSqlDataAdapter
         {
             get => selectSqlDataAdapter;
@@ -97,6 +124,9 @@ namespace SearchControls
         /// 更新用的<see cref="SqlDataAdapter"/>
         /// </summary>
         /// <remarks>默认与SelectSqlDataAdapter一致，当没有添加、删除、更新的语句时，会自动根据查询语句自动生成</remarks>
+        [
+            Description("更新用的SqlDataAdapter")
+        ]
         public SqlDataAdapter UpdateSqlDataAdapter
         {
             get => updateSqlDataAdapter ?? selectSqlDataAdapter;
@@ -105,11 +135,17 @@ namespace SearchControls
         /// <summary>
         /// 封装窗体的数据源<see cref="System.Windows.Forms.BindingSource"/>
         /// </summary>
+        [
+            Description("封装窗体的数据源BindingSource")
+        ]
         public BindingSource BindingSource { get; } = new BindingSource();
         private string tableName;
         /// <summary>
         /// 表名
         /// </summary>
+        [
+            Description("表名")
+        ]
         public string TableName
         {
             get => tableName;
@@ -122,11 +158,17 @@ namespace SearchControls
         /// <summary>
         /// 表示数据在内存中的缓存。
         /// </summary>
+        [
+            Description("表示数据在内存中的缓存。")
+        ]
         public DataSet DataSet { get; } = new DataSet();
         private DataGridView dataGridView;
         /// <summary>
         /// 需要控制的对应网格
         /// </summary>
+        [
+            Description("需要控制的对应网格")
+        ]
         public DataGridView DataGridView
         {
             get => dataGridView;
@@ -254,11 +296,17 @@ namespace SearchControls
         /// Export[0]:转换用的字段,
         /// Export[1]:对应的中文字段
         /// </summary>
+        [
+            Description("Export[0]:转换用的字段,\r\nExport[1]:对应的中文字段")
+        ]
         public string[][] ExcelExportColumns { get; } = new string[2][];
         /// <summary>
         /// Export[0]:转换用的字段,
         /// Export[1]:对应的中文字段
         /// </summary>
+        [
+            Description("Export[0]:转换用的字段,\r\nExport[1]:对应的中文字段")
+        ]
         public string[][] WordExportColumns { get; } = new string[2][];
 
         /// <summary>
@@ -266,100 +314,157 @@ namespace SearchControls
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当第一按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnFirstClick;
         /// <summary>
         /// <para>当向下按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当向下按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnDownClick;
         /// <summary>
         /// <para>当向上按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当向上按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnUpClick;
         /// <summary>
         /// <para>当最后按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当最后按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnLastClick;
         /// <summary>
         /// <para>当添加按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当添加按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnInsertClick;
         /// <summary>
         /// <para>当删除按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当删除按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnDeleteClick;
         /// <summary>
         /// <para>当提交按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当提交按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnUpdateClick;
         /// <summary>
         /// 当更新中出现错误时
         /// </summary>
+        [
+            Description("当更新中出现错误时")
+        ]
         public event ErrorEventHandler ErrorUpdate;
         /// <summary>
         /// <para>当查找按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当查找按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnFoundClick;
         /// <summary>
         /// 当查找完成时
         /// </summary>
+        [
+            Description("当查找完成时")
+        ]
         public event EventHandler FoundCompleted;
         /// <summary>
         /// 当查找中出现错误时
         /// </summary>
+        [
+            Description("当查找中出现错误时")
+        ]
         public event ErrorEventHandler ErrorFound;
         /// <summary>
         /// <para>当Excel按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当Excel按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnExcelClick;
         /// <summary>
         /// <para>当Word按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当Word按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnWordClick;
         /// <summary>
         /// <para>当撤销按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当撤销按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnCancelClick;
         /// <summary>
         /// <para>当退出按钮点击时</para>
         /// <para>当e.Handle = true时为重写事件</para>
         /// <para>添加事件时e.Handle默认为true</para>
         /// </summary>
+        [
+            Description("当退出按钮点击时\r\n当e.Handle = true时为重写事件\r\n添加事件时e.Handle默认为true")
+        ]
         public event HandledEventHandler BtnQuitClick;
         /// <summary>
         /// 当Excel初始化完成后发生
         /// </summary>
+        [
+            Description("当Excel初始化完成后发生")
+        ]
         public event ExcelInitiatedEventHandler ExcelInitiated;
         /// <summary>
         /// 当DataTable转换Excel完成后发生(不包括保存成文件)
         /// </summary>
+        [
+            Description("当DataTable转换Excel完成后发生(不包括保存成文件)")
+        ]
         public event ExcelCompletedEventHandler ExcelCompleted;
         /// <summary>
         /// 当Word初始化完成后发生
         /// </summary>
+        [
+            Description("当Word初始化完成后发生")
+        ]
         public event WordInitiatedEventHandler WordInitiated;
         /// <summary>
         /// 当DataTable转换Word完成后发生(不包括保存成文件)
         /// </summary>
+        [
+            Description("当DataTable转换Word完成后发生(不包括保存成文件)")
+        ]
         public event WordCompletedEventHandler WordCompleted;
         /// <summary>
         /// 第一按钮点击事件
@@ -811,7 +916,9 @@ namespace SearchControls
 
                     int val = UpdateSqlDataAdapter.Update(DataSet, TableName);
 
-                    DataSet.AcceptChanges();
+                    Found();
+
+                    DataSet.Tables[TableName].AcceptChanges();
 
                     return val;
                 }
@@ -824,6 +931,7 @@ namespace SearchControls
 
             #endregion
         }
+
         bool isFounding = false;
         /// <summary>
         /// 点击查找按钮
@@ -907,7 +1015,7 @@ namespace SearchControls
             {
                 try
                 {
-                    //DataSet.Tables[tableName]?.Clear();
+                    DataSet.Tables[tableName]?.Clear();
                     selectSqlDataAdapter.Fill(DataSet, TableName);
 
                     if (DataSet.Tables[TableName].Columns.Cast<DataColumn>().All(dc => !dc.ColumnName.Contains("PY_")))
@@ -1218,7 +1326,11 @@ namespace SearchControls
         /// <summary>
         /// 内存表中更改的内容全部撤销
         /// </summary>
-        public virtual void Cancel() => DataSet.Tables[TableName].RejectChanges();
+        public virtual void Cancel()
+        {
+            BindingSource.MoveFirst();
+            DataSet.Tables[TableName].RejectChanges();
+        }
         /// <summary>
         /// 点击退出按钮
         /// </summary>

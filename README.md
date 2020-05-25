@@ -8,6 +8,12 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.6  
+
+ButtonFlowLayoutPanelMethod撤销时，将焦点移到第一行  
+提交完成后，通过重新查询的方式刷新数据源，避免二次提交时发生错误  
+修正bug  
+
 ### 1.2.5  
 
 添加错误说明  

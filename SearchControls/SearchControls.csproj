@@ -27,8 +27,13 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.5</Version>
-    <PackageReleaseNotes>1.2.5
+    <Version>1.2.6</Version>
+    <PackageReleaseNotes>1.2.6
+ButtonFlowLayoutPanelMethod撤销时，将焦点移到第一行
+提交完成后，通过重新查询的方式刷新数据源，避免二次提交时发生错误
+修正bug
+
+1.2.5
 添加错误说明
 修正无法提交的bug
 
@@ -97,8 +102,8 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.5.0</AssemblyVersion>
-    <FileVersion>1.2.5.0</FileVersion>
+    <AssemblyVersion>1.2.6.0</AssemblyVersion>
+    <FileVersion>1.2.6.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
