@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NPOI.OpenXml4Net.OPC;
+using NPOI.SS.Formula.Functions;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
@@ -236,7 +237,6 @@ namespace SearchControls.Export
         /// DataTable的数据写入到Excel表中
         /// </summary>
         /// <param name="progress">进度条</param>
-        [DebuggerStepThrough]
         protected virtual void DataTableToExcel(IProgress<ExcelProgressEventArgs> progress = null)
         {
             if (DataTable == null) throw new Exception("表格DataTable不能为空");
@@ -262,11 +262,24 @@ namespace SearchControls.Export
                 foreach (DataColumn dc in DataTable.Columns)
                 {
                     XSSFCell newCell = newRow.CreateCell(dc.Ordinal) as XSSFCell;
-                    switch (dc.DataType.ToString())
+                    switch (dc.DataType.Name)
                     {
-                        case "System.DateTime":
-                            newCell.SetCellValue(DateTime.Parse(DataTable.Rows[i][dc].ToString()));
+                        case nameof(DateTime):
+                            newCell.SetCellValue((DateTime)DataTable.Rows[i][dc]);
                             newCell.CellStyle = DateStyle;
+                            break;
+                        case nameof(Decimal):
+                        case nameof(Single):
+                        case nameof(Int16):
+                        case nameof(Int32):
+                        case nameof(Int64):
+                        case nameof(UInt16):
+                        case nameof(UInt32):
+                        case nameof(UInt64):
+                            newCell.SetCellValue(Convert.ToDouble(DataTable.Rows[i][dc]));
+                            break;
+                        case nameof(Boolean):
+                            newCell.SetCellValue((bool)DataTable.Rows[i][dc]);
                             break;
                         default:
                             newCell.SetCellValue(DataTable.Rows[i][dc].ToString());

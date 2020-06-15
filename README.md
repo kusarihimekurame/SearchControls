@@ -8,6 +8,12 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.7  
+
+ButtonFlowLayoutPanelMethod添加IsUpdate(是否提交功能)  
+GridStatusStrip添加IsShowChanges(是否显示更改及提交信息)  
+Excel数据写入时添加数字型判断处理  
+
 ### 1.2.6  
 
 ButtonFlowLayoutPanelMethod撤销时，将焦点移到第一行  

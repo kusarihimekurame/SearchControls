@@ -14,10 +14,19 @@ namespace SearchControls
     /// </summary>
     public partial class GridStatusStrip : StatusStrip
     {
+        /// <summary>
+        /// 是否显示更改的信息
+        /// </summary>
+        [
+            DefaultValue(true),
+            Description("是否显示更改的信息")
+        ]
+        public bool IsShowChanges { get; set; } = true;
         private DataGridView dataGridView;
         /// <summary>
         /// 绑定网格，为了显示网格状态
         /// </summary>
+        [Description("绑定网格，为了显示网格状态")]
         public DataGridView DataGridView
         {
             get => dataGridView;
@@ -64,6 +73,10 @@ namespace SearchControls
         {
             InitializeComponent();
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+
+            ToolRecordCount.Text = "总记录数：0条";
+            ToolChangeRecordCount.Text = string.Empty;
+            ToolUpdateStatus.Text = string.Empty;
         }
 
         /// <summary>
@@ -91,16 +104,19 @@ namespace SearchControls
             else if (dataSource is DataTable _dt) dt = _dt;
             else if (dataSource is DataView dv) dt = dv.Table;
 
-            if (dt != null && dt.GetChanges() != null)
+            if (IsShowChanges)
             {
-                if (ToolUpdateStatus.ForeColor.Equals(Color.Red)) ToolUpdateStatus.ForeColor = Color.Black;
-                ToolChangeRecordCount.Text = dt.GetChanges() == null ? string.Empty : string.Format("更改的记录数：{0}条", dt.GetChanges().Rows.Count);
-                ToolUpdateStatus.Text = string.IsNullOrEmpty(ToolChangeRecordCount.Text) ? string.Empty : "未提交";
-            }
-            else
-            {
-                ToolChangeRecordCount.Text = "";
-                ToolUpdateStatus.Text = "";
+                if (dt != null && dt.GetChanges() != null)
+                {
+                    if (ToolUpdateStatus.ForeColor.Equals(Color.Red)) ToolUpdateStatus.ForeColor = Color.Black;
+                    ToolChangeRecordCount.Text = dt.GetChanges() == null ? string.Empty : string.Format("更改的记录数：{0}条", dt.GetChanges().Rows.Count);
+                    ToolUpdateStatus.Text = string.IsNullOrEmpty(ToolChangeRecordCount.Text) ? string.Empty : "未提交";
+                }
+                else
+                {
+                    ToolChangeRecordCount.Text = "";
+                    ToolUpdateStatus.Text = "";
+                }
             }
         }
     }

@@ -32,6 +32,14 @@ namespace SearchControls
     ]
     public partial class ButtonFlowLayoutPanelMethod : Component , IButtonFlowLayoutPanelMethod
     {
+        /// <summary>
+        /// 是否开启提交功能
+        /// </summary>
+        [
+            DefaultValue(true),
+            Description("是否开启提交功能")
+        ]
+        public bool IsUpdate { get; set; } = true;
         private ButtonFlowLayoutPanel buttonFlowLayoutPanel;
         ButtonFlowLayoutPanel IButtonFlowLayoutPanelMethod.ButtonFlowLayoutPanel 
         { 
@@ -189,7 +197,7 @@ namespace SearchControls
                               {
                                   f.FormClosing += (f_sender, f_e) =>
                                   {
-                                      if (buttonFlowLayoutPanel.BtnUpdate.Enabled && !DataGridView.Rows.Cast<DataGridViewRow>().Count(dgvr => !dgvr.IsNewRow).Equals(0) && DataSet.GetChanges() != null)
+                                      if (IsUpdate && !DataGridView.Rows.Cast<DataGridViewRow>().Count(dgvr => !dgvr.IsNewRow).Equals(0) && DataSet.GetChanges() != null)
                                       {
                                           DialogResult dr = MessageBox.Show("是否将更改提交到 数据库 中？", f.Text, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
                                           switch (dr)
@@ -943,58 +951,61 @@ namespace SearchControls
             HandledEventArgs he = new HandledEventArgs();
             OnBtnFoundClick(he);
 
-            buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
-              {
-                  switch(b.Name)
-                  {
-                      case nameof(buttonFlowLayoutPanel.BtnQuit):
-                          break;
-                      //case nameof(buttonFlowLayoutPanel.BtnFound):
-                      //    if (b.Text.Equals("取消"))
-                      //        isFounding = true;
-                      //    else
-                      //        b.Text = "取消";
-                      //    break;
-                      default:
-                          b.Enabled = false;
-                          break;
-                  }
-              });
-
-            GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
-            if (gridStatusStrip != null && !gridStatusStrip.IsDisposed)
+            if (!he.Handled)
             {
-                gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Marquee;
-                gridStatusStrip.ToolProgressBarStatus.Text = "正在查询";
-            }
-
-            if (!he.Handled) await FoundAsync();
-
-            if(gridStatusStrip != null && !gridStatusStrip.IsDisposed)
-            {
-                gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Continuous;
-                gridStatusStrip.ToolProgressBarStatus.Text = "查询完成";
-            }
-
-            buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
-            {
-                switch (b.Name)
+                buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
                 {
-                    case nameof(buttonFlowLayoutPanel.BtnQuit):
-                        break;
+                    switch (b.Name)
+                    {
+                        case nameof(buttonFlowLayoutPanel.BtnQuit):
+                            break;
+                        //case nameof(buttonFlowLayoutPanel.BtnFound):
+                        //    if (b.Text.Equals("取消"))
+                        //        isFounding = true;
+                        //    else
+                        //        b.Text = "取消";
+                        //    break;
+                        default:
+                            b.Enabled = false;
+                            break;
+                    }
+                });
+
+                GridStatusStrip gridStatusStrip = buttonFlowLayoutPanel.TopLevelControl.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance).FirstOrDefault(fieldInfo => fieldInfo.FieldType != null && fieldInfo.FieldType.Equals(typeof(GridStatusStrip)))?.GetValue(buttonFlowLayoutPanel.TopLevelControl) as GridStatusStrip;
+                if (gridStatusStrip != null && !gridStatusStrip.IsDisposed)
+                {
+                    gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Marquee;
+                    gridStatusStrip.ToolProgressBarStatus.Text = "正在查询";
+                }
+
+                await FoundAsync();
+
+                if (gridStatusStrip != null && !gridStatusStrip.IsDisposed)
+                {
+                    gridStatusStrip.ToolStripProgressBar.Style = ProgressBarStyle.Continuous;
+                    gridStatusStrip.ToolProgressBarStatus.Text = "查询完成";
+                }
+
+                buttonFlowLayoutPanel.Controls.Cast<Control>().Where(c => c is Button).ToList().ForEach(b =>
+                {
+                    switch (b.Name)
+                    {
+                        case nameof(buttonFlowLayoutPanel.BtnQuit):
+                            break;
                     //case nameof(buttonFlowLayoutPanel.BtnFound):
                     //    b.Text = "查找";
                     //    isFounding = false;
                     //    break;
                     case nameof(buttonFlowLayoutPanel.BtnUpdate):
-                        if (UpdateSqlDataAdapter != null) b.Enabled = true;
-                        break;
-                    default:
-                        b.Enabled = true;
-                        break;
-                }
-            });
-            DataSet.Tables[TableName]?.AcceptChanges();
+                            if (IsUpdate) b.Enabled = true;
+                            break;
+                        default:
+                            b.Enabled = true;
+                            break;
+                    }
+                });
+                DataSet.Tables[TableName]?.AcceptChanges();
+            }
 
             OnFoundCompleted(new EventArgs());
 
