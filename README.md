@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.8  
+
+修复搜索框有时候会不顶置Bug  
+
 ### 1.2.7  
 
 ButtonFlowLayoutPanelMethod添加IsUpdate(是否提交功能)  

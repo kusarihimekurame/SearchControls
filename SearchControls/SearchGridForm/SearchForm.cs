@@ -79,8 +79,23 @@ namespace SearchControls.SearchGridForm
         /// </summary>
         protected override bool ShowWithoutActivation => true;
 
+        private const int WS_EX_NOACTIVATE = 0x08000000;
         private const int WM_MOUSEACTIVATE = 0x21;
         private const int MA_NOACTIVATE = 3;
+
+        /// <summary>
+        /// 获取创建控件句柄时所需要的创建参数。
+        /// </summary>
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_NOACTIVATE;
+                return cp;
+            }
+        }
+
         /// <summary>
         /// 处理 Windows 消息。
         /// </summary>
@@ -184,6 +199,8 @@ namespace SearchControls.SearchGridForm
             {
                 //bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
                 Show((_grid as Control).TopLevelControl);
+                BringToFront();
+                (_grid as Control).TopLevelControl.Focus();
             }
         }
 

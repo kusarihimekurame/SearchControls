@@ -27,8 +27,11 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.7</Version>
-    <PackageReleaseNotes>1.2.7
+    <Version>1.2.8</Version>
+    <PackageReleaseNotes>1.2.8
+修复搜索框有时候会不顶置Bug
+
+1.2.7
 ButtonFlowLayoutPanelMethod添加IsUpdate(是否提交功能)
 GridStatusStrip添加IsShowChanges(是否显示更改及提交信息)
 Excel数据写入时添加数字型判断处理
@@ -107,8 +110,8 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.7.0</AssemblyVersion>
-    <FileVersion>1.2.7.0</FileVersion>
+    <AssemblyVersion>1.2.8.0</AssemblyVersion>
+    <FileVersion>1.2.8.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
