@@ -439,7 +439,14 @@ namespace SearchControls.SearchGridForm
 
                 if (MultiSelect != null && tb.Text.Contains(MultiSelect.MultiSelectSplit))
                 {
-                    string[] Texts = tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#if NET472 || NET48 || NETCOREAPP3_0 || NETCOREAPP3_1
+                    string[] Texts = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? tb.Text.Select(_t => _t.ToString()).Append(string.Empty).ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#else
+                    List<string> _text = tb.Text.Select(_t => _t.ToString()).ToList();
+                    _text.Add(string.Empty);
+                    string[] Texts = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? _text.ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#endif
+                    if (Texts.Length.Equals(0)) Texts = new string[] { string.Empty };
                     GetSelectedText(Texts, out int LocationStart, out int Index);
                     tb.Select(LocationStart, Texts[Index].Length);
                 }
@@ -469,10 +476,17 @@ namespace SearchControls.SearchGridForm
                     DataText.TextBox.Text = "";
                 }
 
-                string[] XZ_Texts = MultiSelect == null ? null : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#if NET472 || NET48 || NETCOREAPP3_0 || NETCOREAPP3_1
+                string[] XZ_Texts = MultiSelect == null ? null : string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? tb.Text.Select(_t => _t.ToString()).Append(string.Empty).ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#else
+                List<string> _text = tb.Text.Select(_t => _t.ToString()).ToList();
+                _text.Add(string.Empty);
+                string[] XZ_Texts = MultiSelect == null ? null : string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? _text.ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+#endif
+                if (XZ_Texts.Length.Equals(0)) XZ_Texts = new string[] { string.Empty };
                 string[] Texts = tb.Text.Split(new char[] { ' ' }, StringSplitOptions.None);
 
-                #region 多选框
+#region 多选框
 
                 if (MultiSelect != null && MultiSelect.IsMultiSelect)
                 {
@@ -482,9 +496,9 @@ namespace SearchControls.SearchGridForm
                     });
                 }
 
-                #endregion
+#endregion
 
-                #region 文本框的模糊查找      
+#region 文本框的模糊查找      
 
                 string cWHERE = "";
 
@@ -519,7 +533,7 @@ namespace SearchControls.SearchGridForm
 
                     if (dt != null)
                     {
-                        cWHERE = Method.CreateFilter(dt, XZ_Texts[Index]);
+                        cWHERE = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? Method.CreateFilter(dt, XZ_Texts[_SelectionStart]) : Method.CreateFilter(dt, XZ_Texts[Index]);
                     }
                     else
                     {
@@ -563,7 +577,7 @@ namespace SearchControls.SearchGridForm
                     if (noSelectRow != null) CurrentCell = noSelectRow.Cells[0];
                 }
 
-                #endregion
+#endregion
 
                 if (e != null && DataText.IsAutoInput && (MultiSelect == null || MultiSelect != null && !MultiSelect.IsMultiSelect))
                 {
@@ -608,7 +622,7 @@ namespace SearchControls.SearchGridForm
 
                     if (string.IsNullOrEmpty(_DisplayDataName))
                     {
-                        string[] Texts = tb.Text.Contains(MultiSelect.MultiSelectSplit) ? tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.RemoveEmptyEntries) : (new string[] { tb.Text.Trim() });
+                        string[] Texts = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? tb.Text.Select(_t => _t.ToString()).ToArray() : tb.Text.Contains(MultiSelect.MultiSelectSplit) ? tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.RemoveEmptyEntries) : (new string[] { tb.Text.Trim() });
                         DataRow dr = (Rows[e.RowIndex].DataBoundItem as DataRowView).Row;
                         string OldText = dr.ItemArray.Where(s => s is string).Cast<string>().SingleOrDefault(s => Texts.Count(t => t.Trim().Equals(s)).Equals(1) && !string.IsNullOrWhiteSpace(s)).Trim();
                         tb.Text = tb.Text.Replace(OldText + MultiSelect.MultiSelectSplit, "");
@@ -648,7 +662,7 @@ namespace SearchControls.SearchGridForm
         /// <param name="e">包含事件数据的 System.Windows.Forms.KeyEventArgs。</param>
         public void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            #region 键盘事件
+#region 键盘事件
 
             int index = 0;
             if (RowCount > 0 && SelectedRows.Count > 0) index = SelectedRows[0].Index;   // 获取选择的行数
@@ -859,13 +873,13 @@ namespace SearchControls.SearchGridForm
                                     });
                                 }
 
-                                if (!string.IsNullOrWhiteSpace(DataText.TextBox.Text) && !DataText.TextBox.Text[DataText.TextBox.TextLength - 1].Equals(MultiSelect.MultiSelectSplit[MultiSelect.MultiSelectSplit.Length - 1]))
+                                if (!string.IsNullOrWhiteSpace(DataText.TextBox.Text) && !string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) && !DataText.TextBox.Text[DataText.TextBox.TextLength - 1].Equals(MultiSelect.MultiSelectSplit[MultiSelect.MultiSelectSplit.Length - 1]))
                                 {
                                     DataText.TextBox.Text += MultiSelect.MultiSelectSplit;
                                     DataText.TextBox.SelectionLength = 0;
                                     DataText.TextBox.SelectionStart = DataText.TextBox.TextLength;
                                 }
-                                SubSearchTextBoxes.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.TextBox.Text) && !_sstb.TextBox.Text.Substring(_sstb.TextBox.TextLength - 1, 1).Equals(MultiSelect.MultiSelectSplit)).ToList().ForEach(_sstb =>
+                                SubSearchTextBoxes.Where(_sstb => !string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) && !string.IsNullOrWhiteSpace(_sstb.TextBox.Text) && !_sstb.TextBox.Text.Substring(_sstb.TextBox.TextLength - 1, 1).Equals(MultiSelect.MultiSelectSplit)).ToList().ForEach(_sstb =>
                                 {
                                     _sstb.TextBox.Text += MultiSelect.MultiSelectSplit;
                                     _sstb.TextBox.SelectionLength = 0;
@@ -886,7 +900,7 @@ namespace SearchControls.SearchGridForm
                     break;
             }
 
-            #endregion
+#endregion
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)

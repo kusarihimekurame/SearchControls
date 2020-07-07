@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.9  
+
+多选框中如果显示内容是单字符的时候，允许使用无分隔符的模式  
+升级SqlClient至2.0.0  
+
 ### 1.2.8  
 
 修复搜索框有时候会不顶置Bug  

@@ -49,7 +49,7 @@ namespace SearchControls
             {
                 if (value != null && !(value is DataGridViewSearchTextBoxCell))
                 {
-                    throw new InvalidCastException("所设置的类型与类型 System.Windows.Forms.DataGridViewSearchTextBoxCell 不兼容。");
+                    throw new InvalidCastException("所设置的类型与类型 SearchControls.DataGridViewSearchTextBoxCell 不兼容。");
                 }
                 base.CellTemplate = value;
             }
@@ -73,7 +73,7 @@ namespace SearchControls
             {
                 if (TextBoxCellTemplate == null)
                 {
-                    throw new InvalidOperationException("System.Windows.Forms.DataGridViewSearchTextBoxColumn.CellTemplate 属性的值为 null。");
+                    throw new InvalidOperationException("SearchControls.DataGridViewSearchTextBoxColumn.CellTemplate 属性的值为 null。");
                 }
                 return TextBoxCellTemplate.MaxInputLength;
             }
