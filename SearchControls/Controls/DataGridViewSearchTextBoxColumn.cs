@@ -89,8 +89,7 @@ namespace SearchControls
                         for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
                         {
                             DataGridViewRow dataGridViewRow = dataGridViewRows.SharedRow(rowIndex);
-                            DataGridViewSearchTextBoxCell dataGridViewCell = dataGridViewRow.Cells[Index] as DataGridViewSearchTextBoxCell;
-                            if (dataGridViewCell != null)
+                            if (dataGridViewRow.Cells[Index] is DataGridViewSearchTextBoxCell dataGridViewCell)
                             {
                                 dataGridViewCell.MaxInputLength = value;
                             }

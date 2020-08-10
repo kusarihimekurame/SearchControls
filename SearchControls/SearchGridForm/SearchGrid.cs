@@ -9,7 +9,7 @@ using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Drawing.Design;
 using System.Linq;
-using System.Linq.Dynamic;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -58,6 +58,18 @@ namespace SearchControls.SearchGridForm
                 base.ColumnHeadersVisible = value;
                 if (TopLevelControl != null)
                 {
+                    if (grid.IsUp)
+                    {
+                        if (value)
+                        {
+                            TopLevelControl.Location = new Point(TopLevelControl.Location.X, TopLevelControl.Location.Y - ColumnHeadersHeight);
+                        }
+                        else
+                        {
+                            TopLevelControl.Location = new Point(TopLevelControl.Location.X, TopLevelControl.Location.Y + ColumnHeadersHeight);
+                        }
+                    }
+
                     if (value)
                     {
                         TopLevelControl.Height += ColumnHeadersHeight;
@@ -559,7 +571,7 @@ namespace SearchControls.SearchGridForm
                     }
                     else if (_OriginSource is IEnumerable os)
                     {
-                        base.DataSource = os.Where(cWHERE.Substring(3));
+                        base.DataSource = os.AsQueryable().Where(cWHERE.Substring(3));
                     }
                 }
                 catch { }

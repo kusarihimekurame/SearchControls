@@ -27,8 +27,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.9</Version>
-    <PackageReleaseNotes>1.2.9
+    <Version>1.2.10</Version>
+    <PackageReleaseNotes>1.2.10
+修复搜索框朝上显示标题时错位bug
+将已弃用的System.Linq.Dynamic包替换成新的System.Linq.Dynamic.Core包
+
+1.2.9
 多选框中如果显示内容是单字符的时候，允许使用无分隔符的模式
 升级SqlClient至2.0.0
 
@@ -114,18 +118,16 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.9.0</AssemblyVersion>
-    <FileVersion>1.2.9.0</FileVersion>
+    <AssemblyVersion>1.2.10.0</AssemblyVersion>
+    <FileVersion>1.2.10.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
-    <PackageReference Include="wilx.System.Linq.Dynamic.Core" Version="2.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' AND '$(TargetFramework)' != 'netcoreapp3.1'">
     <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
-    <PackageReference Include="System.Linq.Dynamic" Version="1.0.7" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -150,6 +152,7 @@ SearchTextBox.Enter在搜索表格出现之前触发,
     
   <ItemGroup>
     <PackageReference Include="NPOI" Version="2.5.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.1" />
   </ItemGroup>
     
   <ItemGroup>

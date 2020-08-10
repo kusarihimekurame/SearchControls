@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.10
+
+修复搜索框朝上显示标题时错位bug  
+将已弃用的System.Linq.Dynamic包替换成新的System.Linq.Dynamic.Core包  
+
 ### 1.2.9  
 
 多选框中如果显示内容是单字符的时候，允许使用无分隔符的模式  
