@@ -27,8 +27,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.10</Version>
-    <PackageReleaseNotes>1.2.10
+    <Version>1.2.11</Version>
+    <PackageReleaseNotes>1.2.11
+添加TextChangedColumnNames字段，模糊查找可以根据这个字段中的列名进行选择性的查找
+模糊查找根据视图显示的列名以及拼音列进行查找
+
+1.2.10
 修复搜索框朝上显示标题时错位bug
 将已弃用的System.Linq.Dynamic包替换成新的System.Linq.Dynamic.Core包
 
@@ -118,8 +122,8 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.10.0</AssemblyVersion>
-    <FileVersion>1.2.10.0</FileVersion>
+    <AssemblyVersion>1.2.11.0</AssemblyVersion>
+    <FileVersion>1.2.11.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">

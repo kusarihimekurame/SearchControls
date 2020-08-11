@@ -28,6 +28,13 @@ namespace SearchControls.Interface
             Description("是否进行模糊查找")
         ]
         bool IsTextChanged { get; set; }
+        /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="TextChangedColumnNames"]/*'/>
+        [
+            DefaultValue(null),
+            Category("Search"),
+            Description("需要进行模糊查找的列名，为空时默认为全部的需要显示的列")
+        ]
+        string[] TextChangedColumnNames { get; set; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsAutoInput"]/*'/>
         [
             DefaultValue(true),

@@ -180,6 +180,11 @@
       <para><c>IsTextChanged</c>为<c>false</c>时，不会进行模糊查找</para>
       </value>
     </Member>
+    <Member Name="TextChangedColumnNames">
+      <summary>
+      需要进行模糊查找的列名，为空时默认为全部的需要显示的列
+      </summary>
+    </Member>
     <Member Name="IsAutoInput">
       <summary>
       是否当输入内容完全正确时，自动触发选择相应内容

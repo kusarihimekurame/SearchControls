@@ -25,7 +25,7 @@ namespace SearchControls.SearchGridForm
         private IGrid grid => ((SearchForm)TopLevelControl).Grid;
         private IDataText _IDataText;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IDataText"]/*'/>
-        internal IDataText DataText 
+        internal IDataText DataText
         {
             get => _IDataText;
             set
@@ -188,7 +188,7 @@ namespace SearchControls.SearchGridForm
                 int index = Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr => dgvr.Selected)?.Index ?? 0;
                 if (index < FirstDisplayedScrollingRowIndex || index > FirstDisplayedScrollingRowIndex + DisplayedRowCount(false) - 1)
                 {
-                    switch(e.Type)
+                    switch (e.Type)
                     {
                         case ScrollEventType.SmallIncrement:
                         case ScrollEventType.LargeIncrement:
@@ -395,7 +395,7 @@ namespace SearchControls.SearchGridForm
                         grid.ShowSearchGrid();
                     }
                 }
-                else if(DataSource is BindingSource bs)
+                else if (DataSource is BindingSource bs)
                 {
                     if (string.IsNullOrEmpty(bs.Filter))
                     {
@@ -498,7 +498,7 @@ namespace SearchControls.SearchGridForm
                 if (XZ_Texts.Length.Equals(0)) XZ_Texts = new string[] { string.Empty };
                 string[] Texts = tb.Text.Split(new char[] { ' ' }, StringSplitOptions.None);
 
-#region 多选框
+                #region 多选框
 
                 if (MultiSelect != null && MultiSelect.IsMultiSelect)
                 {
@@ -508,13 +508,18 @@ namespace SearchControls.SearchGridForm
                     });
                 }
 
-#endregion
+                #endregion
 
-#region 文本框的模糊查找      
+                #region 文本框的模糊查找      
 
                 string cWHERE = "";
 
                 TextBox_MouseClick(tb, null);
+
+                string[] displayColumnNames = DataText.TextChangedColumnNames != null && DataText.TextChangedColumnNames.Count() > 0
+                    ? DataText.TextChangedColumnNames
+                    : Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.DataPropertyName.Contains("PY_")).Select(dgvc => dgvc.DataPropertyName).
+                        Concat(dt?.Columns.Cast<DataColumn>().Where(dc => dc.ColumnName.Contains("PY_")).Select(dc => dc.ColumnName)).Distinct().ToArray();
 
                 if (MultiSelect == null || !MultiSelect.IsMultiSelect)
                 {
@@ -523,7 +528,7 @@ namespace SearchControls.SearchGridForm
                     {
                         if (dt != null)
                         {
-                            cWHERE = Method.CreateFilter(dt, tb.Text);
+                            cWHERE = Method.CreateFilter(dt, tb.Text, displayColumnNames);
                         }
                         else
                         {
@@ -545,7 +550,7 @@ namespace SearchControls.SearchGridForm
 
                     if (dt != null)
                     {
-                        cWHERE = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? Method.CreateFilter(dt, XZ_Texts[_SelectionStart]) : Method.CreateFilter(dt, XZ_Texts[Index]);
+                        cWHERE = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? Method.CreateFilter(dt, XZ_Texts[_SelectionStart], displayColumnNames) : Method.CreateFilter(dt, XZ_Texts[Index], displayColumnNames);
                     }
                     else
                     {
@@ -589,7 +594,7 @@ namespace SearchControls.SearchGridForm
                     if (noSelectRow != null) CurrentCell = noSelectRow.Cells[0];
                 }
 
-#endregion
+                #endregion
 
                 if (e != null && DataText.IsAutoInput && (MultiSelect == null || MultiSelect != null && !MultiSelect.IsMultiSelect))
                 {
@@ -674,7 +679,7 @@ namespace SearchControls.SearchGridForm
         /// <param name="e">包含事件数据的 System.Windows.Forms.KeyEventArgs。</param>
         public void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
-#region 键盘事件
+            #region 键盘事件
 
             int index = 0;
             if (RowCount > 0 && SelectedRows.Count > 0) index = SelectedRows[0].Index;   // 获取选择的行数
@@ -755,7 +760,7 @@ namespace SearchControls.SearchGridForm
                             {
                                 if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                 {
-                                    if (!Columns.Contains(DataText.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName))) 
+                                    if (!Columns.Contains(DataText.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)))
                                         throw new Exception($"没有找到列名'{DataText.DisplayDataName}',请检查DisplayDataName属性的值是否正确。");
                                     DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
                                         ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
@@ -912,7 +917,7 @@ namespace SearchControls.SearchGridForm
                     break;
             }
 
-#endregion
+            #endregion
         }
 
         private void TextBox_KeyPress(object sender, KeyPressEventArgs e)

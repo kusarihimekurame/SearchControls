@@ -8,7 +8,12 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
-### 1.2.10
+### 1.2.11  
+
+添加TextChangedColumnNames字段，模糊查找可以根据这个字段中的列名进行选择性的查找  
+模糊查找根据视图显示的列名以及拼音列进行查找  
+
+### 1.2.10  
 
 修复搜索框朝上显示标题时错位bug  
 将已弃用的System.Linq.Dynamic包替换成新的System.Linq.Dynamic.Core包  

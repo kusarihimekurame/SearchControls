@@ -26,6 +26,8 @@ namespace SearchControls
     {
         private bool _IsTextChanged;
         bool IDataText.IsTextChanged { get => _IsTextChanged; set => _IsTextChanged = value; }
+        private string[] _TextChangedColumnNames;
+        string[] IDataText.TextChangedColumnNames { get => _TextChangedColumnNames; set => _TextChangedColumnNames = value; }
         private bool _IsAutoInput;
         bool IDataText.IsAutoInput { get => _IsAutoInput; set => _IsAutoInput = value; }
         private string _AutoInputDataName;
@@ -203,6 +205,7 @@ namespace SearchControls
 
                 _IsAutoInput = stbc.IsAutoInput;
                 _IsTextChanged = stbc.IsTextChanged;
+                _TextChangedColumnNames = stbc.TextChangedColumnNames;
                 _DisplayRowCount = stbc.DisplayRowCount;
                 _AutoInputDataName = stbc.AutoInputDataName;
                 _DisplayDataName = stbc.DisplayDataName;
