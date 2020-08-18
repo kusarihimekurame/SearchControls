@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.12  
+
+为ButtonFlowLayoutPanel的IsEscQuit添加默认值以及分类说明属性  
+
 ### 1.2.11  
 
 添加TextChangedColumnNames字段，模糊查找可以根据这个字段中的列名进行选择性的查找  

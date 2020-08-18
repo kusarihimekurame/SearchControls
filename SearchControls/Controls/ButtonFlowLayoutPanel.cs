@@ -40,8 +40,13 @@ namespace SearchControls
     {
         private bool isEscQuit = true;
         /// <summary>
-        /// 按Esc是否退出
+        /// 是否将主页面Form的CancelButton设置为BtnQuit
         /// </summary>
+        [
+            DefaultValue(true),
+            Category("ButtonStyle"),
+            Description("是否将主页面Form的CancelButton设置为BtnQuit")
+        ]
         public bool IsEscQuit
         {
             get => isEscQuit;
