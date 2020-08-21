@@ -1,5 +1,6 @@
 ﻿using Microsoft.International.Converters.PinYinConverter;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -79,6 +80,7 @@ namespace PinYinConverter
         /// <returns>拼音列</returns>
         public static DataColumn[] CreateManyInitialsDataColumn(DataTable dataTable, DataColumn[] dataColumns)
         {
+            Hashtable hashtable = new Hashtable();
             DataColumn[] PinYinDataColumns = dataColumns.Select(dc => new DataColumn("PY_" + dc.ColumnName)).ToArray();
             dataTable.Columns.AddRange(PinYinDataColumns);
             try
@@ -89,7 +91,12 @@ namespace PinYinConverter
                     {
                         foreach (DataColumn pydc in PinYinDataColumns)
                         {
-                            dr.SetField(pydc, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                            string zw = dr.Field<string>(pydc.ColumnName.Substring(3));
+                            if (!hashtable.ContainsKey(zw))
+                            {
+                                hashtable.Add(zw, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                            }
+                            dr.SetField(pydc, hashtable[zw]);
                         }
                     }
                 }
@@ -109,8 +116,12 @@ namespace PinYinConverter
                     case DataRowAction.Add:
                         foreach (DataColumn pydc in PinYinDataColumns)
                         {
-                            string py = string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" });
-                            if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(py)) e.Row.SetField(pydc, py);
+                            string zw = e.Row.Field<string>(pydc.ColumnName.Substring(3));
+                            if (!hashtable.ContainsKey(zw))
+                            {
+                                hashtable.Add(zw, string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                            }
+                            if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(hashtable[zw])) e.Row.SetField(pydc, hashtable[zw]);
                         }
                         break;
                 }

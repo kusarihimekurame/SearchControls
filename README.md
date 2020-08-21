@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.13  
+
+给拼音转换添加哈希表，提高性能  
+
 ### 1.2.12  
 
 为ButtonFlowLayoutPanel的IsEscQuit添加默认值以及分类说明属性  
