@@ -27,8 +27,11 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.13</Version>
-    <PackageReleaseNotes>1.2.13
+    <Version>1.2.14</Version>
+    <PackageReleaseNotes>1.2.14
+textBox没有焦点时(对应通过代码输入的情况)，自动选择对应的项目
+
+1.2.13
 给拼音转换添加哈希表，提高性能
 
 1.2.12
@@ -128,8 +131,8 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.13.0</AssemblyVersion>
-    <FileVersion>1.2.13.0</FileVersion>
+    <AssemblyVersion>1.2.14.0</AssemblyVersion>
+    <FileVersion>1.2.14.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">

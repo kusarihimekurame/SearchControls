@@ -114,14 +114,17 @@ namespace PinYinConverter
                     case DataRowAction.ChangeCurrentAndOriginal:
                     case DataRowAction.Change:
                     case DataRowAction.Add:
-                        foreach (DataColumn pydc in PinYinDataColumns)
+                        lock (e.Row)
                         {
-                            string zw = e.Row.Field<string>(pydc.ColumnName.Substring(3));
-                            if (!hashtable.ContainsKey(zw))
+                            foreach (DataColumn pydc in PinYinDataColumns)
                             {
-                                hashtable.Add(zw, string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                string zw = e.Row.Field<string>(pydc.ColumnName.Substring(3));
+                                if (!hashtable.ContainsKey(zw))
+                                {
+                                    hashtable.Add(zw, string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                }
+                                if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(hashtable[zw])) e.Row.SetField(pydc, hashtable[zw]);
                             }
-                            if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(hashtable[zw])) e.Row.SetField(pydc, hashtable[zw]);
                         }
                         break;
                 }

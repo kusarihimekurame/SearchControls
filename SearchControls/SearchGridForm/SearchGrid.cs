@@ -598,6 +598,24 @@ namespace SearchControls.SearchGridForm
 
                 if (e != null && DataText.IsAutoInput && (MultiSelect == null || MultiSelect != null && !MultiSelect.IsMultiSelect))
                 {
+                    if(!string.IsNullOrWhiteSpace(DataText.AutoInputDataName))
+                    {
+                        if (RowCount.Equals(1) && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase))
+                        {
+                            TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
+                        }
+                        else if (!tb.Focused)
+                        {
+                            using (DataGridViewRow selectRow = Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase)))
+                            {
+                                if (selectRow != null)
+                                {
+                                    CurrentCell = selectRow.Cells[0];
+                                    TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
+                                }
+                            }
+                        }
+                    }
                     if (RowCount.Equals(1) && !string.IsNullOrWhiteSpace(DataText.AutoInputDataName) && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase))
                         TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
                 }
