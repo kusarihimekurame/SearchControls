@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 1.2.15  
+
+修复选择后反复填充的bug  
+
 ### 1.2.14  
 
 textBox没有焦点时(对应通过代码输入的情况)，自动选择对应的项目  

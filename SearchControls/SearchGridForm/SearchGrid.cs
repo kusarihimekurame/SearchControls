@@ -616,8 +616,6 @@ namespace SearchControls.SearchGridForm
                             }
                         }
                     }
-                    if (RowCount.Equals(1) && !string.IsNullOrWhiteSpace(DataText.AutoInputDataName) && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase))
-                        TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
                 }
 
                 isCellValueChanged = true;
