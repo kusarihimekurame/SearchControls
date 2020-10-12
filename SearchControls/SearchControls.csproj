@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netcoreapp3.1;netcoreapp3.0;net48;net472;net47;net461;net46;net452;net451;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.0;net45;net40</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
     <StartupObject />
@@ -27,8 +27,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>1.2.15</Version>
-    <PackageReleaseNotes>1.2.15
+    <Version>2.0.0</Version>
+    <PackageReleaseNotes>2.0.0
+删除与模糊查找无关的其他控件
+删除多余的框架，只保留net4.0, net4.5, netCore3.0
+
+1.2.15
 修复选择后反复填充的bug
 
 1.2.14
@@ -134,16 +138,20 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>1.2.15.0</AssemblyVersion>
-    <FileVersion>1.2.15.0</FileVersion>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'netcoreapp3.1'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'net45' ">
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' AND '$(TargetFramework)' != 'netcoreapp3.1'">
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
     <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' ">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -167,7 +175,6 @@ SearchTextBox.Enter在搜索表格出现之前触发,
   </ItemGroup>
     
   <ItemGroup>
-    <PackageReference Include="NPOI" Version="2.5.1" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
   </ItemGroup>
     
@@ -175,10 +182,6 @@ SearchTextBox.Enter在搜索表格出现之前触发,
     <None Update="Include_Tag.xml">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-    
-  <ItemGroup Condition="'$(TargetFramework)' != 'net45' AND '$(TargetFramework)' != 'net451' AND '$(TargetFramework)' != 'net452'">
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

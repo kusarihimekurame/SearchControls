@@ -25,7 +25,11 @@ namespace SearchControls
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="dataColumns">需要创建的对应列</param>
         /// <returns>拼音列</returns>
+#if NET40
+        public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params DataColumn[] dataColumns) => Task.Factory.StartNew(() => CreateManyInitialsDataColumn(dataTable, dataColumns));
+#else
         public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params DataColumn[] dataColumns) => Task.Run(() => CreateManyInitialsDataColumn(dataTable, dataColumns));
+#endif
         /// <summary>
         /// 创建多音首字母列
         /// </summary>
@@ -39,7 +43,11 @@ namespace SearchControls
         /// <param name="dataTable">需要创建列的对应表单DataTable</param>
         /// <param name="columnNames">需要创建的对应列名</param>
         /// <returns>拼音列</returns>
+#if NET40
+        public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params string[] columnNames) => Task.Factory.StartNew(() => CreateManyInitialsDataColumn(dataTable, columnNames));
+#else
         public static Task<DataColumn[]> CreateManyInitialsDataColumnAsync(DataTable dataTable, params string[] columnNames) => Task.Run(() => CreateManyInitialsDataColumn(dataTable, columnNames));
+#endif
 
         /// <summary>
         /// 根据列名进行模糊查找

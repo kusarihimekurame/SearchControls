@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 2.0.0  
+
+删除与模糊查找无关的其他控件  
+删除多余的框架，只保留net4.0, net4.5, netCore3.0  
+
 ### 1.2.15  
 
 修复选择后反复填充的bug  

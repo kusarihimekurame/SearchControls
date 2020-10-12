@@ -27,8 +27,8 @@
       <Argument Key="maxVersionParts" Value="" xmlns="" />
     </TransformComponentArguments>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\SearchControls\bin\Release\net48\SearchControls.dll" />
-      <DocumentationSource sourceFile="..\SearchControls\bin\Release\net48\SearchControls.xml" />
+      <DocumentationSource sourceFile="..\SearchControls\bin\Release\net45\SearchControls.dll" />
+      <DocumentationSource sourceFile="..\SearchControls\bin\Release\net45\SearchControls.xml" />
     </DocumentationSources>
     <HelpFileFormat>HtmlHelp1</HelpFileFormat>
     <SyntaxFilters>Standard</SyntaxFilters>

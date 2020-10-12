@@ -77,6 +77,6 @@
         /// <summary>
         /// 模糊查找的小表
         /// </summary>
-        internal SearchControls.SearchGridForm.SearchGrid SearchGrid;
+        public SearchControls.SearchGridForm.SearchGrid SearchGrid;
     }
 }

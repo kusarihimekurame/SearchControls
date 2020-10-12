@@ -84,22 +84,35 @@ namespace SearchControls
                 e.Handled = true;
 
                 DataGridViewSearchTextBoxColumn currentColumn = CurrentCell.OwningColumn as DataGridViewSearchTextBoxColumn;
-                DataGridViewSearchTextBoxColumn MainColumn = currentColumn.IsMain ? currentColumn : Columns.Cast<DataGridViewColumn>().First(dgvc => dgvc.Name.Equals(currentColumn.MainColumnName) || dgvc.DataPropertyName.Equals(currentColumn.MainColumnName)) as DataGridViewSearchTextBoxColumn;
-                Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc is DataGridViewSearchTextBoxColumn).Cast<DataGridViewSearchTextBoxColumn>().Where(stbc => !string.IsNullOrWhiteSpace(stbc.DisplayDataName) && (stbc.Equals(MainColumn) || !stbc.IsMain && (stbc.MainColumnName.Equals(MainColumn.Name) || stbc.MainColumnName.Equals(MainColumn.DataPropertyName)))).ToList().ForEach(stbc =>
-                 {
-                     string text = SearchGrid.Columns.Contains(stbc.DisplayDataName)
-                         ? SearchGrid[stbc.DisplayDataName, e.RowIndex].Value.ToString().Trim()
-                         : e.CurrentRow.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(stbc.DisplayDataName)).Value.ToString().Trim();
-                     //if (stbc.Equals(currentColumn))
-                     //{
-                     //    if (!(EditingControl as TextBox).Text.Equals(text)) (EditingControl as TextBox).Text = text;
-                     //}
-                     //else
-                     //{
-                     //    if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
-                     //}
-                     if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
-                 });
+                DataGridViewSearchTextBoxColumn MainColumn =
+                    currentColumn.IsMain
+                    ? currentColumn
+                    : Columns.Cast<DataGridViewColumn>().First(dgvc =>
+                        dgvc.Name.Equals(currentColumn.MainColumnName, StringComparison.OrdinalIgnoreCase)
+                        || dgvc.DataPropertyName.Equals(currentColumn.MainColumnName, StringComparison.OrdinalIgnoreCase)) as DataGridViewSearchTextBoxColumn;
+
+                Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc is DataGridViewSearchTextBoxColumn).Cast<DataGridViewSearchTextBoxColumn>()
+                    .Where(stbc =>
+                        !string.IsNullOrWhiteSpace(stbc.DisplayDataName)
+                        && (stbc.Equals(MainColumn)
+                            || !stbc.IsMain
+                            && (stbc.MainColumnName.Equals(MainColumn.Name, StringComparison.OrdinalIgnoreCase) || stbc.MainColumnName.Equals(MainColumn.DataPropertyName, StringComparison.OrdinalIgnoreCase))
+                        )
+                    ).ToList().ForEach(stbc =>
+                     {
+                         string text = SearchGrid.Columns.Contains(stbc.DisplayDataName)
+                             ? SearchGrid[stbc.DisplayDataName, e.RowIndex].Value.ToString().Trim()
+                             : e.CurrentRow.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(stbc.DisplayDataName, StringComparison.OrdinalIgnoreCase)).Value.ToString().Trim();
+                         if (stbc.Equals(currentColumn))
+                         {
+                             if (!(EditingControl as TextBox).Text.Equals(text)) (EditingControl as TextBox).Text = text;
+                         }
+                         else
+                         {
+                             if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
+                         }
+                         //if (!CurrentRow.Cells[stbc.Name].Value.Equals(text)) CurrentRow.Cells[stbc.Name].Value = text;
+                     });
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using SearchControls.SearchGridForm;
+﻿using SearchControls.Interface;
+using SearchControls.SearchGridForm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,9 +23,9 @@ namespace SearchControls
         public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
         {
             base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
-            if (DataGridView is SearchDataGridView sdgv && sdgv.SearchGrid is SearchGrid sg)
+            if (DataGridView is IGrid grid)
             {
-                sg.Add_TextBoxEvent();
+                grid.SearchForm.SearchGrid.Add_TextBoxEvent();
             }
         }
 
@@ -33,9 +34,9 @@ namespace SearchControls
         /// </summary>
         public override void DetachEditingControl()
         {
-            if (DataGridView is SearchDataGridView sdgv && sdgv.SearchGrid is SearchGrid sg)
+            if (DataGridView is IGrid grid)
             {
-                sg.Remove_TextBoxEvent();
+                grid.SearchForm.SearchGrid.Remove_TextBoxEvent();
             }
             base.DetachEditingControl();
         }

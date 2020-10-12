@@ -22,6 +22,7 @@ namespace SearchControls.SearchGridForm
     [ToolboxItem(false)]
     public partial class SearchGrid : DataGridView
     {
+        private string[] Key;
         private IGrid grid => ((SearchForm)TopLevelControl).Grid;
         private IDataText _IDataText;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IDataText"]/*'/>
@@ -94,10 +95,10 @@ namespace SearchControls.SearchGridForm
             get => base.DataMember;
             set
             {
-                if (AutoGenerateColumns)
-                {
-                    Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
-                }
+                //if (AutoGenerateColumns)
+                //{
+                //    Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
+                //}
                 base.DataMember = value;
             }
         }
@@ -125,10 +126,10 @@ namespace SearchControls.SearchGridForm
                     base.DataSource = value;
                 }
 
-                if (AutoGenerateColumns)
-                {
-                    Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
-                }
+                //if (AutoGenerateColumns)
+                //{
+                //    Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc => dgvc.Visible = false);
+                //}
             }
         }
 
@@ -160,7 +161,11 @@ namespace SearchControls.SearchGridForm
         public void Remove_TextBoxEvent()
         {
             PropertyInfo propertyInfo = typeof(Control).GetProperty("Events", BindingFlags.Instance | BindingFlags.NonPublic);
+#if NET40
+            EventHandlerList eventHandlerList = (EventHandlerList)propertyInfo.GetValue(DataText.TextBox, null);
+#else
             EventHandlerList eventHandlerList = (EventHandlerList)propertyInfo.GetValue(DataText.TextBox);
+#endif
             FieldInfo fieldInfo = typeof(Control).GetField("EventKeyDown", BindingFlags.Static | BindingFlags.NonPublic);
             Delegate d = eventHandlerList[fieldInfo.GetValue(null)];
             if (d != null)
@@ -261,9 +266,10 @@ namespace SearchControls.SearchGridForm
             HitTestInfo hti = HitTest(e.X, e.Y);
 
             DataGridViewCellMouseEventArgs dgvcme = null;
-            if (!hti.Type.Equals(DataGridViewHitTestType.None) &&
-                !hti.Type.Equals(DataGridViewHitTestType.HorizontalScrollBar) &&
-                !hti.Type.Equals(DataGridViewHitTestType.VerticalScrollBar))
+            if (!hti.Type.Equals(DataGridViewHitTestType.None)
+                && !hti.Type.Equals(DataGridViewHitTestType.HorizontalScrollBar)
+                && !hti.Type.Equals(DataGridViewHitTestType.VerticalScrollBar)
+            )
             {
                 int mouseX = e.X - hti.ColumnX;
                 dgvcme = new DataGridViewCellMouseEventArgs(hti.ColumnIndex, hti.RowIndex, mouseX, e.Y - hti.RowY, e);
@@ -471,12 +477,20 @@ namespace SearchControls.SearchGridForm
 
         private void TextBox_TextChanged(object sender, EventArgs e)
         {
-            if (DataSource == null && RowCount.Equals(0) || (DataSource is DataSet && string.IsNullOrEmpty(DataMember)) || !DataText.IsTextChanged) return;
+            if (DataSource == null && RowCount.Equals(0)
+                || (DataSource is DataSet && string.IsNullOrEmpty(DataMember))
+                || !DataText.IsTextChanged
+            ) return;
 
             DataTable dt = null;
             if (DataSource is DataTable _dt) dt = _dt;
             else if (DataSource is DataView _dv) dt = _dv.Table;
             else if (DataSource is DataSet _ds) dt = _ds.Tables[DataMember];
+
+            if (dt != null)
+            {
+                Key = dt.PrimaryKey.Select(key => key.ColumnName).ToArray();
+            }
 
             if (sender is TextBox tb)
             {
@@ -489,13 +503,17 @@ namespace SearchControls.SearchGridForm
                 }
 
 #if NET472 || NET48 || NETCOREAPP3_0 || NETCOREAPP3_1
-                string[] XZ_Texts = MultiSelect == null ? null : string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? tb.Text.Select(_t => _t.ToString()).Append(string.Empty).ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
+                string[] XZ_Texts = MultiSelect == null
+                    ? null
+                    : string.IsNullOrEmpty(MultiSelect.MultiSelectSplit)
+                        ? tb.Text.Select(_t => _t.ToString()).Append(string.Empty).ToArray()
+                        : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
 #else
                 List<string> _text = tb.Text.Select(_t => _t.ToString()).ToList();
                 _text.Add(string.Empty);
                 string[] XZ_Texts = MultiSelect == null ? null : string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? _text.ToArray() : tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.None);
 #endif
-                if (XZ_Texts.Length.Equals(0)) XZ_Texts = new string[] { string.Empty };
+                if (XZ_Texts == null || XZ_Texts.Length.Equals(0)) XZ_Texts = new string[] { string.Empty };
                 string[] Texts = tb.Text.Split(new char[] { ' ' }, StringSplitOptions.None);
 
                 #region 多选框
@@ -504,7 +522,10 @@ namespace SearchControls.SearchGridForm
                 {
                     Rows.Cast<DataGridViewRow>().ToList().ForEach(dgvr =>
                     {
-                        dgvr.Cells[MultiSelect.MultiSelectColumn.Name].Value = dgvr.Cells.Cast<DataGridViewCell>().Select(dgvc => dgvc.Value.ToString().Trim()).Any(v => XZ_Texts.Any(t => !string.IsNullOrWhiteSpace(t) && t.Equals(v)));
+                        dgvr.Cells[MultiSelect.MultiSelectColumn.Name].Value =
+                            dgvr.Cells.Cast<DataGridViewCell>()
+                            .Select(dgvc => dgvc.Value.ToString().Trim())
+                            .Any(v => XZ_Texts.Any(t => !string.IsNullOrWhiteSpace(t) && t.Equals(v)));
                     });
                 }
 
@@ -518,8 +539,11 @@ namespace SearchControls.SearchGridForm
 
                 string[] displayColumnNames = DataText.TextChangedColumnNames != null && DataText.TextChangedColumnNames.Count() > 0
                     ? DataText.TextChangedColumnNames
-                    : Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.DataPropertyName.Contains("PY_")).Select(dgvc => dgvc.DataPropertyName).
-                        Concat(dt?.Columns.Cast<DataColumn>().Where(dc => dc.ColumnName.Contains("PY_")).Select(dc => dc.ColumnName)).Distinct().ToArray();
+                    : Columns.Cast<DataGridViewColumn>()
+                        .Where(dgvc => dgvc.Visible || dgvc.DataPropertyName.Contains("PY_"))
+                        .Select(dgvc => dgvc.DataPropertyName)
+                        .Concat(dt?.Columns.Cast<DataColumn>().Where(dc => dc.ColumnName.Contains("PY_")).Select(dc => dc.ColumnName))
+                        .Distinct().ToArray();
 
                 if (MultiSelect == null || !MultiSelect.IsMultiSelect)
                 {
@@ -533,12 +557,14 @@ namespace SearchControls.SearchGridForm
                         else
                         {
                             string _cWHERE = "";
-                            Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc =>
+                            Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.DataPropertyName.Contains("PY_")).ToList().ForEach(dgvc =>
                             {
-                                if (!dgvc.DataPropertyName.Equals("NID") && (dgvc.ValueType == null || dgvc.ValueType.Equals(typeof(string))))
+                                if (!Key.Any(key => key.Equals(dgvc.DataPropertyName, StringComparison.OrdinalIgnoreCase))
+                                    && (dgvc.ValueType == null || dgvc.ValueType.Equals(typeof(string)))
+                                )
                                     _cWHERE +=
                                       //"OR " + dgvc.DataPropertyName + ".IndexOf(\"" + t + "\", @0) >= 0 " :
-                                      "OR " + dgvc.Name + ".Contains(\"" + t + "\") "; //字段模糊查找
+                                      "OR " + dgvc.DataPropertyName + ".Contains(\"" + t + "\") "; //字段模糊查找
                             });
                             cWHERE += string.IsNullOrEmpty(_cWHERE) ? string.Empty : "AND (" + _cWHERE.Substring(3) + ") ";
                         }
@@ -556,8 +582,11 @@ namespace SearchControls.SearchGridForm
                     {
                         Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc.Visible || dgvc.Name.Contains("PY_")).ToList().ForEach(dgvc =>
                         {
-                            if (!dgvc.Name.Equals(MultiSelect.MultiSelectColumn) && !dgvc.Name.Equals("NID") && (dgvc.ValueType == null || dgvc.ValueType.Equals(typeof(string))))
-                                cWHERE += "OR " + dgvc.Name + ".Contains(\"" + XZ_Texts[Index] + "\") "; //字段模糊查找
+                            if (!dgvc.DataPropertyName.Equals(MultiSelect.MultiSelectColumn.DataPropertyName, StringComparison.OrdinalIgnoreCase)
+                                && !Key.Any(key => key.Equals(dgvc.DataPropertyName, StringComparison.OrdinalIgnoreCase))
+                                && (dgvc.ValueType == null || dgvc.ValueType.Equals(typeof(string)))
+                            )
+                                cWHERE += "OR " + dgvc.DataPropertyName + ".Contains(\"" + XZ_Texts[Index] + "\") "; //字段模糊查找
                         });
                     }
                 }
@@ -598,15 +627,25 @@ namespace SearchControls.SearchGridForm
 
                 if (e != null && DataText.IsAutoInput && (MultiSelect == null || MultiSelect != null && !MultiSelect.IsMultiSelect))
                 {
-                    if(!string.IsNullOrWhiteSpace(DataText.AutoInputDataName))
+                    if (!string.IsNullOrWhiteSpace(DataText.AutoInputDataName))
                     {
-                        if (RowCount.Equals(1) && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase))
+                        if (RowCount.Equals(1)
+                            && Rows[0].Cells.Cast<DataGridViewCell>().First(dgvc =>
+                                   dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName, StringComparison.OrdinalIgnoreCase)
+                                   || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName, StringComparison.OrdinalIgnoreCase)
+                               ).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase)
+                        )
                         {
                             TextBox_KeyDown(this, new KeyEventArgs(Keys.Enter));
                         }
                         else if (!tb.Focused)
                         {
-                            using (DataGridViewRow selectRow = Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName)).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase)))
+                            using (DataGridViewRow selectRow =
+                                Rows.Cast<DataGridViewRow>().FirstOrDefault(dgvr =>
+                                    dgvr.Cells.Cast<DataGridViewCell>().First(dgvc =>
+                                        dgvc.OwningColumn.Name.Equals(DataText.AutoInputDataName, StringComparison.OrdinalIgnoreCase)
+                                        || dgvc.OwningColumn.DataPropertyName.Equals(DataText.AutoInputDataName, StringComparison.OrdinalIgnoreCase)
+                                    ).Value.ToString().Equals(tb.Text, StringComparison.OrdinalIgnoreCase)))
                             {
                                 if (selectRow != null)
                                 {
@@ -655,7 +694,13 @@ namespace SearchControls.SearchGridForm
 
                     if (string.IsNullOrEmpty(_DisplayDataName))
                     {
-                        string[] Texts = string.IsNullOrEmpty(MultiSelect.MultiSelectSplit) ? tb.Text.Select(_t => _t.ToString()).ToArray() : tb.Text.Contains(MultiSelect.MultiSelectSplit) ? tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.RemoveEmptyEntries) : (new string[] { tb.Text.Trim() });
+                        string[] Texts =
+                            string.IsNullOrEmpty(MultiSelect.MultiSelectSplit)
+                            ? tb.Text.Select(_t => _t.ToString()).ToArray()
+                            : tb.Text.Contains(MultiSelect.MultiSelectSplit)
+                                ? tb.Text.Split(new string[] { MultiSelect.MultiSelectSplit }, StringSplitOptions.RemoveEmptyEntries)
+                                : (new string[] { tb.Text.Trim() });
+
                         DataRow dr = (Rows[e.RowIndex].DataBoundItem as DataRowView).Row;
                         string OldText = dr.ItemArray.Where(s => s is string).Cast<string>().SingleOrDefault(s => Texts.Count(t => t.Trim().Equals(s)).Equals(1) && !string.IsNullOrWhiteSpace(s)).Trim();
                         tb.Text = tb.Text.Replace(OldText + MultiSelect.MultiSelectSplit, "");
@@ -664,7 +709,9 @@ namespace SearchControls.SearchGridForm
                     {
                         tb.Text = Columns.Contains(DataText.DisplayDataName)
                             ? tb.Text.Replace(this[DataText.DisplayDataName, e.RowIndex].Value.ToString().Trim() + MultiSelect.MultiSelectSplit, "")
-                            : tb.Text.Replace(Rows[e.RowIndex].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim() + MultiSelect.MultiSelectSplit, "");
+                            : tb.Text.Replace(Rows[e.RowIndex].Cells.Cast<DataGridViewCell>()
+                                .First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase))
+                                .Value.ToString().Trim() + MultiSelect.MultiSelectSplit, "");
                     }
                     tb.Select(tb.TextLength, 0);
                 }
@@ -776,19 +823,19 @@ namespace SearchControls.SearchGridForm
                             {
                                 if (!string.IsNullOrWhiteSpace(DataText.DisplayDataName))
                                 {
-                                    if (!Columns.Contains(DataText.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)))
+                                    if (!Columns.Contains(DataText.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)))
                                         throw new Exception($"没有找到列名'{DataText.DisplayDataName}',请检查DisplayDataName属性的值是否正确。");
                                     DataText.TextBox.Text = Columns.Contains(DataText.DisplayDataName)
                                         ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
-                                        : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
+                                        : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)).Value.ToString().Trim();
                                 }
                                 SubSearchTextBoxes?.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
                                 {
-                                    if (!Columns.Contains(_sstb.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)))
+                                    if (!Columns.Contains(_sstb.DisplayDataName) && !Rows[index].Cells.Cast<DataGridViewCell>().Any(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName, StringComparison.OrdinalIgnoreCase)))
                                         throw new Exception($"没有找到列名'{_sstb.DisplayDataName}',请检查子文本框的DisplayDataName属性的值是否正确。");
                                     _sstb.TextBox.Text = Columns.Contains(_sstb.DisplayDataName)
                                         ? this[_sstb.DisplayDataName, index].Value.ToString().Trim()
-                                        : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)).Value.ToString().Trim();
+                                        : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName, StringComparison.OrdinalIgnoreCase)).Value.ToString().Trim();
                                 });
                             }
 
@@ -868,14 +915,28 @@ namespace SearchControls.SearchGridForm
                                             {
                                                 string sort = bs.Sort;
                                                 bs.Sort = "";
-                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+
+                                                Rows.Cast<DataGridViewRow>().First(dgvr =>
+                                                    dgvr.Cells.Cast<DataGridViewCell>().First(dgvc =>
+                                                        dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)
+                                                        || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)
+                                                    ).Value.Equals(displayData)
+                                                ).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+
                                                 bs.Sort = sort;
                                             }
                                             else
                                             {
                                                 string sort = dv.Sort;
                                                 dv.Sort = "";
-                                                Rows.Cast<DataGridViewRow>().First(dgvr => dgvr.Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName) || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.Equals(displayData)).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+
+                                                Rows.Cast<DataGridViewRow>().First(dgvr =>
+                                                    dgvr.Cells.Cast<DataGridViewCell>().First(dgvc =>
+                                                        dgvc.OwningColumn.Name.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)
+                                                        || dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)
+                                                    ).Value.Equals(displayData)
+                                                ).Cells[MultiSelect.MultiSelectColumn.Name].Value = false;
+
                                                 dv.Sort = sort;
                                             }
                                         }
@@ -896,13 +957,13 @@ namespace SearchControls.SearchGridForm
                                     {
                                         DataText.TextBox.SelectedText = Columns.Contains(DataText.DisplayDataName)
                                             ? this[DataText.DisplayDataName, index].Value.ToString().Trim()
-                                            : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName)).Value.ToString().Trim();
+                                            : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(DataText.DisplayDataName, StringComparison.OrdinalIgnoreCase)).Value.ToString().Trim();
                                     }
                                     SubSearchTextBoxes.Where(_sstb => !string.IsNullOrWhiteSpace(_sstb.DisplayDataName)).ToList().ForEach(_sstb =>
                                     {
                                         _sstb.TextBox.Text = Columns.Contains(_sstb.DisplayDataName)
                                             ? this[_sstb.DisplayDataName, index].Value.ToString().Trim()
-                                            : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName)).Value.ToString().Trim();
+                                            : Rows[index].Cells.Cast<DataGridViewCell>().First(dgvc => dgvc.OwningColumn.DataPropertyName.Equals(_sstb.DisplayDataName, StringComparison.OrdinalIgnoreCase)).Value.ToString().Trim();
                                     });
                                 }
 
