@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.0  
+
+依赖的框架：net5.0-windows;netcoreapp3.1;net48;net40  
+删除SearchDataGridView控件，以后只需要在微软自带的控件DataGridView的Columns添加DataGridViewSearchTextBoxColumn类型的列，该列就能进行模糊查找  
+
 ### 2.0.0  
 
 删除与模糊查找无关的其他控件  
