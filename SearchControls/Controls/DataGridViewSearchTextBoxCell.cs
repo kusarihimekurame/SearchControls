@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,6 +16,19 @@ namespace SearchControls
     public class DataGridViewSearchTextBoxCell : DataGridViewTextBoxCell
     {
         /// <summary>
+        /// 获取单元格的寄宿编辑控件的类型。
+        /// </summary>
+        /// <returns>
+        /// 一个 <see cref="Type"/> 表示 <see cref="DataGridViewSearchTextBoxControl"/> 类型。
+        /// </returns>
+        public override Type EditType => typeof(DataGridViewSearchTextBoxControl);
+
+        /// <summary>
+        /// 搜索表格中的当前绑定的数据行
+        /// </summary>
+        public object SearchDataBoundItem { get; private set; }
+
+        /// <summary>
         /// 附加并初始化寄宿的编辑控件。
         /// </summary>
         /// <param name="rowIndex">所编辑的行的索引。</param>
@@ -23,10 +37,27 @@ namespace SearchControls
         public override void InitializeEditingControl(int rowIndex, object initialFormattedValue, DataGridViewCellStyle dataGridViewCellStyle)
         {
             base.InitializeEditingControl(rowIndex, initialFormattedValue, dataGridViewCellStyle);
-            if (DataGridView is IGrid grid)
+            DataGridViewSearchTextBoxControl stb = DataGridView.EditingControl as DataGridViewSearchTextBoxControl;
+            DataGridViewSearchTextBoxColumn column = OwningColumn as DataGridViewSearchTextBoxColumn;
+            DataGridViewSearchTextBoxColumn dataColumn = column.IsMain ? column : DataGridView.Columns[column.MainColumnName] as DataGridViewSearchTextBoxColumn;
+            stb.Columns.Clear();
+            if (dataColumn.SearchColumns.Count > 0)
             {
-                grid.SearchForm.SearchGrid.Add_TextBoxEvent();
+                stb.SearchGrid.AutoGenerateColumns = false;
+                stb.Columns.AddRange(dataColumn.SearchColumns.ToArray());
             }
+            else
+            {
+                stb.SearchGrid.AutoGenerateColumns = true;
+            }
+            stb.DataSource = dataColumn.SearchDataSource ?? (DataGridView.DataSource is BindingSource bs ? bs.DataSource : DataGridView.DataSource);
+            stb.DataMember = dataColumn.SearchDataMember;
+            stb.AutoInputDataName = column.AutoInputDataName;
+            stb.DisplayDataName = column.DisplayDataName;
+            stb.DisplayRowCount = column.DisplayRowCount;
+            stb.IsTextChanged = column.IsTextChanged;
+            stb.IsAutoInput = column.IsAutoInput;
+            stb.TextChangedColumnNames = column.TextChangedColumnNames;
         }
 
         /// <summary>
@@ -34,9 +65,46 @@ namespace SearchControls
         /// </summary>
         public override void DetachEditingControl()
         {
-            if (DataGridView is IGrid grid)
+            DataGridViewSearchTextBoxControl stb = DataGridView.EditingControl as DataGridViewSearchTextBoxControl;
+
+            stb.IsTextChanged = false;
+
+            SearchDataBoundItem = stb.CurrentRow?.DataBoundItem;
+            if (SearchDataBoundItem != null && OwningColumn is DataGridViewSearchTextBoxColumn currentColumn)
             {
-                grid.SearchForm.SearchGrid.Remove_TextBoxEvent();
+                DataGridViewSearchTextBoxColumn MainColumn =
+                    currentColumn.IsMain
+                    ? currentColumn
+                    : DataGridView.Columns[currentColumn.MainColumnName] as DataGridViewSearchTextBoxColumn;
+
+                if (stb.Text == stb.CurrentRow.Cells[currentColumn.DisplayDataName].Value.ToString())
+                {
+                    DataGridView.Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc != OwningColumn && dgvc is DataGridViewSearchTextBoxColumn).Cast<DataGridViewSearchTextBoxColumn>()
+                        .Where(stbc =>
+                            !string.IsNullOrEmpty(stbc.DisplayDataName)
+                            && (stbc.Equals(MainColumn)
+                                || !stbc.IsMain
+                                && (stbc.MainColumnName.Equals(MainColumn.Name, StringComparison.OrdinalIgnoreCase) || stbc.MainColumnName.Equals(MainColumn.DataPropertyName, StringComparison.OrdinalIgnoreCase))
+                            )
+                        ).ToList().ForEach(stbc =>
+                        {
+                            if (!OwningRow.Cells[stbc.Name].Value.ToString().Equals(stb.CurrentRow.Cells[stbc.DisplayDataName].Value.ToString())) OwningRow.Cells[stbc.Name].Value = stb.CurrentRow.Cells[stbc.DisplayDataName].Value.ToString();
+                        });
+                }
+                else
+                {
+                    DataGridView.Columns.Cast<DataGridViewColumn>().Where(dgvc => dgvc != OwningColumn && dgvc is DataGridViewSearchTextBoxColumn).Cast<DataGridViewSearchTextBoxColumn>()
+                        .Where(stbc =>
+                            !string.IsNullOrEmpty(stbc.DisplayDataName)
+                            && (stbc.Equals(MainColumn)
+                                || !stbc.IsMain
+                                && (stbc.MainColumnName.Equals(MainColumn.Name, StringComparison.OrdinalIgnoreCase) || stbc.MainColumnName.Equals(MainColumn.DataPropertyName, StringComparison.OrdinalIgnoreCase))
+                            )
+                        ).ToList().ForEach(stbc =>
+                        {
+                            if (!OwningRow.Cells[stbc.Name].Value.ToString().Equals(stb.CurrentRow.Cells[stbc.DisplayDataName].Value.ToString())) OwningRow.Cells[stbc.Name].Value = string.Empty;
+                        });
+                }
             }
             base.DetachEditingControl();
         }

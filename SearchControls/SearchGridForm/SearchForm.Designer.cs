@@ -59,13 +59,9 @@
             // 
             // SearchForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
             this.Controls.Add(this.SearchGrid);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "SearchForm";
-            this.ShowInTaskbar = false;
             this.Text = "SearchForm";
             ((System.ComponentModel.ISupportInitialize)(this.SearchGrid)).EndInit();
             this.ResumeLayout(false);

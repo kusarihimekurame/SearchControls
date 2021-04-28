@@ -28,10 +28,34 @@ namespace SearchControls
     ]
     public partial class SearchTextBox : TextBox, IGrid, IDataText, IMultiSelect, ISubSearchTextBoxes
     {
-        Rectangle IGrid.Bounds => Parent.RectangleToScreen(Bounds);
+        /// <summary>
+        /// 是否自动移动焦点
+        /// </summary>
+        [
+            Category("Search"),
+            Description("是否自动移动焦点"),
+            DefaultValue(true)
+        ]
+        public bool IsAutoMoveFocus { get; set; } = true;
+        /// <summary>
+        /// 得到焦点后是否显示
+        /// </summary>
+        [
+            Category("Search"),
+            Description("得到焦点后是否显示"),
+            DefaultValue(true)
+        ]
+        public bool IsEnterShow { get; set; } = true;
+
+        /// <summary>
+        /// 计算指定工作区矩形的大小和位置（以屏幕坐标表示）。
+        /// </summary>
+        /// <returns>一个 <see cref="Rectangle"/>，表示转换后的 <see cref="Rectangle"/>、p（以屏幕坐标表示）。</returns>
+        public virtual Rectangle GetBounds() => Parent.RectangleToScreen(Bounds);
+
         TextBox IDataText.TextBox => this;
 
-        SearchForm IGrid.SearchForm => SearchForm;
+        NoActivateForm IGrid.SearchForm => SearchForm;
         private readonly SearchForm SearchForm;
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="MultSelectColumn"]/*'/>
@@ -117,7 +141,7 @@ namespace SearchControls
             Description("附属的文本框")
         ]
         public SubSearchTextBoxCollection SubSearchTextBoxes { get; } = new SubSearchTextBoxCollection();
-#if NETCOREAPP3_0 || NETCOREAPP3_1
+#if NETCOREAPP3_0_OR_GREATER
         SearchGrid IDataText.SearchGrid => SearchForm.SearchGrid;
 #endif
         private SearchGrid _SearchGrid => SearchForm.SearchGrid;
@@ -170,11 +194,11 @@ namespace SearchControls
         public bool IsUp { get; set; } = false;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IsLeft"]/*'/>
         [
-            DefaultValue(false),
+            DefaultValue(null),
             Category("Search"),
-            Description("是否将表朝左")
+            Description("是否将表朝左,为null时自动根据屏幕判断。")
         ]
-        public bool IsLeft { get; set; } = false;
+        public bool? IsLeft { get; set; }
         private string _DisplayDataName;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DisplayDataName"]/*'/>
         [
@@ -393,6 +417,8 @@ namespace SearchControls
             InitializeComponent();
 
             SearchForm = new SearchForm(this);
+            components = new Container();
+            components.Add(SearchForm);
             SubSearchTextBoxes.CollectionChanged += (sender, e) =>
               {
                   switch (e.Action)
@@ -417,6 +443,7 @@ namespace SearchControls
             base.OnEnter(e);
         }
 
+#if NET40_OR_GREATER
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>
         public virtual void Reset() => _SearchGrid.Reset();
 
@@ -431,5 +458,6 @@ namespace SearchControls
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
         public virtual void SetSearchGridLocation() => SearchForm.SetSearchGridLocation();
+#endif
     }
 }

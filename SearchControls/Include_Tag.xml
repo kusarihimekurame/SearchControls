@@ -153,6 +153,9 @@
         <para>
           <c>IsLeft</c>为false时，表在文本框的右边
         </para>
+        <para>
+          <c>IsLeft</c>为null时,自动根据屏幕判断
+        </para>
       </value>
     </Member>
     <Member Name="DisplayDataName">
@@ -204,7 +207,6 @@
       <para><c>IsAutoReset</c>为<c>True </c>时，列表显示时自动还原到初始状态，显示列表全部内容</para>
       <para><c>IsAutoReset</c>为<c>false</c>时，列表显示时是模糊查找以后的状态</para>
       </value>
-      <seealso cref="Reset"/>
     </Member>
     <Member Name="DataSource">
       <summary>
@@ -486,6 +488,12 @@
       引发 SearchControls.SearchTextBox.GridSelected 事件。
       </summary>
       <param name="e">包含事件数据的 SearchControls.GridSelectedEventArgs。</param>
+    </Member>
+    <Member Name="OnCellValidated">
+      <summary>
+      引发 SearchControls.SearchDataGridView.CellValidated 事件。
+      </summary>
+      <param name="e">包含事件数据的 System.Windows.Forms.DataGridViewCellEventArgs。</param>
     </Member>
     <Member Name="SearchGridLocationSizeChangedEventHandler">
       <summary>

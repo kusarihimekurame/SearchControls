@@ -6,7 +6,9 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,7 +17,7 @@ namespace SearchControls.SearchGridForm
     /// <summary>
     /// 模糊查找表的窗口
     /// </summary>
-    public partial class SearchForm : Form
+    public partial class SearchForm : NoActivateForm
     {
         private IGrid _grid;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="IGrid"]/*'/>
@@ -34,8 +36,16 @@ namespace SearchControls.SearchGridForm
                         {
                             if (c.TopLevelControl != null)
                             {
-                                c.TopLevelControl.SizeChanged += (_sender, _e) => SetSearchGridLocation();
-                                c.TopLevelControl.Move += (_sender, _e) => SetSearchGridLocation();
+                                c.TopLevelControl.SizeChanged += (_sender, _e) =>
+                                {
+                                    SetSearchGridLocation();
+                                    _grid.OnSearchGridLocationSizeChanged(new SearchFormLocationSizeEventArgs(this));
+                                };
+                                c.TopLevelControl.Move += (_sender, _e) =>
+                                {
+                                    SetSearchGridLocation();
+                                    _grid.OnSearchGridLocationSizeChanged(new SearchFormLocationSizeEventArgs(this));
+                                };
                                 c.TopLevelControl.Enter += Hide_event;
                                 c.TopLevelControl.Click += Hide_event;
                                 c.TopLevelControl.VisibleChanged += (_sender, _e) =>
@@ -51,7 +61,7 @@ namespace SearchControls.SearchGridForm
                             }
                         };
                     }
-                    if (_grid is SearchTextBox stb)
+                    if (_grid is ISubSearchTextBoxes stb)
                     {
                         stb.SubSearchTextBoxes.CollectionChanged += SubSearchTextBoxes_CollectionChanged;
                     }
@@ -69,46 +79,10 @@ namespace SearchControls.SearchGridForm
         public SearchForm(Control control) : base()
         {
             InitializeComponent();
+            
             if (control is IGrid grid) Grid = grid;
             if (control is IDataText dataText) SearchGrid.DataText = dataText;
             if (control is IMultiSelect multiSelect) SearchGrid.MultiSelect = multiSelect;
-        }
-
-        /// <summary>
-        /// 显示窗口时不将其激活
-        /// </summary>
-        protected override bool ShowWithoutActivation => true;
-
-        private const int WS_EX_NOACTIVATE = 0x08000000;
-        private const int WM_MOUSEACTIVATE = 0x21;
-        private const int MA_NOACTIVATE = 3;
-
-        /// <summary>
-        /// 获取创建控件句柄时所需要的创建参数。
-        /// </summary>
-        protected override CreateParams CreateParams
-        {
-            get
-            {
-                CreateParams cp = base.CreateParams;
-                cp.ExStyle |= WS_EX_NOACTIVATE;
-                return cp;
-            }
-        }
-
-        /// <summary>
-        /// 处理 Windows 消息。
-        /// </summary>
-        /// <param name="m">一个 Windows 消息对象。</param>
-        [DebuggerStepThrough]
-        protected override void WndProc(ref Message m)
-        {
-            if (m.Msg.Equals(WM_MOUSEACTIVATE))
-            {
-                m.Result = new IntPtr(MA_NOACTIVATE);
-                return;
-            }
-            base.WndProc(ref m);
         }
 
         private bool _IsAutoReset = true;
@@ -149,7 +123,7 @@ namespace SearchControls.SearchGridForm
                 if (!Visible)
                 {
                     _IsAutoReset = false;
-                    Visible = true;
+                    Show((_grid as Control).TopLevelControl);
                     _IsAutoReset = true;
                     return;
                 }
@@ -169,7 +143,7 @@ namespace SearchControls.SearchGridForm
             else Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;  // 重新设置网格总高
         }
 
-        private Rectangle bounds;
+        //private Rectangle bounds;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
         public virtual void SetSearchGridLocation()
         {
@@ -178,15 +152,16 @@ namespace SearchControls.SearchGridForm
                 int Height = SearchGrid.Rows.Cast<DataGridViewRow>().Take(_grid.DisplayRowCount).Sum(dgvr => dgvr.Height) + 3;
 
                 int x, y;
-                Rectangle _bounds = bounds.IsEmpty ? _grid.Bounds : bounds;
+                //Rectangle _bounds = bounds.IsEmpty ? _grid.GetBounds() : bounds;
+                Rectangle _bounds = _grid.GetBounds();
 
-                y = _grid.IsUp || _bounds.Y + _bounds.Height + Height > Screen.FromControl(this).Bounds.Height
-                    ? _bounds.Y - Height
-                    : _bounds.Y + _bounds.Height;
+                y = _grid.IsUp || _bounds.Top - Screen.FromRectangle(_bounds).Bounds.Top + _bounds.Height + Height > Screen.FromControl(this).Bounds.Height
+                    ? _bounds.Top - Height - (SearchGrid.ColumnHeadersVisible ? SearchGrid.ColumnHeadersHeight : 0)
+                    : _bounds.Top + _bounds.Height;
 
-                x = _grid.IsLeft || _bounds.X + SearchGrid.Width > Screen.FromControl(this).Bounds.Width
-                    ? _bounds.X + _bounds.Width - SearchGrid.Width
-                    : _bounds.X;
+                x = _grid.IsLeft.HasValue && _grid.IsLeft.Value || !_grid.IsLeft.HasValue && _bounds.Left - Screen.FromRectangle(_bounds).Bounds.Left + SearchGrid.Width > Screen.FromControl(this).Bounds.Width
+                    ? _bounds.Left + _bounds.Width - SearchGrid.Width
+                    : _bounds.Left;
 
                 Location = new Point(x, y);
             }
@@ -195,18 +170,34 @@ namespace SearchControls.SearchGridForm
         private void TextBox_Enter(object sender, EventArgs e)
         {
             SearchGrid.IsEnter = true;
-            if (!Visible)
+            if (!Visible && Grid.IsEnterShow)
             {
                 //bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
                 Show((_grid as Control).TopLevelControl);
-                BringToFront();
-                (_grid as Control).TopLevelControl.Focus();
+#if NETCOREAPP3_0_OR_GREATER
+                object window = typeof(Control).GetField("_window", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
+#else
+                object window = typeof(Control).GetField("window", BindingFlags.NonPublic | BindingFlags.Instance).GetValue(this);
+#endif
+
+                SetWindowPos(
+                    new HandleRef(window, Handle), new HandleRef(null, (IntPtr)0), 0, 0, 0, 0,
+                    0x0002 | 0x0001 | 0x0010
+                );
+                
+                //BringToFront();
+                //(_grid as Control).TopLevelControl.Focus();
             }
         }
 
+        [DllImport("User32", ExactSpelling = true, CharSet = CharSet.Auto)]
+        [ResourceExposure(ResourceScope.None)]
+        private static extern bool SetWindowPos(HandleRef hWnd, HandleRef hWndInsertAfter,
+                                               int x, int y, int cx, int cy, int flags);
+
         private void Hide_event(object sender, EventArgs e)
         {
-            #region 隐藏小表
+#region 隐藏小表
 
             if (sender is Control cl)
             {
@@ -216,12 +207,12 @@ namespace SearchControls.SearchGridForm
                 }
             }
 
-            #endregion
+#endregion
         }
 
         private void Hide_event2(object sender, EventArgs e)
         {
-            #region 隐藏小表
+#region 隐藏小表
 
             if (sender is Control cl)
             {
@@ -231,7 +222,7 @@ namespace SearchControls.SearchGridForm
                 }
             }
 
-            #endregion
+#endregion
         }
 
         private void Click_Add_Visible_event(Control cl)
@@ -242,8 +233,45 @@ namespace SearchControls.SearchGridForm
                 if (_grid is SearchTextBox stb) stbc = stb.SubSearchTextBoxes;
                 cl.Parent.Controls.Cast<Control>().Where(c => !c.Equals(_grid) && stbc.Select(sstb => sstb.TextBox).All(tb => !tb.Equals(c))).ToList().ForEach(c =>
                 {
+#if NET40
+                    EventHandlerList eventHandlerList = c.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance).GetValue(c, null) as EventHandlerList;
+#else
+                    EventHandlerList eventHandlerList = c.GetType().GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance).GetValue(c) as EventHandlerList;
+#endif
+                    var dels = new[] 
+                    { 
+                        new 
+                        { 
+                            eventInfo = c.GetType().GetEvents().FirstOrDefault(ei => ei.Name == "Click"),
+#if NETCOREAPP3_0_OR_GREATER
+                            del = eventHandlerList[typeof(Control).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static).GetValue(c)]
+#else
+                            del = eventHandlerList[typeof(Control).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static).GetValue(c)] 
+#endif
+
+                        },
+                        new 
+                        { 
+                            eventInfo = c.GetType().GetEvents().FirstOrDefault(ei => ei.Name == "Enter"),
+#if NETCOREAPP3_0_OR_GREATER
+                            del = eventHandlerList[typeof(Control).GetField("s_enterEvent", BindingFlags.NonPublic | BindingFlags.Static).GetValue(c)]
+#else
+                            del = eventHandlerList[typeof(Control).GetField("EventEnter", BindingFlags.NonPublic | BindingFlags.Static).GetValue(c)] 
+#endif
+                        }
+                    };
+                    
                     c.Enter += Hide_event;
                     c.Click += Hide_event;
+                    
+                    foreach (var del in from del in dels.Where(_del => _del.del != null)
+                                        from Delegate h in del.del.GetInvocationList()
+                                        select new { del.eventInfo, h })
+                    {
+                        del.eventInfo.RemoveEventHandler(c, del.h);
+                        del.eventInfo.AddEventHandler(c, del.h);
+                    }
+
                 });
                 if (cl.Parent != TopLevelControl)
                 {

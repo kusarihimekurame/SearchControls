@@ -18,6 +18,7 @@ namespace SearchControls.Design
         /// <summary>
         /// Collection的设计器
         /// </summary>
+        /// <param name="type">此编辑器要编辑的集合的类型。</param>
         public HelpCollectionEditor(Type type) : base(type)
         { 
         }

@@ -58,7 +58,7 @@ namespace SearchControls
         /// <returns>dataTable.DefaultView.RowFilter</returns>
         public static string CreateFilter(DataTable dataTable, string text, params string[] columnNames)
         {
-            if (columnNames.Count().Equals(0)) columnNames = dataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName).ToArray();
+            columnNames = columnNames.Count().Equals(0) ? dataTable.Columns.Cast<DataColumn>().Select(dc => dc.ColumnName.ToUpper()).ToArray() : columnNames.Select(name => name.ToUpper()).ToArray();
             List<string> rowFilter = new List<string>();
             string[] Texts = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             if (Texts.Count() > 0)
@@ -66,8 +66,8 @@ namespace SearchControls
                 Texts.ToList().ForEach(t =>
                     rowFilter.Add("(" + string.Join("OR ",
                         dataTable.Columns.Cast<DataColumn>().
-                            Where(dc => (columnNames.Contains(dc.ColumnName) || columnNames.Select(cn => "PY_" + cn).Contains(dc.ColumnName)) && dc.DataType.Equals(typeof(string))).
-                            Select(dc => string.Format("{0} LIKE '%{1}%' ", dc.ColumnName, t.Replace("'", "''").Replace("[", "[[ ").Replace("]", " ]]").Replace("*", "[*]").Replace("%", "[%]").Replace("[[ ", "[[]").Replace(" ]]", "[]]")))
+                            Where(dc => (columnNames.Contains(dc.ColumnName.ToUpper()) || columnNames.Select(cn => "PY_" + cn).Contains(dc.ColumnName.ToUpper())) && dc.DataType.Equals(typeof(string))).
+                            Select(dc => string.Format("{0} LIKE '%{1}%' ", dc.ColumnName.ToUpper(), t.Replace("'", "''").Replace("[", "[[ ").Replace("]", " ]]").Replace("*", "[*]").Replace("%", "[%]").Replace("[[ ", "[[]").Replace(" ]]", "[]]")))
                         ) + ") ")
                 );
             }

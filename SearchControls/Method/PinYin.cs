@@ -83,26 +83,32 @@ namespace PinYinConverter
             Hashtable hashtable = new Hashtable();
             DataColumn[] PinYinDataColumns = dataColumns.Select(dc => new DataColumn("PY_" + dc.ColumnName)).ToArray();
             dataTable.Columns.AddRange(PinYinDataColumns);
-            try
+
+            foreach (DataRow dr in dataTable.Rows)
             {
-                foreach (DataRow dr in dataTable.Rows)
+                try
                 {
                     lock (dr)
                     {
+                        bool isUnchanged = dr.RowState == DataRowState.Unchanged;
                         foreach (DataColumn pydc in PinYinDataColumns)
                         {
                             string zw = dr.Field<string>(pydc.ColumnName.Substring(3));
-                            if (!hashtable.ContainsKey(zw))
+                            if (!string.IsNullOrWhiteSpace(zw))
                             {
-                                hashtable.Add(zw, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                if (!hashtable.ContainsKey(zw))
+                                {
+                                    hashtable.Add(zw, string.Join(",", GetInitials(dr.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                }
+                                dr.SetField(pydc, hashtable[zw]);
                             }
-                            dr.SetField(pydc, hashtable[zw]);
                         }
+                        if (isUnchanged) dr.AcceptChanges();
                     }
                 }
-                dataTable.AcceptChanges();
+                catch { }
             }
-            catch { }
+
             dataTable.RowChanged += DataTable_RowChanged;
 
             void DataTable_RowChanged(object sender, DataRowChangeEventArgs e)
@@ -110,21 +116,25 @@ namespace PinYinConverter
                 dataTable.RowChanged -= DataTable_RowChanged;
                 switch (e.Action)
                 {
-                    case DataRowAction.ChangeOriginal:
                     case DataRowAction.ChangeCurrentAndOriginal:
                     case DataRowAction.Change:
                     case DataRowAction.Add:
                         lock (e.Row)
                         {
+                            bool isUnchanged = e.Row.RowState == DataRowState.Unchanged;
                             foreach (DataColumn pydc in PinYinDataColumns)
                             {
                                 string zw = e.Row.Field<string>(pydc.ColumnName.Substring(3));
-                                if (!hashtable.ContainsKey(zw))
+                                if (!string.IsNullOrWhiteSpace(zw))
                                 {
-                                    hashtable.Add(zw, string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                    if (!hashtable.ContainsKey(zw))
+                                    {
+                                        hashtable.Add(zw, string.Join(",", GetInitials(e.Row.Field<string>(pydc.ColumnName.Substring(3))) ?? new string[] { "" }));
+                                    }
+                                    if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(hashtable[zw])) e.Row.SetField(pydc, hashtable[zw]);
                                 }
-                                if (string.IsNullOrEmpty(e.Row.Field<string>(pydc)) || !e.Row.Field<string>(pydc).Equals(hashtable[zw])) e.Row.SetField(pydc, hashtable[zw]);
                             }
+                            if (isUnchanged) e.Row.AcceptChanges();
                         }
                         break;
                 }

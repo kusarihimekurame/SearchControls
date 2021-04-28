@@ -31,31 +31,30 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.searchDataGridView1 = new SearchControls.SearchDataGridView();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // searchDataGridView1
             // 
-            this.searchDataGridView1.AllowUserToResizeRows = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.searchDataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            this.searchDataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.searchDataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.searchDataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.searchDataGridView1.IsAutoReset = false;
-            this.searchDataGridView1.Location = new System.Drawing.Point(191, 0);
-            this.searchDataGridView1.MultiSelect = false;
-            this.searchDataGridView1.Name = "searchDataGridView1";
-            this.searchDataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.dataGridView1.Location = new System.Drawing.Point(191, 0);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "searchDataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.PowderBlue;
-            this.searchDataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.searchDataGridView1.RowTemplate.Height = 23;
-            this.searchDataGridView1.Size = new System.Drawing.Size(404, 219);
-            this.searchDataGridView1.TabIndex = 0;
+            this.dataGridView1.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView1.RowTemplate.Height = 23;
+            this.dataGridView1.Size = new System.Drawing.Size(404, 219);
+            this.dataGridView1.TabIndex = 0;
             // 
             // textBox1
             // 
@@ -81,10 +80,10 @@
             this.ClientSize = new System.Drawing.Size(595, 219);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.searchDataGridView1);
+            this.Controls.Add(this.dataGridView1);
             this.Name = "searchDataGridView";
             this.Text = "SearchDataGridView";
-            ((System.ComponentModel.ISupportInitialize)(this.searchDataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,7 +91,7 @@
 
         #endregion
 
-        private SearchControls.SearchDataGridView searchDataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
     }

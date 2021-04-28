@@ -36,57 +36,61 @@ namespace Example
             dataSet.Tables.Add(Country);
             BindingSource bindingSource = new BindingSource(dataSet, "Main");
 
-            searchDataGridView1.AutoGenerateColumns = false;
-            searchDataGridView1.Columns.AddRange(new DataGridViewTextBoxColumn
-            {
-                Name = "Name",
-                DataPropertyName = "Name",
-                HeaderText = "名字"
-            }, new DataGridViewTextBoxColumn
-            {
-                Name = "Age",
-                DataPropertyName = "Age",
-                HeaderText = "年龄"
-            }, new DataGridViewSearchTextBoxColumn
-            {
-                Name = "CountryCode",
-                DataPropertyName = "CountryCode",
-                HeaderText = "国家代码",
-                SearchDataMember = "Country",
-                DisplayDataName = "Code",
-                AutoInputDataName = "Code",
-                SearchColumns = new List<DataGridViewColumn>
+            dataGridView1.AutoGenerateColumns = false;
+            dataGridView1.Columns.AddRange(
+                new DataGridViewTextBoxColumn
                 {
-                    new DataGridViewTextBoxColumn
+                    Name = "Name",
+                    DataPropertyName = "Name",
+                    HeaderText = "名字"
+                }, 
+                new DataGridViewTextBoxColumn
+                {
+                    Name = "Age",
+                    DataPropertyName = "Age",
+                    HeaderText = "年龄"
+                }, 
+                new DataGridViewSearchTextBoxColumn
+                {
+                    Name = "CountryCode",
+                    DataPropertyName = "CountryCode",
+                    HeaderText = "国家代码",
+                    SearchDataMember = "Country",
+                    DisplayDataName = "Code",
+                    AutoInputDataName = "Code",
+                    SearchColumns = new List<DataGridViewColumn>
                     {
-                        Name = "Code",
-                        DataPropertyName = "Code",
-                        HeaderText = "代码"
-                    },
-                    new DataGridViewTextBoxColumn
-                    {
-                        Name = "Name",
-                        DataPropertyName = "Name",
-                        HeaderText = "名称"
+                        new DataGridViewTextBoxColumn
+                        {
+                            Name = "Code",
+                            DataPropertyName = "Code",
+                            HeaderText = "代码"
+                        },
+                        new DataGridViewTextBoxColumn
+                        {
+                            Name = "Name",
+                            DataPropertyName = "Name",
+                            HeaderText = "名称"
+                        }
                     }
-                }
-            }, new DataGridViewSearchTextBoxColumn
-            {
-                Name = "Country",
-                DataPropertyName = "Country",
-                HeaderText = "国家名称",
-                SearchDataMember = "Country",
-                DisplayDataName = "Name",
-                AutoInputDataName = "Code",
-                IsMain = false,
-                MainColumnName = "CountryCode"
-            });
-            searchDataGridView1.DataSource = bindingSource;
+                }, 
+                new DataGridViewSearchTextBoxColumn
+                {
+                    Name = "Country",
+                    DataPropertyName = "Country",
+                    HeaderText = "国家名称",
+                    SearchDataMember = "Country",
+                    DisplayDataName = "Name",
+                    AutoInputDataName = "Code",
+                    IsMain = false,
+                    MainColumnName = "CountryCode"
+                });
+            dataGridView1.DataSource = bindingSource;
         }
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
-            if (sender is TextBox tb && searchDataGridView1.DataSource is BindingSource bs && bs.List is DataView dv)
+            if (sender is TextBox tb && dataGridView1.DataSource is BindingSource bs && bs.List is DataView dv)
             {
                 bs.Filter = Method.CreateFilter(dv.Table, tb.Text);
             }

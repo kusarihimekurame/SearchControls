@@ -15,7 +15,7 @@ namespace SearchControls.Interface
         /// <para>实现默认接口用</para>
         /// <para><c>SearchForm IGrid.SearchForm => SearchForm;</c></para>
         /// </summary>
-        SearchForm SearchForm { get; }
+        NoActivateForm SearchForm { get; }
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DisplayRowCount"]/*'/>
         [
             DefaultValue(15),
@@ -34,28 +34,35 @@ namespace SearchControls.Interface
         [
             DefaultValue(false),
             Category("Search"),
-            Description("是否将表朝左")
+            Description("是否将表朝左,为null时自动根据屏幕判断。")
         ]
-        bool IsLeft { get; set; }
+        bool? IsLeft { get; set; }
+        /// <summary>
+        /// 得到焦点后是否显示
+        /// </summary>
+        bool IsEnterShow { get; set; }
+
         /// <summary>
         /// 需要跟踪的控件的边框Rectangle
         /// </summary>
-        Rectangle Bounds { get; }
+        /// <returns>边框Rectangle</returns>
+        Rectangle GetBounds();
+
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="ShowSearchGrid"]/*'/>
-#if NETCOREAPP3_0 || NETCOREAPP3_1
-        void ShowSearchGrid() => SearchForm.ShowSearchGrid();
+#if NETCOREAPP3_0_OR_GREATER
+        void ShowSearchGrid() => (SearchForm as SearchForm)?.ShowSearchGrid();
 #else
         void ShowSearchGrid();
 #endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridSize"]/*'/>
-#if NETCOREAPP3_0 || NETCOREAPP3_1
-        void SetSearchGridSize() => SearchForm.SetSearchGridSize();
+#if NETCOREAPP3_0_OR_GREATER
+        void SetSearchGridSize() => (SearchForm as SearchForm)?.SetSearchGridSize();
 #else
         void SetSearchGridSize();
 #endif
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
-#if NETCOREAPP3_0 || NETCOREAPP3_1
-        void SetSearchGridLocation() => SearchForm.SetSearchGridLocation();
+#if NETCOREAPP3_0_OR_GREATER
+        void SetSearchGridLocation() => (SearchForm as SearchForm)?.SetSearchGridLocation();
 #else
         void SetSearchGridLocation();
 #endif

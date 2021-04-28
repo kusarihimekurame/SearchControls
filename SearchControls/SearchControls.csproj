@@ -1,9 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>netcoreapp3.0;net45;net40</TargetFrameworks>
+    <TargetFrameworks>net5.0-windows;netcoreapp3.1;net48;net40</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
+	<LangVersion>9.0</LangVersion>
     <ApplicationIcon />
     <StartupObject />
     <AssemblyName>SearchControls</AssemblyName>
@@ -27,8 +28,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>2.0.0</Version>
-    <PackageReleaseNotes>2.0.0
+    <Version>3.0.0</Version>
+    <PackageReleaseNotes>3.0.0
+依赖的框架：net5.0-windows;netcoreapp3.1;net48;net40
+删除SearchDataGridView控件，以后只需要在微软自带的控件DataGridView的Columns添加DataGridViewSearchTextBoxColumn类型的列，该列就能进行模糊查找
+
+2.0.0
 删除与模糊查找无关的其他控件
 删除多余的框架，只保留net4.0, net4.5, netCore3.0
 
@@ -138,20 +143,20 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
-    <FileVersion>2.0.0.0</FileVersion>
+    <AssemblyVersion>3.0.0.0</AssemblyVersion>
+    <FileVersion>3.0.0.0</FileVersion>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.0' OR '$(TargetFramework)' == 'net45' ">
+  <ItemGroup Condition="'$(TargetFramework)' != 'net40'">
     <PackageReference Include="PinYinConverterCore" Version="1.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
     <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'netcoreapp3.0' ">
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1' AND '$(TargetFramework)' != 'net5.0-windows'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -175,7 +180,7 @@ SearchTextBox.Enter在搜索表格出现之前触发,
   </ItemGroup>
     
   <ItemGroup>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
   </ItemGroup>
     
   <ItemGroup>

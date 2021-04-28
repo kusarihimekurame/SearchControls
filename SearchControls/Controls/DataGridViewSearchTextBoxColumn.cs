@@ -65,6 +65,7 @@ namespace SearchControls
         /// System.Windows.Forms.DataGridViewSearchTextBoxColumn.CellTemplate 属性的值为 null。
         /// </exception>
         [
+            Browsable(false),
             DefaultValue(DATAGRIDVIEWTEXTBOXCOLUMN_maxInputLength)
         ]
         public int MaxInputLength
