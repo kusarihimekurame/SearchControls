@@ -443,7 +443,6 @@ namespace SearchControls
             base.OnEnter(e);
         }
 
-#if NET40_OR_GREATER
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="Reset"]/*'/>
         public virtual void Reset() => _SearchGrid.Reset();
 
@@ -458,6 +457,5 @@ namespace SearchControls
 
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="SetSearchGridLocation"]/*'/>
         public virtual void SetSearchGridLocation() => SearchForm.SetSearchGridLocation();
-#endif
     }
 }
