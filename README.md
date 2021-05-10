@@ -8,6 +8,11 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.1  
+
+修复默认实现接口无法显示实现的bug  
+兼容过去版本，保留SearchDataGridView类（与DataGridView完全一致）添加已过时标记  
+
 ### 3.0.0  
 
 依赖的框架：net5.0-windows;netcoreapp3.1;net48;net40  
