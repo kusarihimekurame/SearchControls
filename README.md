@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.2  
+添加对ReadOnly的判断  
+修复net5.0及以上版本出现的bug  
+
 ### 3.0.1  
 
 修复默认实现接口无法显示实现的bug  

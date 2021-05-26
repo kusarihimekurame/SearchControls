@@ -170,7 +170,7 @@ namespace SearchControls.SearchGridForm
         private void TextBox_Enter(object sender, EventArgs e)
         {
             SearchGrid.IsEnter = true;
-            if (!Visible && Grid.IsEnterShow)
+            if (sender is TextBox tb && !tb.ReadOnly && !Visible && Grid.IsEnterShow)
             {
                 //bounds = sender is TextBox tb && SubSearchTextBoxes.Any(sstb => sstb.TextBox.Equals(tb) && sstb.IsMoveGrid) ? (_grid as Control).Parent.RectangleToScreen(tb.Bounds) : _grid.Bounds;
                 Show((_grid as Control).TopLevelControl);

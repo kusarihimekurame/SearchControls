@@ -450,7 +450,7 @@ namespace SearchControls.SearchGridForm
         {
             if (sender is TextBox tb)
             {
-                if (e != null)
+                if (e != null && !tb.ReadOnly)
                 {
                     if (IsEnter) IsEnter = false;
                     else if (TopLevelControl.Visible) DataText.ReversalSearchState();
@@ -466,7 +466,7 @@ namespace SearchControls.SearchGridForm
         {
             if (sender is TextBox tb)
             {
-                if (e != null) DataText.ReversalSearchState();
+                if (e != null && !tb.ReadOnly) DataText.ReversalSearchState();
 
                 if (MultiSelect != null && tb.Text.Contains(MultiSelect.MultiSelectSplit))
                 {
@@ -1139,6 +1139,15 @@ namespace SearchControls.SearchGridForm
             if (e.Exception.Message.Equals("给定关键字不在字典中。"))
                 displayErrorDialogIfNoHandler = false;
             base.OnDataError(displayErrorDialogIfNoHandler, e);
+        }
+
+        /// <summary>
+        /// 修复net5中关闭窗口后会触发CreateHandle()问题
+        /// </summary>
+        protected override void CreateHandle()
+        {
+            if (IsDisposed) return;
+            base.CreateHandle();
         }
     }
 }

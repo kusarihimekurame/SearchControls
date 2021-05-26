@@ -37,26 +37,30 @@
             this.searchTextBox1.AutoInputDataName = null;
             this.searchTextBox1.DataMember = null;
             this.searchTextBox1.DisplayDataName = null;
-            this.searchTextBox1.Location = new System.Drawing.Point(12, 12);
+            this.searchTextBox1.Location = new System.Drawing.Point(14, 17);
+            this.searchTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.searchTextBox1.Name = "searchTextBox1";
-            this.searchTextBox1.Size = new System.Drawing.Size(100, 21);
+            this.searchTextBox1.Size = new System.Drawing.Size(116, 23);
             this.searchTextBox1.TabIndex = 0;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(118, 12);
+            this.textBox1.Location = new System.Drawing.Point(138, 17);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(116, 23);
             this.textBox1.TabIndex = 1;
             // 
-            // SearchTextBox
+            // searchTextBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(241, 53);
+            this.ClientSize = new System.Drawing.Size(281, 75);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.searchTextBox1);
-            this.Name = "SearchTextBox";
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Name = "searchTextBox";
             this.Text = "SearchTextBox";
             this.ResumeLayout(false);
             this.PerformLayout();

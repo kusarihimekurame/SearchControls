@@ -28,8 +28,12 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>3.0.1</Version>
-    <PackageReleaseNotes>3.0.1
+    <Version>3.0.2</Version>
+    <PackageReleaseNotes>3.0.2
+添加对ReadOnly的判断
+修复net5.0及以上版本出现的bug
+
+3.0.1
 修复默认实现接口无法显示实现的bug
 兼容过去版本，保留SearchDataGridView类（与DataGridView完全一致）添加已过时标记
 
@@ -147,8 +151,8 @@ SearchTextBox.Enter在搜索表格出现之前触发,
 模糊查找文本框控件(SearchTextBox)、
 模糊查找表格控件(SearchDataGridView)</PackageReleaseNotes>
     <PackageTags>Search Control</PackageTags>
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>
-    <FileVersion>3.0.1.0</FileVersion>
+    <AssemblyVersion>3.0.2.0</AssemblyVersion>
+    <FileVersion>3.0.2.0</FileVersion>
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
