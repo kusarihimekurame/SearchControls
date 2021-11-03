@@ -302,7 +302,6 @@ namespace SearchControls
             }
         }
 
-        private string dataMember;
         /// <include file='Include_Tag.xml' path='Tab/Members/Member[@Name="DataMember"]/*'/>
         [
             DefaultValue(""),
@@ -312,40 +311,37 @@ namespace SearchControls
         ]
         public string DataMember
         {
-            get => dataMember;
+            get => _SearchGrid.DataMember;
             set
             {
-                dataMember = value;
-                if (DataSource is DataSet ds && ds.Tables.Contains(value))
+                Action action = null;
+                action = () =>
                 {
-                    Action action = null;
-                    action = () =>
+                    if (InvokeRequired)
                     {
-                        if (InvokeRequired)
-                        {
-                            Invoke(action);
-                        }
-                        else
-                        {
-                            _SearchGrid.DataMember = value;
+                        Invoke(action);
+                    }
+                    else
+                    {
+                        _SearchGrid.DataMember = value;
 
-                            if (IsMultiSelect)
-                            {
-                                SetMultSelectColumn(true);
-                            }
+                        if (IsMultiSelect)
+                        {
+                            SetMultSelectColumn(true);
                         }
-                    };
-                    action();
-                }
+                    }
+                };
+                action();
             }
         }
 
         private void SetMultSelectColumn(bool IsAdd)
         {
+            BindingSource bs = SearchGrid.DataSource as BindingSource;
             DataTable dt = null;
-            if (SearchGrid.DataSource is DataTable _dt) dt = _dt;
-            else if (SearchGrid.DataSource is DataView _dv) dt = _dv.Table;
-            else if (SearchGrid.DataSource is DataSet _ds) dt = _ds.Tables[SearchGrid.DataMember];
+            if (bs.DataSource is DataTable _dt) dt = _dt;
+            else if (bs.DataSource is DataView _dv) dt = _dv.Table;
+            else if (bs.DataSource is DataSet _ds) dt = _ds.Tables[bs.DataMember];
 
             if (dt != null)
             {
@@ -366,7 +362,7 @@ namespace SearchControls
                     }
                 }
             }
-            else if (SearchGrid.DataSource is IEnumerable e)
+            else if (bs.DataSource is IEnumerable e)
             {
 
             }

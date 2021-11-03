@@ -349,5 +349,14 @@ namespace SearchControls.SearchGridForm
                 SearchGrid.DataText.TextBox.Enter += TextBox_Enter;
             }
         }
+
+        /// <summary>
+        /// 修复关闭窗口后会触发CreateHandle()问题
+        /// </summary>
+        protected override void CreateHandle()
+        {
+            if (IsDisposed) return;
+            base.CreateHandle();
+        }
     }
 }

@@ -66,9 +66,20 @@ namespace SearchControls
                 Texts.ToList().ForEach(t =>
                     rowFilter.Add("(" + string.Join("OR ",
                         dataTable.Columns.Cast<DataColumn>().
-                            Where(dc => (columnNames.Contains(dc.ColumnName.ToUpper()) || columnNames.Select(cn => "PY_" + cn).Contains(dc.ColumnName.ToUpper())) && dc.DataType.Equals(typeof(string))).
-                            Select(dc => string.Format("{0} LIKE '%{1}%' ", dc.ColumnName.ToUpper(), t.Replace("'", "''").Replace("[", "[[ ").Replace("]", " ]]").Replace("*", "[*]").Replace("%", "[%]").Replace("[[ ", "[[]").Replace(" ]]", "[]]")))
-                        ) + ") ")
+                            Where(dc =>
+                                (columnNames.Contains(dc.ColumnName.ToUpper())
+                                    || columnNames.Select(cn => "PY_" + cn).Contains(dc.ColumnName.ToUpper()))
+                                && (dc.DataType.Equals(typeof(string))
+                                    || int.TryParse(t, out _) && dc.DataType.Equals(typeof(int))
+                                    || decimal.TryParse(t, out _) && dc.DataType.Equals(typeof(decimal))
+                                    || double.TryParse(t, out _) && dc.DataType.Equals(typeof(double))
+                                    || short.TryParse(t, out _) && dc.DataType.Equals(typeof(short))
+                                    || long.TryParse(t, out _) && dc.DataType.Equals(typeof(long)))).
+                            Select(dc =>
+                                    dc.DataType.Equals(typeof(string))
+                                        ? string.Format("{0} LIKE '%{1}%' ", dc.ColumnName.ToUpper(), t.Replace("'", "''").Replace("[", "[[ ").Replace("]", " ]]").Replace("*", "[*]").Replace("%", "[%]").Replace("[[ ", "[[]").Replace(" ]]", "[]]"))
+                                        : string.Format("{0} = {1} ", dc.ColumnName.ToUpper(), t)
+                                )) + ") ")
                 );
             }
             return string.Join("AND ", rowFilter);

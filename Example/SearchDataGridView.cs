@@ -21,6 +21,7 @@ namespace Example
             dataTable.Columns.Add("Age");
             dataTable.Columns.Add("CountryCode");
             dataTable.Columns.Add("Country");
+            dataTable.Columns["Age"].DataType = typeof(int);
             dataTable.Rows.Add("小王", 15,"CN","中国");
             dataTable.Rows.Add("小明", 20,"JP","日本");
             dataTable.Rows.Add("王小李", 30, "DE", "德国");

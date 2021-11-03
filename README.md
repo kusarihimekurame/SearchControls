@@ -8,7 +8,14 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.3
+
+将SearchControl数据源替换为BindingSource的查找方式
+将IList类型转换为可以模糊查找的BindingListView类型
+模糊查找自动生成对应字段中添加对数字型的支持
+
 ### 3.0.2  
+
 添加对ReadOnly的判断  
 修复net5.0及以上版本出现的bug  
 
