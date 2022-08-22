@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFrameworks>net5.0-windows;netcoreapp3.1;net48;net40</TargetFrameworks>
+    <TargetFrameworks>net6.0-windows;net48;</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
-	<LangVersion>9.0</LangVersion>
+	<LangVersion>latest</LangVersion>
     <ApplicationIcon />
     <StartupObject />
     <AssemblyName>SearchControls</AssemblyName>
@@ -28,8 +28,11 @@ The control of fuzzy searching by table.
 
   <PropertyGroup>
     <DocumentationFile>C:\Users\Administrator\source\repos\SearchControls\SearchControls\bin\$(Configuration)\$(TargetFramework)\SearchControls.xml</DocumentationFile>
-    <Version>3.0.3</Version>
-    <PackageReleaseNotes>3.0.3
+    <Version>3.0.4</Version>
+    <PackageReleaseNotes>3.0.4
+升级到net6.0，并升级依赖包的版本
+
+3.0.3
 将SearchControl数据源替换为BindingSource的查找方式
 将IList类型转换为可以模糊查找的BindingListView类型
 模糊查找自动生成对应字段中添加对数字型的支持
@@ -169,7 +172,7 @@ SearchTextBox.Enter在搜索表格出现之前触发,
     <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1' AND '$(TargetFramework)' != 'net5.0-windows'">
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1' AND '$(TargetFramework)' != 'net6.0-windows'">
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -193,7 +196,7 @@ SearchTextBox.Enter在搜索表格出现之前触发,
   </ItemGroup>
     
   <ItemGroup>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.9" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.*" />
   </ItemGroup>
     
   <ItemGroup>

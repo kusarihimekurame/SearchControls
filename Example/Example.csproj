@@ -2,9 +2,9 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
-		<TargetFramework>net5.0-windows</TargetFramework>
+		<TargetFramework>net6.0-windows</TargetFramework>
 		<UseWindowsForms>true</UseWindowsForms>
-		<LangVersion>9.0</LangVersion>
+		<LangVersion>latest</LangVersion>
 		<Platforms>AnyCPU;x86;x64</Platforms>
 		<EnableNETAnalyzers>true</EnableNETAnalyzers>
 	</PropertyGroup>
