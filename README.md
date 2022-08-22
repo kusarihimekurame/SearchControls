@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.4
+
+升级到net6.0，并升级依赖包的版本
+
 ### 3.0.3
 
 将SearchControl数据源替换为BindingSource的查找方式  
