@@ -102,6 +102,7 @@ namespace SearchControls.SearchGridForm
             SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
             base.MultiSelect = false;
             ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            ShowCellToolTips = false;
         }
         /// <summary>
         /// 引发 <see cref="DataGridView.DataSourceChanged"/> 事件。

@@ -8,6 +8,10 @@ The control of fuzzy searching by table.
 
 ## Release Notes
 
+### 3.0.6
+
+关闭ShowCellToolTips，解决ShowCellToolTips默认开启后偶尔会引发NullReferenceException的bug
+
 ### 3.0.5
 
 升级依赖包的版本
