@@ -22,8 +22,8 @@ namespace Example
             dataTable.Columns.Add("CountryCode");
             dataTable.Columns.Add("Country");
             dataTable.Columns["Age"].DataType = typeof(int);
-            dataTable.Rows.Add("小王", 15,"CN","中国");
-            dataTable.Rows.Add("小明", 20,"JP","日本");
+            dataTable.Rows.Add("小王", 15, "CN", "中国");
+            dataTable.Rows.Add("小明", 20, "JP", "日本");
             dataTable.Rows.Add("王小李", 30, "DE", "德国");
             DataTable Country = new DataTable("Country");
             Country.Columns.Add("Code");
@@ -44,13 +44,13 @@ namespace Example
                     Name = "Name",
                     DataPropertyName = "Name",
                     HeaderText = "名字"
-                }, 
+                },
                 new DataGridViewTextBoxColumn
                 {
                     Name = "Age",
                     DataPropertyName = "Age",
                     HeaderText = "年龄"
-                }, 
+                },
                 new DataGridViewSearchTextBoxColumn
                 {
                     Name = "CountryCode",
@@ -74,7 +74,7 @@ namespace Example
                             HeaderText = "名称"
                         }
                     }
-                }, 
+                },
                 new DataGridViewSearchTextBoxColumn
                 {
                     Name = "Country",

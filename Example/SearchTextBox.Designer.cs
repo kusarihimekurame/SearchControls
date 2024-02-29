@@ -28,43 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.searchTextBox1 = new SearchControls.SearchTextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
+            searchTextBox1 = new SearchControls.SearchTextBox();
+            textBox1 = new System.Windows.Forms.TextBox();
+            SuspendLayout();
             // 
             // searchTextBox1
             // 
-            this.searchTextBox1.AutoInputDataName = null;
-            this.searchTextBox1.DataMember = null;
-            this.searchTextBox1.DisplayDataName = null;
-            this.searchTextBox1.Location = new System.Drawing.Point(14, 17);
-            this.searchTextBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.searchTextBox1.Name = "searchTextBox1";
-            this.searchTextBox1.Size = new System.Drawing.Size(116, 23);
-            this.searchTextBox1.TabIndex = 0;
+            searchTextBox1.AutoInputDataName = null;
+            searchTextBox1.DisplayDataName = null;
+            searchTextBox1.Location = new System.Drawing.Point(14, 17);
+            searchTextBox1.Margin = new System.Windows.Forms.Padding(4);
+            searchTextBox1.Name = "searchTextBox1";
+            searchTextBox1.Size = new System.Drawing.Size(116, 23);
+            searchTextBox1.TabIndex = 0;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(138, 17);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(116, 23);
-            this.textBox1.TabIndex = 1;
+            textBox1.Location = new System.Drawing.Point(138, 17);
+            textBox1.Margin = new System.Windows.Forms.Padding(4);
+            textBox1.Name = "textBox1";
+            textBox1.ReadOnly = true;
+            textBox1.Size = new System.Drawing.Size(116, 23);
+            textBox1.TabIndex = 1;
             // 
             // searchTextBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 75);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.searchTextBox1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.Name = "searchTextBox";
-            this.Text = "SearchTextBox";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            ClientSize = new System.Drawing.Size(281, 75);
+            Controls.Add(textBox1);
+            Controls.Add(searchTextBox1);
+            Margin = new System.Windows.Forms.Padding(4);
+            Name = "searchTextBox";
+            Text = "SearchTextBox";
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

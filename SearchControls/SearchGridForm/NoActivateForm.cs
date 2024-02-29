@@ -62,17 +62,18 @@ namespace SearchControls.SearchGridForm
 
         private void InitializeComponent()
         {
-            this.SuspendLayout();
+            SuspendLayout();
             // 
             // NoActivateForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
-            this.ShowInTaskbar = false;
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.Name = "NoActivateForm";
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            AutoScaleMode = AutoScaleMode.Dpi;
+            ClientSize = new System.Drawing.Size(331, 370);
+            FormBorderStyle = FormBorderStyle.None;
+            Margin = new Padding(4, 4, 4, 4);
+            Name = "NoActivateForm";
+            ShowInTaskbar = false;
+            ResumeLayout(false);
         }
     }
 }

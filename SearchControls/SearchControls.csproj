@@ -196,7 +196,7 @@ SearchTextBox.Enter在搜索表格出现之前触发,
   </ItemGroup>
     
   <ItemGroup>
-    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.*" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.8" />
   </ItemGroup>
     
   <ItemGroup>

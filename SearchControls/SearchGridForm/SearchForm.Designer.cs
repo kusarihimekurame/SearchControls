@@ -63,6 +63,7 @@
             this.Controls.Add(this.SearchGrid);
             this.Name = "SearchForm";
             this.Text = "SearchForm";
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             ((System.ComponentModel.ISupportInitialize)(this.SearchGrid)).EndInit();
             this.ResumeLayout(false);
 
